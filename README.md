@@ -14,12 +14,15 @@
     cd bogue
     ```
 
-2. Démarrer les conteneurs
+2. Lancer l'environnement
 
     ```sh
     docker compose up -d
     ```
 
-## Accès à l'application
+## Utilisation
 
-Une fois les conteneurs démarrés, l'application est accessible à l'adresse [`localhost:8080`](http://localhost:8080).
+| Service     | URL                                     | Description                                   |
+| ----------- | --------------------------------------- | --------------------------------------------- |
+| Application | [localhost:8080](http://localhost:8080) | Interface principale de l'application Symfony |
+| phpMyAdmin  | [localhost:8081](http://localhost:8081) | Gestion de la base de données                 |
