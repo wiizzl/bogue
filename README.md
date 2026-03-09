@@ -10,7 +10,7 @@
 1. Cloner le dépôt
 
     ```sh
-    git clone <url-du-depot>
+    git clone https://github.com/wiizzl/bogue
     cd bogue
     ```
 
