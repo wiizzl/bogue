@@ -22,4 +22,4 @@
 
 ## Accès à l'application
 
-Une fois les conteneurs démarrés, l'application est accessible sur [`localhost:8080`](http://localhost:8080)
+Une fois les conteneurs démarrés, l'application est accessible à l'adresse [`localhost:8080`](http://localhost:8080).
