@@ -35,7 +35,7 @@ COPY --link frankenphp/Caddyfile /etc/frankenphp/Caddyfile
 
 ENTRYPOINT ["docker-entrypoint"]
 
-HEALTHCHECK --start-period=180s CMD curl http://localhost:2019/metrics --silent --show-error --fail --output /dev/null || exit 1
+# HEALTHCHECK --start-period=180s CMD curl http://localhost:2019/metrics --silent --show-error --fail --output /dev/null || exit 1
 CMD [ "frankenphp", "run", "--config", "/etc/frankenphp/Caddyfile" ]
 
 FROM frankenphp_base AS frankenphp_dev
