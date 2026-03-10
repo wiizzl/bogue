@@ -17,7 +17,17 @@
 2. Lancer l'environnement
 
     ```sh
-    docker compose up -d
+    docker compose build --pull --no-cache
+    ```
+
+    ```sh
+    docker compose up --wait
+    ```
+
+3. Stopper l'environnement
+
+    ```sh
+    docker compose down --remove-orphans
     ```
 
 ## Utilisation
