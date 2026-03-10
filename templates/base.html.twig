@@ -1,15 +1,24 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="fr">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}{% endblock %} - Bogue</title>
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
-        {% block stylesheets %}
-        {% endblock %}
-        {% block javascripts %}
-        {% endblock %}
+
+        <link rel="stylesheet" href="{{ asset('css/globals.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/header.css') }}">
+        {% block stylesheets %}{% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <header>
+            <a href="/">
+                <img src="{{ asset('images/logo.png') }}" alt="Bogue">
+            </a>
+        </header>
+        <main>
+            {% block body %}{% endblock %}
+        </main>
+        {% block javascripts %}{% endblock %}
     </body>
 </html>
