@@ -1,4 +1,7 @@
 {
+	order php before file_server
+    order php_server before file_server
+
 	skip_install_trust
 
 	{$CADDY_GLOBAL_OPTIONS}
@@ -20,7 +23,7 @@
 		{$CADDY_SERVER_LOG_OPTIONS}
 	}
 
-	root /app/public
+	root * /app/public
 	encode zstd br gzip
 
 	{$CADDY_SERVER_EXTRA_DIRECTIVES}
