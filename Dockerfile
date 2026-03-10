@@ -1,5 +1,3 @@
-#syntax=docker/dockerfile:1
-
 FROM dunglas/frankenphp:1-php8.2.18 AS frankenphp_base
 
 WORKDIR /app
