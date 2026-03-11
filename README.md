@@ -33,8 +33,8 @@ Les versions des logiciels utilisées dans l'image Docker (PHP, MySQL) correspon
    docker compose up --wait
    ```
 
-   > [!WARNING]
-   > Laissez bien le conteneur tourner le temps qu'il installe les dépendances, regardez les logs.
+> [!WARNING]
+> Laissez bien le conteneur tourner le temps qu'il installe les dépendances, regardez les logs.
 
 2. Stopper l'environnement
 
