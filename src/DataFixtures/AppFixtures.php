@@ -31,11 +31,6 @@ class AppFixtures extends Fixture
     {
         $faker = Factory::create('fr_FR');
 
-        $faker = Factory::create('fr_FR');
-
-        // ==========================================
-        // 1. DICTIONNAIRES (Rôles, Filières, Jalons, Statuts, Actions)
-        // ==========================================
         $savedRoles = [];
         foreach (['ROLE_ADMIN' => 'Administrateur', 'ROLE_TEACHER' => 'Enseignant', 'ROLE_SECRETARY' => 'Secrétariat'] as $code => $label) {
             $role = (new Role())->setCode($code)->setLabel($label);
