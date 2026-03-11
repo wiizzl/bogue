@@ -13,10 +13,11 @@ Ce projet est conçu pour fonctionner de deux manières :
 
 Les versions des logiciels utilisées dans l'image Docker (PHP, MySQL) correspondent volontairement à celles de l'environnement WAMP du product owner, afin de garantir une cohérence et d'éviter tout problème de compatibilité entre les deux environnements.
 
-| Programme | Version |
-| --------- | ------- |
-| PHP       | 8.2.18  |
-| MySQL     | 8.3     |
+| Programme  | Version |
+| ---------- | ------- |
+| PHP        | 8.2.18  |
+| MySQL      | 8.3     |
+| phpMyAdmin | 5.2.1   |
 
 ## Installation
 
@@ -31,6 +32,9 @@ Les versions des logiciels utilisées dans l'image Docker (PHP, MySQL) correspon
    ```sh
    docker compose up --wait
    ```
+
+   > [!WARNING]
+   > Laissez bien le conteneur tourner le temps qu'il installe les dépendances, regardez les logs.
 
 2. Stopper l'environnement
 

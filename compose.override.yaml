@@ -22,3 +22,14 @@ services:
     ports:
       - "3306"
   ###< doctrine/doctrine-bundle ###
+
+  phpmyadmin:
+    image: phpmyadmin:5.2.1
+    environment:
+      PMA_HOST: database
+      PMA_USER: "root"
+      PMA_PASSWORD: ""
+    ports:
+      - "8001:80"
+    depends_on:
+      - database
