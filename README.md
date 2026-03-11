@@ -44,17 +44,27 @@ Les versions des logiciels utilisées dans l'image Docker (PHP, MySQL) correspon
 
 ### Via WAMP
 
-1. Importer la base de données
-
-Ouvrir phpMyAdmin et exécuter le script sql contenu dans le dossier [`sql`](./sql/).
-
-2. Installer les dépendances PHP
+1. Installer les dépendances PHP
 
    ```sh
    composer install
    ```
 
-3. Lancer le serveur de développement
+2. Importer la base de données
+
+Deux options sont disponibles :
+
+- Via phpMyAdmin : importer le [script SQL](./sql/bogue.sql).
+
+- Via la console :
+
+  ```sh
+  php bin/console doctrine:database:create
+  php bin/console doctrine:migrations:migrate
+  php bin/console doctrine:fixtures:load
+  ```
+
+1. Lancer le serveur de développement
 
    ```sh
    symfony server:start
