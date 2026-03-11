@@ -71,7 +71,7 @@ class AppFixtures extends Fixture
         $manager->persist($secretary);
 
         $teachersList = [
-            'Catherine Baranger', 'Réjane Boursier', 'Sophie Ternisien', 'Nathalie Grandin', 'Marie Serrault',
+            'Catherine Baranger', 'Réjane Boursier', 'Sandrine Ternisien', 'Nathalie Grandin', 'Marie Serrault',
             'Christophe Baudoux', 'Antoine Bloyet', 'Kévin Bayeul', 'Laurent Maurice', 'Robin Szylobryt'
         ];
 
