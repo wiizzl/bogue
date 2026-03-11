@@ -3,9 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -20,10 +22,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
     /**
-     * @var list<string> The user roles
+     * @var Collection<int, Role> The user roles
      */
-    #[ORM\Column]
-    private array $roles = [];
+    #[ORM\ManyToMany(targetEntity: Role::class)]
+    private Collection $userRoles;
 
     /**
      * @var string The hashed password
@@ -31,11 +33,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $firstname = null;
+    #[ORM\Column(length: 100)]
+    private ?string $firstName = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $lastname = null;
+    #[ORM\Column(length: 100)]
+    private ?string $lastName = null;
+
+    /**
+     * @var Collection<int, Internship>
+     */
+    #[ORM\OneToMany(targetEntity: Internship::class, mappedBy: 'trackingTeacher')]
+    private Collection $trackingInternships;
+
+    /**
+     * @var Collection<int, Internship>
+     */
+    #[ORM\OneToMany(targetEntity: Internship::class, mappedBy: 'visitingTeacher')]
+    private Collection $visitingInternships;
+
+    public function __construct()
+    {
+        $this->userRoles = new ArrayCollection();
+        $this->trackingInternships = new ArrayCollection();
+        $this->visitingInternships = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -69,19 +90,39 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
+        $roles = [];
+        foreach ($this->userRoles as $roleEntity) {
+            $roles[] = $roleEntity->getCode();
+        }
+
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
 
-    /**
-     * @param list<string> $roles
-     */
-    public function setRoles(array $roles): static
+    public function getUserRoles(): Collection
     {
-        $this->roles = $roles;
+        return $this->userRoles;
+    }
+
+    /**
+     * @param Role $role The role to add
+     */
+    public function addUserRole(Role $role): static
+    {
+        if (!$this->userRoles->contains($role)) {
+            $this->userRoles->add($role);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Role $role The role to remove
+     */
+    public function removeUserRole(Role $role): static
+    {
+        $this->userRoles->removeElement($role);
 
         return $this;
     }
@@ -118,26 +159,86 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // @deprecated, to be removed when upgrading to Symfony 8
     }
 
-    public function getFirstname(): ?string
+    public function getFirstName(): ?string
     {
-        return $this->firstname;
+        return $this->firstName;
     }
 
-    public function setFirstname(string $firstname): static
+    public function setFirstName(string $firstName): static
     {
-        $this->firstname = $firstname;
+        $this->firstName = $firstName;
 
         return $this;
     }
 
-    public function getLastname(): ?string
+    public function getLastName(): ?string
     {
-        return $this->lastname;
+        return $this->lastName;
     }
 
-    public function setLastname(string $lastname): static
+    public function setLastName(string $lastName): static
     {
-        $this->lastname = $lastname;
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Internship>
+     */
+    public function getTrackingInternships(): Collection
+    {
+        return $this->trackingInternships;
+    }
+
+    public function addTrackingInternship(Internship $trackingInternship): static
+    {
+        if (!$this->trackingInternships->contains($trackingInternship)) {
+            $this->trackingInternships->add($trackingInternship);
+            $trackingInternship->setTrackingTeacher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrackingInternship(Internship $trackingInternship): static
+    {
+        if ($this->trackingInternships->removeElement($trackingInternship)) {
+            // set the owning side to null (unless already changed)
+            if ($trackingInternship->getTrackingTeacher() === $this) {
+                $trackingInternship->setTrackingTeacher(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Internship>
+     */
+    public function getVisitingInternships(): Collection
+    {
+        return $this->visitingInternships;
+    }
+
+    public function addVisitingInternship(Internship $visitingInternship): static
+    {
+        if (!$this->visitingInternships->contains($visitingInternship)) {
+            $this->visitingInternships->add($visitingInternship);
+            $visitingInternship->setVisitingTeacher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVisitingInternship(Internship $visitingInternship): static
+    {
+        if ($this->visitingInternships->removeElement($visitingInternship)) {
+            // set the owning side to null (unless already changed)
+            if ($visitingInternship->getVisitingTeacher() === $this) {
+                $visitingInternship->setVisitingTeacher(null);
+            }
+        }
 
         return $this;
     }
