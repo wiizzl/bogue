@@ -17,15 +17,25 @@ final class HomeController extends AbstractController
     #[Route(name: 'app_home')]
     public function index(Request $request, InternshipRepository $internshipRepo, MajorRepository $majorRepo, UserRepository $userRepo): Response
     {
+        $page = $request->query->getInt('page', 1);
+        $limit = $request->query->getInt('limit', 10);
+
         $filters = [
             'major' => $request->query->get('major'),
             'teacher' => $request->query->get('teacher'),
         ];
 
-        $internships = $internshipRepo->findForTracking($filters, $this->getUser());
+        $paginator = $internshipRepo->findForTracking($filters, $this->getUser(), $page, $limit);
+
+        $totalItems = count($paginator);
+        $pagesCount = ceil($totalItems / $limit);
 
         return $this->render('home/index.html.twig', [
-            'internships' => $internships,
+            'internships' => $paginator,
+            'current_page' => $page,
+            'current_limit' => $limit,
+            'pages_count' => $pagesCount,
+            'total_items' => $totalItems,
             'majors' => $majorRepo->findAll(),
             'teachers' => $userRepo->findAll(),
             'current_filters' => $filters
@@ -40,7 +50,7 @@ final class HomeController extends AbstractController
             'teacher' => $request->query->get('teacher'),
         ];
 
-        $internships = $internshipRepo->findForTracking($filters, $this->getUser());
+        $internships = $internshipRepo->findForTracking($filters, $this->getUser(), 1, null);
         $allMilestones = $milestoneRepo->findAll();
 
         $fp = fopen('php://temp', 'w');

@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Internship;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -18,9 +19,9 @@ class InternshipRepository extends ServiceEntityRepository
     }
 
     /**
-     * Get filtered internships for tracking.
+     * Get filtered internships for tracking with pagination.
      */
-    public function findForTracking(array $filters, ?User $user = null): array
+    public function findForTracking(array $filters, ?User $user = null, int $page = 1, ?int $limit = null): Paginator|array
     {
         $qb = $this->createQueryBuilder('i')
             ->addSelect('s', 'm', 'c', 'tt', 'vt', 'im', 'mst')
@@ -47,6 +48,13 @@ class InternshipRepository extends ServiceEntityRepository
         if (!empty($filters['teacher'])) {
             $qb->andWhere('tt.id = :teacherId OR vt.id = :teacherId')
                ->setParameter('teacherId', $filters['teacher']);
+        }
+
+        if ($limit !== null) {
+            $qb->setFirstResult(($page - 1) * $limit)
+               ->setMaxResults($limit);
+
+            return new Paginator($qb->getQuery());
         }
 
         return $qb->getQuery()->getResult();

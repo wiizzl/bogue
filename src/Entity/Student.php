@@ -26,7 +26,6 @@ class Student
     private ?string $firstName = null;
 
     #[ORM\Column(length: 100)]
-    #[ORM\Column(length: 100)]
     #[Assert\NotBlank(message: "Le nom est obligatoire.")]
     #[Assert\Length(max: 100)]
     private ?string $lastName = null;

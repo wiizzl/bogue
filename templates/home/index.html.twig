@@ -73,4 +73,25 @@
         {% endfor %}
         </tbody>
     </table>
+
+    <div class="pagination">
+        {% if pages_count > 1 %}
+            {% for i in 1..pages_count %}
+                <a href="{{ path('app_home', current_filters|merge({'page': i, 'limit': current_limit})) }}"
+                style="{{ i == current_page ? 'font-weight: bold; font-size: 1.2em;' : '' }}">
+                    {{ i }}
+                </a>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <div class="options">
+        <small>Afficher :
+            <a href="{{ path('app_home', current_filters|merge({'limit': 10})) }}">10</a> |
+            <a href="{{ path('app_home', current_filters|merge({'limit': 20})) }}">20</a> |
+            <a href="{{ path('app_home', current_filters|merge({'limit': 50})) }}">50</a>
+        </small>
+    </div>
+
+    <p>Total : {{ total_items }} dossiers trouvés.</p>
 {% endblock %}
