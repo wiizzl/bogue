@@ -35,9 +35,12 @@ class InternshipRepository extends ServiceEntityRepository
             ->where('s.isArchived = false')
             ->orderBy('s.lastName', 'ASC');
 
-        if ($user && !in_array('ROLE_ADMIN', $user->getRoles())) {
+        $isAdmin = $user && in_array('ROLE_ADMIN', $user->getRoles());
+        $isSecretary = $user && in_array('ROLE_SECRETARY', $user->getRoles());
+
+        if ($user && !$isAdmin && !$isSecretary) {
             $qb->andWhere('i.trackingTeacher = :user OR i.visitingTeacher = :user')
-               ->setParameter('user', $user);
+            ->setParameter('user', $user);
         }
 
         if (!empty($filters['major'])) {

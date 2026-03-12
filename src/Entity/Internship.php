@@ -139,6 +139,18 @@ class Internship
         return $this;
     }
 
+    public function getDurationInWeeks(): int
+    {
+        if (!$this->startDate || !$this->endDate) {
+            return 0;
+        }
+
+        $diff = $this->startDate->diff($this->endDate);
+        $days = $diff->days;
+
+        return (int) ceil($days / 7);
+    }
+
     public function getRemarks(): ?string
     {
         return $this->remarks;

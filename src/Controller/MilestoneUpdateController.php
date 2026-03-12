@@ -22,7 +22,7 @@ final class MilestoneUpdateController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_home_index');
         }
 
         return $this->render('milestone/edit.html.twig', [

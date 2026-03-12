@@ -29,12 +29,16 @@ class InternshipMilestoneVoter extends Voter
             return false;
         }
 
+        if ($this->security->isGranted('ROLE_ADMIN')) {
+            return true;
+        }
+
         /** @var InternshipMilestone $milestone */
         $milestone = $subject;
         $internship = $milestone->getInternship();
 
-        if ($this->security->isGranted('ROLE_ADMIN')) {
-            return true;
+        if ($this->security->isGranted('ROLE_SECRETARY')) {
+            return false;
         }
 
         if ($this->security->isGranted('ROLE_TEACHER')) {

@@ -25,7 +25,7 @@ security:
                 enable_csrf: true
             logout:
                 path: app_logout
-                target: app_home
+                target: app_home_index
 
             # Activate different ways to authenticate:
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -36,6 +36,10 @@ security:
     access_control:
         - { path: ^/login, roles: PUBLIC_ACCESS }
         - { path: ^/, roles: ROLE_USER }
+
+    role_hierarchy:
+        ROLE_SECRETARY: ROLE_USER
+        ROLE_ADMIN: [ROLE_SECRETARY, ROLE_TEACHER]
 
 when@test:
     security:

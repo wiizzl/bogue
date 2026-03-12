@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class HomeController extends AbstractController
 {
-    #[Route(name: 'app_home')]
+    #[Route(name: 'app_home_index', methods: ['GET'])]
     public function index(Request $request, InternshipRepository $internshipRepo, MajorRepository $majorRepo, UserRepository $userRepo): Response
     {
         $page = $request->query->getInt('page', 1);
@@ -42,7 +42,7 @@ final class HomeController extends AbstractController
         ]);
     }
 
-    #[Route('/export', name: 'app_export_csv', methods: ['GET'])]
+    #[Route('/export', name: 'app_home_export', methods: ['GET'])]
     public function exportCsv(Request $request, InternshipRepository $internshipRepo, MilestoneRepository $milestoneRepo): Response
     {
         $filters = [
