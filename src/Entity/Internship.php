@@ -184,7 +184,6 @@ class Internship
     public function removeMilestone(InternshipMilestone $milestone): static
     {
         if ($this->milestones->removeElement($milestone)) {
-            // set the owning side to null (unless already changed)
             if ($milestone->getInternship() === $this) {
                 $milestone->setInternship(null);
             }
@@ -214,7 +213,6 @@ class Internship
     public function removeHistoryLog(HistoryLog $historyLog): static
     {
         if ($this->historyLogs->removeElement($historyLog)) {
-            // set the owning side to null (unless already changed)
             if ($historyLog->getInternship() === $this) {
                 $historyLog->setInternship(null);
             }

@@ -214,7 +214,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeTrackingInternship(Internship $trackingInternship): static
     {
         if ($this->trackingInternships->removeElement($trackingInternship)) {
-            // set the owning side to null (unless already changed)
             if ($trackingInternship->getTrackingTeacher() === $this) {
                 $trackingInternship->setTrackingTeacher(null);
             }
@@ -244,7 +243,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeVisitingInternship(Internship $visitingInternship): static
     {
         if ($this->visitingInternships->removeElement($visitingInternship)) {
-            // set the owning side to null (unless already changed)
             if ($visitingInternship->getVisitingTeacher() === $this) {
                 $visitingInternship->setVisitingTeacher(null);
             }

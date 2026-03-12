@@ -18,6 +18,7 @@ class Student
 
     #[ORM\ManyToOne(inversedBy: 'students')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(message: "La filière est obligatoire.")]
     private ?Major $major = null;
 
     #[ORM\Column(length: 100)]
@@ -30,10 +31,6 @@ class Student
     #[Assert\Length(max: 100)]
     private ?string $lastName = null;
 
-    #[ORM\Column]
-    #[Assert\NotNull(message: "L'état d'archivage doit être défini.")]
-    private ?bool $isArchived = null;
-
     /**
      * @var Collection<int, Internship>
      */
@@ -42,6 +39,7 @@ class Student
 
     #[ORM\ManyToOne(inversedBy: 'students')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(message: "La promotion est obligatoire.")]
     private ?Promotion $promotion = null;
 
     public function __construct()
@@ -90,18 +88,6 @@ class Student
         return $this;
     }
 
-    public function isArchived(): ?bool
-    {
-        return $this->isArchived;
-    }
-
-    public function setIsArchived(bool $isArchived): static
-    {
-        $this->isArchived = $isArchived;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Internship>
      */
@@ -123,7 +109,6 @@ class Student
     public function removeInternship(Internship $internship): static
     {
         if ($this->internships->removeElement($internship)) {
-            // set the owning side to null (unless already changed)
             if ($internship->getStudent() === $this) {
                 $internship->setStudent(null);
             }

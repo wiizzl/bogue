@@ -87,7 +87,6 @@ class Major
     public function removeStudent(Student $student): static
     {
         if ($this->students->removeElement($student)) {
-            // set the owning side to null (unless already changed)
             if ($student->getMajor() === $this) {
                 $student->setMajor(null);
             }

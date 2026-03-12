@@ -6,6 +6,7 @@ use App\Repository\PromotionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PromotionRepository::class)]
 class Promotion
@@ -16,9 +17,12 @@ class Promotion
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "L'année de promotion est obligatoire.")]
+    #[Assert\Range(min: 2020, max: 2050)]
     private ?int $year = null;
 
     #[ORM\Column]
+    #[Assert\NotNull(message: "L'état d'archivage doit être défini.")]
     private ?bool $isArchived = null;
 
     /**
@@ -82,7 +86,6 @@ class Promotion
     public function removeStudent(Student $student): static
     {
         if ($this->students->removeElement($student)) {
-            // set the owning side to null (unless already changed)
             if ($student->getPromotion() === $this) {
                 $student->setPromotion(null);
             }

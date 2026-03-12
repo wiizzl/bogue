@@ -168,7 +168,6 @@ class Company
     public function removeInternship(Internship $internship): static
     {
         if ($this->internships->removeElement($internship)) {
-            // set the owning side to null (unless already changed)
             if ($internship->getCompany() === $this) {
                 $internship->setCompany(null);
             }

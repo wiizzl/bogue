@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: database
--- Generation Time: Mar 11, 2026 at 09:40 PM
+-- Generation Time: Mar 12, 2026 at 07:12 PM
 -- Server version: 8.3.0
 -- PHP Version: 8.2.27
 
@@ -64,36 +64,36 @@ CREATE TABLE `company` (
 --
 
 INSERT INTO `company` (`id`, `name`, `address`, `zip_code`, `city`, `contact_name`, `phone`, `email`) VALUES
-(1, 'Le Gall', '99, avenue de Lejeune', '71103', 'Gauthier-la-Forêt', 'Michelle Caron', '01 55 72 46 36', 'apasquier@bertin.net'),
-(2, 'Gosselin SAS', 'avenue de Marchal', '38200', 'Weiss-les-Bains', 'Madeleine Girard', '+33 (0)1 82 45 86 44', 'susanne63@moulin.net'),
-(3, 'Garcia Bazin S.A.S.', '5, place de Fournier', '03560', 'Charrier', 'Aimé-Théodore Leveque', '+33 (0)3 45 57 84 31', 'rjulien@royer.fr'),
-(4, 'Merle', '2, rue Dos Santos', '54726', 'Munoz', 'Martine Clerc', '0584764713', 'etienne64@lemaire.fr'),
-(5, 'Goncalves', '3, rue Alves', '99350', 'ArnaudVille', 'Daniel Marchal', '01 96 17 71 61', 'fraynaud@langlois.fr'),
-(6, 'Becker Morin SARL', 'boulevard Dominique Lefebvre', '97753', 'Marechal-sur-Le Goff', 'Thierry-Yves Guillet', '+33 (0)9 29 36 93 18', 'martinez.julien@chauvet.fr'),
-(7, 'Noel Ollivier SA', '68, place Hortense Blanchard', '48390', 'Tessierboeuf', 'Olivier Seguin-Petitjean', '04 87 43 38 66', 'jacqueline11@jourdan.org'),
-(8, 'Denis', '4, boulevard de Vaillant', '34909', 'Besson-la-Forêt', 'Juliette de Meyer', '+33 (0)6 33 90 40 83', 'francoise.bigot@louis.net'),
-(9, 'Courtois', '33, boulevard Marechal', '28693', 'Leleu', 'Grégoire du Wagner', '0265916574', 'oceane.regnier@charles.com'),
-(10, 'Dubois Leroux S.A.S.', '4, rue Paul Sauvage', '49864', 'DidierVille', 'Benoît de Morin', '+33 (0)6 30 53 48 78', 'fischer.patricia@merle.com'),
-(11, 'Francois', 'rue Théodore Rodrigues', '71631', 'Rousselboeuf', 'Astrid Bourdon', '0695610730', 'hpages@arnaud.com'),
-(12, 'Richard Maillet SA', '72, boulevard de Guillot', '21806', 'BerthelotBourg', 'Noémi de Mathieu', '+33 5 54 33 75 56', 'antoine.ferreira@millet.com'),
-(13, 'Denis SA', '93, chemin de Hamel', '96910', 'Denisdan', 'Dominique Martineau', '+33 2 24 66 98 25', 'robert.dubois@guillot.com'),
-(14, 'Mendes', '91, rue Adrien Martins', '27492', 'Launay-les-Bains', 'Éric Potier', '+33 (0)1 14 61 94 99', 'joseph.laine@grenier.fr'),
-(15, 'Laurent', '12, chemin Aurore Jacquet', '94001', 'Leduc-les-Bains', 'Élise Martel', '06 34 83 23 47', 'gimenez.isabelle@guilbert.com'),
-(16, 'Andre', '13, place de Schmitt', '02181', 'Michaud-sur-Leroux', 'Georges Texier', '+33 (0)5 29 94 64 83', 'thibault.gerard@rousseau.net'),
-(17, 'Lesage', '46, avenue de Francois', '04420', 'MaillardBourg', 'Arnaude Fischer', '0344034311', 'richard.baudry@berger.com'),
-(18, 'De Oliveira', '83, rue Matthieu Durand', '91427', 'Vaillant', 'Pénélope Dupuy', '0311391918', 'elevy@diallo.com'),
-(19, 'Lebon', 'avenue de Daniel', '00208', 'Leleu', 'David Lamy', '+33 (0)6 95 65 81 33', 'benard.augustin@coste.fr'),
-(20, 'Brunet Laine S.A.S.', 'impasse de Fischer', '67902', 'Guichard-sur-Alves', 'Luc Martin', '0372271670', 'dorothee02@pires.fr'),
-(21, 'Paris', '615, avenue de Humbert', '50462', 'Bailly-les-Bains', 'Célina-Véronique Begue', '0915205000', 'fernandes.marine@gerard.org'),
-(22, 'Grenier SAS', '470, chemin de Boulanger', '35605', 'Thibault', 'Charles Vaillant-Brun', '+33 (0)8 12 08 67 92', 'laurent49@diallo.com'),
-(23, 'Giraud et Fils', 'impasse Renaud', '23155', 'Dumontboeuf', 'Élodie Roche', '+33 3 83 11 57 16', 'bouvier.gerard@moreau.net'),
-(24, 'Charpentier', '17, impasse Chevalier', '68155', 'Dupont', 'Brigitte Bourgeois', '05 88 00 45 42', 'kbousquet@salmon.com'),
-(25, 'Guillot', '3, place de Texier', '73575', 'Bessonnec', 'Pauline Gilles', '05 96 63 06 34', 'imaillet@gomez.com'),
-(26, 'Dubois et Fils', '61, chemin de Guibert', '64434', 'Etienne', 'Isabelle Carre', '+33 6 33 82 35 06', 'victoire21@lecoq.com'),
-(27, 'Mercier', 'impasse de Faivre', '99068', 'Lefebvre', 'Jules Regnier-Laine', '0490762650', 'xavier.henry@auger.com'),
-(28, 'Lemaire', '54, rue de De Oliveira', '21057', 'Michel', 'Julien Marie', '+33 5 14 45 56 47', 'millet.manon@rousseau.org'),
-(29, 'Mary Collin SA', '95, boulevard Weber', '26547', 'CollinVille', 'Julie Adam', '0442016878', 'clemence10@delattre.fr'),
-(30, 'Laurent S.A.R.L.', '3, rue Garcia', '29846', 'LabbeVille', 'Thierry Dupont', '09 66 53 30 99', 'rleconte@benoit.fr');
+(1, 'Louis S.A.R.L.', '26, chemin Nicole Lemonnier', '71793', 'Lacombe', 'Adrien Boulanger', '04 84 86 71 05', 'ibertrand@hoarau.net'),
+(2, 'Didier', '96, rue Thibault Ruiz', '66827', 'Tessier', 'Gabrielle-Pénélope Bourgeois', '+33 4 75 88 30 44', 'laure.ferrand@maillard.org'),
+(3, 'Lebrun', 'place Texier', '95637', 'Rolland-la-Forêt', 'Laurence-Margaux Lombard', '+33 8 99 95 72 99', 'ecousin@bouchet.fr'),
+(4, 'Richard S.A.R.L.', '94, chemin Hamel', '23572', 'Imbert-la-Forêt', 'Sophie Laine', '+33 (0)1 01 89 89 88', 'susanne.mace@fabre.fr'),
+(5, 'Petitjean Hamel S.A.R.L.', '46, rue Charles Alves', '00226', 'Schneider-sur-Mer', 'Xavier Chevalier-Lambert', '+33 (0)9 06 37 52 28', 'uduhamel@dacosta.fr'),
+(6, 'Letellier SARL', '62, avenue Hoarau', '50322', 'Guyon', 'Émile Bertrand', '+33 3 74 62 58 52', 'graynaud@coulon.net'),
+(7, 'Courtois', '9, boulevard de Pruvost', '65339', 'Hamonnec', 'Guy-Xavier Pasquier', '06 31 50 45 10', 'bourgeois.louise@dupuis.com'),
+(8, 'Etienne SA', '18, rue Thibaut Barthelemy', '11580', 'Dupont', 'Thibaut Marchand', '05 43 14 75 70', 'bpons@germain.com'),
+(9, 'Roche', '98, boulevard Laurent Costa', '30328', 'DumasBourg', 'Éric Coste-Becker', '+33 3 65 53 63 29', 'carre.emmanuel@bouchet.fr'),
+(10, 'Gimenez et Fils', '76, impasse Guillaume Jacques', '13937', 'Tessier', 'Jeanne Rossi', '+33 2 56 73 02 41', 'christelle.martinez@gilbert.com'),
+(11, 'Germain', '243, boulevard Susanne Martins', '41763', 'Hubert-sur-Mer', 'Laurent de la Daniel', '01 28 89 22 37', 'fleury.julie@bonneau.fr'),
+(12, 'Perrin', '6, rue de Merle', '01094', 'Herve', 'Maurice Boucher', '+33 (0)8 14 68 92 98', 'laure79@simon.fr'),
+(13, 'Devaux', '273, boulevard Dupont', '61549', 'Dupuis-sur-Mer', 'Joseph Le Noel', '07 86 33 20 93', 'martin.bertrand@boulay.com'),
+(14, 'Chevalier Moulin SA', 'rue Godard', '87736', 'CourtoisBourg', 'Isaac Louis', '+33 (0)1 73 32 98 25', 'henri.delattre@monnier.com'),
+(15, 'Pruvost', '380, avenue William Moreau', '85882', 'Martin-sur-Mer', 'Roger Poirier', '+33 8 20 05 23 07', 'maillard.andre@hoareau.net'),
+(16, 'Leroy SA', '10, impasse de Louis', '27382', 'Traore', 'Thibaut Jacquet', '+33 3 84 09 66 85', 'zroger@lebrun.fr'),
+(17, 'Collin S.A.R.L.', '489, place Bodin', '01354', 'Pereira-sur-Legrand', 'Renée Albert', '01 70 81 50 46', 'rbazin@daniel.org'),
+(18, 'Didier', '806, avenue de Blin', '39192', 'Colas-sur-Mer', 'Victoire Laporte', '02 16 45 68 93', 'anouk17@vallet.org'),
+(19, 'Antoine', 'boulevard Valentine Boulanger', '70988', 'EtienneBourg', 'Cécile Perret', '+33 7 89 44 00 17', 'paul.aurore@guerin.org'),
+(20, 'Vaillant SA', '382, rue Marine Weber', '52023', 'Boucher', 'Maggie Blondel-Charpentier', '05 15 15 50 65', 'luc62@goncalves.com'),
+(21, 'Chauvin SAS', '12, chemin Tristan Lefebvre', '14793', 'De Sousa-les-Bains', 'Olivie Rousseau', '02 98 57 06 80', 'marchal.alain@leduc.fr'),
+(22, 'Fischer', '336, place Guillaume Aubry', '62599', 'Humbert-la-Forêt', 'Eugène Denis', '09 20 50 13 13', 'constance.dias@pires.fr'),
+(23, 'Faivre', '831, boulevard de Ferrand', '59750', 'Diallo', 'Audrey Hamel-Laurent', '+33 (0)9 80 02 99 06', 'marcel61@langlois.fr'),
+(24, 'Leroux', '54, boulevard de Gimenez', '16714', 'Raynaud-sur-Mer', 'Nathalie Ferrand', '+33 3 62 74 17 75', 'nicole.ruiz@lefort.com'),
+(25, 'Marie SA', '22, avenue Adèle Bertin', '24168', 'CohenVille', 'Agnès-Susan Peron', '+33 1 10 22 02 82', 'pruvost.adrien@meunier.com'),
+(26, 'Coulon', '562, place Perrin', '36941', 'Pruvost', 'Paulette Benard', '+33 1 34 29 09 97', 'franck.mallet@bonnet.com'),
+(27, 'Michaud', '58, rue Édouard Reynaud', '11787', 'Gallet', 'Lorraine Lucas', '09 12 77 52 18', 'ines56@didier.com'),
+(28, 'Caron Descamps SARL', '19, impasse de Delannoy', '50828', 'Blondel', 'Célina Leclercq', '01 64 55 04 82', 'manon.masse@hernandez.org'),
+(29, 'Merle', '55, rue Franck Regnier', '55064', 'Gosselin', 'Tristan Potier', '+33 1 39 56 78 99', 'rossi.andree@dubois.com'),
+(30, 'Reynaud Parent SARL', '95, rue Margaret Lopez', '09179', 'Boucher-sur-Berger', 'Hélène Dupre', '+33 2 52 53 66 67', 'peron.pierre@gaudin.fr');
 
 -- --------------------------------------------------------
 
@@ -112,7 +112,7 @@ CREATE TABLE `doctrine_migration_versions` (
 --
 
 INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
-('DoctrineMigrations\\Version20260311201823', '2026-03-11 21:40:27', 2459);
+('DoctrineMigrations\\Version20260312191047', '2026-03-12 19:10:50', 2467);
 
 -- --------------------------------------------------------
 
@@ -152,41 +152,46 @@ CREATE TABLE `internship` (
 --
 
 INSERT INTO `internship` (`id`, `start_date`, `end_date`, `remarks`, `student_id`, `company_id`, `tracking_teacher_id`, `visiting_teacher_id`) VALUES
-(1, '2026-01-02', '2026-02-13', NULL, 1, 25, 4, 9),
-(2, '2026-01-06', '2026-02-17', 'Homais s\'épanouissait dans son coeur, montant toujours des capitaux pour les soigner, outre la.', 2, 19, 5, 9),
-(3, '2026-01-13', '2026-02-24', 'Il ne comprenait pas cet entêtement, cet aveuglement à se maudire, lorsque Charles était triste.', 3, 19, 9, 3),
-(4, '2026-01-18', '2026-03-01', NULL, 4, 3, 9, 12),
-(5, '2026-01-29', '2026-03-12', 'Emma, dès le duo récitatif où Gilbert expose à son attachement. Cette tendresse, en effet, chaque.', 5, 17, 9, 11),
-(6, '2026-01-17', '2026-02-28', NULL, 6, 15, 8, 9),
-(7, '2026-01-03', '2026-02-14', NULL, 7, 2, 4, 5),
-(8, '2026-01-17', '2026-02-28', NULL, 8, 26, 10, 7),
-(9, '2026-01-26', '2026-03-09', 'Elle fit revenir la petite. Le dîner n\'était pas fermée. -- Que vous seriez charitable.', 9, 21, 11, 9),
-(10, '2026-01-08', '2026-02-19', NULL, 10, 29, 6, 3),
-(11, '2026-01-10', '2026-02-21', NULL, 11, 29, 8, 12),
-(12, '2026-01-29', '2026-03-12', 'Le jour commençait à se rappeler ainsi toutes les trahisons, les bassesses et les doigts à leurs.', 12, 29, 10, 11),
-(13, '2026-01-27', '2026-03-10', 'Dubuc, la vieille femme. Et elle lui dit: -- Que tu es beau! tu es bon, toi! Et elle la petite.', 13, 25, 3, 8),
-(14, '2026-01-03', '2026-02-14', NULL, 14, 18, 6, 5),
-(15, '2026-01-19', '2026-03-02', 'Bovary tournaient autour d\'Emma, en achevant de le pouvoir aimer. Mais il y en avait tiré hors de.', 15, 7, 4, 3),
-(16, '2026-01-12', '2026-02-23', NULL, 16, 5, 4, 3),
-(17, '2026-01-20', '2026-03-03', NULL, 17, 18, 3, 6),
-(18, '2026-01-18', '2026-03-01', 'Charles, tout à son patron; tout le reste des oiseaux, du soleil arrivant par les mêmes qui.', 18, 5, 12, 9),
-(19, '2026-01-30', '2026-03-13', 'Et vous y allez! reprit-il en se reculant. Et Emma se sentait à l\'aise, sûr d\'avance qu\'il.', 19, 29, 10, 11),
-(20, '2026-01-04', '2026-02-15', NULL, 20, 23, 7, 11),
-(21, '2026-01-26', '2026-03-09', NULL, 21, 18, 8, 5),
-(22, '2026-01-22', '2026-03-05', 'Ils vinrent à tomber. Elle noua son mouchoir qu\'il venait de regarder Lestiboudois, le sacristain.', 22, 9, 4, 9),
-(23, '2026-01-03', '2026-02-14', NULL, 23, 3, 6, 3),
-(24, '2026-01-01', '2026-02-12', NULL, 24, 29, 10, 4),
-(25, '2026-01-15', '2026-02-26', NULL, 25, 20, 7, 6),
-(26, '2026-01-07', '2026-02-18', NULL, 26, 22, 6, 3),
-(27, '2026-01-17', '2026-02-28', NULL, 27, 5, 3, 5),
-(28, '2026-01-14', '2026-02-25', NULL, 28, 14, 10, 5),
-(29, '2026-01-28', '2026-03-11', 'Laissez donc un peu Cujas et Bartole, que diable! Qui vous inquiète, puisque vous toucherez dans.', 29, 10, 5, 9),
-(30, '2026-01-13', '2026-02-24', 'Le ménétrier allait en tête, avec son père, n\'est-ce pas, c\'est impossible! Si vous saviez.', 30, 24, 9, 4),
-(31, '2026-01-17', '2026-02-28', NULL, 31, 12, 12, 7),
-(32, '2026-01-30', '2026-03-13', NULL, 32, 9, 3, 3),
-(33, '2026-01-08', '2026-02-19', NULL, 33, 6, 9, 9),
-(34, '2026-01-15', '2026-02-26', 'Oui, adieu..., partez! Ils s\'avancèrent l\'un vers l\'autre. Et il la baisait dans le silence, la.', 34, 27, 12, 10),
-(35, '2026-01-08', '2026-02-19', NULL, 35, 24, 8, 3);
+(1, '2026-01-22', '2026-03-05', NULL, 1, 18, 6, 9),
+(2, '2026-01-05', '2026-02-16', NULL, 2, 5, 5, 11),
+(3, '2026-01-27', '2026-03-10', NULL, 3, 29, 4, 6),
+(4, '2026-01-26', '2026-03-09', NULL, 4, 27, 11, 4),
+(5, '2026-01-19', '2026-03-02', NULL, 5, 9, 3, 12),
+(6, '2026-01-07', '2026-02-18', NULL, 6, 26, 11, 12),
+(7, '2026-01-24', '2026-03-07', NULL, 7, 27, 10, 9),
+(8, '2026-01-06', '2026-02-17', NULL, 8, 4, 6, 9),
+(9, '2026-01-13', '2026-02-24', NULL, 9, 27, 7, 10),
+(10, '2026-01-22', '2026-03-05', NULL, 10, 23, 3, 7),
+(11, '2026-01-07', '2026-02-18', NULL, 11, 24, 7, 3),
+(12, '2026-01-26', '2026-03-09', NULL, 12, 1, 3, 11),
+(13, '2026-01-24', '2026-03-07', NULL, 13, 6, 4, 8),
+(14, '2026-01-18', '2026-03-01', NULL, 14, 23, 10, 11),
+(15, '2026-01-25', '2026-03-08', NULL, 15, 20, 11, 6),
+(16, '2026-01-09', '2026-02-20', NULL, 16, 4, 11, 7),
+(17, '2026-01-26', '2026-03-09', NULL, 17, 24, 4, 8),
+(18, '2026-01-01', '2026-02-12', NULL, 18, 5, 11, 10),
+(19, '2026-01-18', '2026-03-01', NULL, 19, 21, 4, 9),
+(20, '2026-01-25', '2026-03-08', NULL, 20, 24, 10, 3),
+(21, '2026-01-01', '2026-02-12', NULL, 21, 16, 3, 11),
+(22, '2026-01-02', '2026-02-13', NULL, 22, 19, 6, 6),
+(23, '2026-01-05', '2026-02-16', NULL, 23, 30, 3, 11),
+(24, '2026-01-15', '2026-02-26', NULL, 24, 29, 9, 5),
+(25, '2026-01-01', '2026-02-12', NULL, 25, 17, 7, 10),
+(26, '2026-01-11', '2026-02-22', NULL, 26, 24, 11, 3),
+(27, '2026-01-09', '2026-02-20', NULL, 27, 15, 4, 10),
+(28, '2026-01-28', '2026-03-11', NULL, 28, 18, 9, 3),
+(29, '2026-01-31', '2026-03-14', NULL, 29, 4, 7, 10),
+(30, '2026-01-05', '2026-02-16', NULL, 30, 19, 7, 9),
+(31, '2026-01-14', '2026-02-25', NULL, 31, 2, 9, 9),
+(32, '2026-01-12', '2026-02-23', NULL, 32, 29, 5, 3),
+(33, '2026-01-15', '2026-02-26', NULL, 33, 15, 9, 9),
+(34, '2026-01-04', '2026-02-15', NULL, 34, 2, 8, 6),
+(35, '2026-01-26', '2026-03-09', NULL, 35, 9, 4, 4),
+(36, '2026-01-05', '2026-02-16', NULL, 36, 11, 10, 9),
+(37, '2026-01-27', '2026-03-10', NULL, 37, 22, 5, 4),
+(38, '2026-01-31', '2026-03-14', NULL, 38, 16, 12, 4),
+(39, '2026-01-20', '2026-03-03', NULL, 39, 30, 3, 12),
+(40, '2026-01-10', '2026-02-21', NULL, 40, 4, 10, 12);
 
 -- --------------------------------------------------------
 
@@ -208,104 +213,122 @@ CREATE TABLE `internship_milestone` (
 --
 
 INSERT INTO `internship_milestone` (`id`, `validated_at`, `comment`, `internship_id`, `status_id`, `milestone_id`) VALUES
-(1, NULL, NULL, 1, 2, 1),
-(2, NULL, NULL, 1, 2, 2),
-(3, NULL, NULL, 1, 1, 3),
-(4, NULL, 'Sunt et cumque debitis accusantium.', 1, 3, 4),
-(5, NULL, NULL, 2, 1, 1),
-(6, NULL, NULL, 2, 3, 2),
-(7, '2026-03-10', NULL, 2, 2, 3),
-(8, '2026-02-21', 'Consequuntur delectus sed laudantium debitis et ex.', 2, 1, 4),
-(9, NULL, 'Et ut sit vel laboriosam voluptas tempore facilis.', 3, 3, 1),
-(10, NULL, 'Deleniti et consequatur iste et consequatur dolores.', 3, 3, 3),
-(11, '2026-01-29', 'Dolores est deserunt sit at voluptatem ea at.', 4, 2, 2),
-(12, NULL, NULL, 4, 1, 3),
-(13, '2026-01-21', NULL, 4, 2, 4),
-(14, NULL, NULL, 5, 3, 2),
-(15, NULL, NULL, 5, 1, 3),
-(16, NULL, NULL, 5, 2, 4),
-(17, NULL, NULL, 6, 1, 1),
-(18, '2026-01-28', NULL, 6, 3, 3),
-(19, NULL, NULL, 6, 1, 4),
-(20, NULL, NULL, 7, 1, 1),
-(21, '2026-01-24', NULL, 7, 3, 2),
-(22, NULL, NULL, 7, 3, 3),
-(23, '2026-01-30', 'Sunt et magni consectetur voluptatem quos dolor.', 8, 2, 3),
-(24, '2026-02-26', NULL, 8, 1, 4),
-(25, NULL, NULL, 9, 3, 1),
-(26, '2026-02-15', NULL, 9, 3, 2),
-(27, NULL, NULL, 9, 3, 3),
-(28, NULL, NULL, 9, 2, 4),
-(29, NULL, 'Doloremque ducimus quam ratione aut qui.', 10, 2, 1),
+(1, NULL, NULL, 1, 3, 1),
+(2, NULL, NULL, 1, 3, 2),
+(3, NULL, NULL, 1, 3, 3),
+(4, NULL, NULL, 1, 1, 4),
+(5, NULL, NULL, 2, 2, 1),
+(6, NULL, NULL, 2, 2, 4),
+(7, NULL, NULL, 3, 1, 1),
+(8, NULL, NULL, 3, 3, 2),
+(9, NULL, NULL, 3, 1, 3),
+(10, NULL, NULL, 4, 2, 1),
+(11, NULL, NULL, 4, 3, 2),
+(12, NULL, NULL, 4, 2, 3),
+(13, NULL, NULL, 4, 2, 4),
+(14, NULL, NULL, 5, 2, 1),
+(15, NULL, NULL, 5, 1, 2),
+(16, NULL, NULL, 5, 2, 3),
+(17, NULL, NULL, 6, 1, 2),
+(18, NULL, NULL, 6, 1, 3),
+(19, NULL, NULL, 6, 2, 4),
+(20, NULL, NULL, 7, 2, 1),
+(21, NULL, NULL, 7, 1, 2),
+(22, NULL, NULL, 7, 2, 3),
+(23, NULL, NULL, 7, 2, 4),
+(24, NULL, NULL, 8, 2, 1),
+(25, NULL, NULL, 8, 3, 2),
+(26, NULL, NULL, 8, 1, 3),
+(27, NULL, NULL, 9, 1, 2),
+(28, NULL, NULL, 9, 3, 3),
+(29, NULL, NULL, 10, 1, 1),
 (30, NULL, NULL, 10, 2, 2),
-(31, NULL, NULL, 10, 3, 4),
-(32, NULL, 'Et facere veniam quisquam vel.', 11, 3, 1),
+(31, NULL, NULL, 10, 1, 4),
+(32, NULL, NULL, 11, 2, 1),
 (33, NULL, NULL, 11, 1, 2),
-(34, '2026-02-02', NULL, 11, 3, 4),
-(35, '2026-02-23', NULL, 12, 1, 1),
-(36, NULL, NULL, 12, 3, 2),
-(37, '2026-02-28', NULL, 12, 1, 3),
-(38, NULL, NULL, 14, 3, 2),
-(39, '2026-02-27', NULL, 15, 2, 1),
-(40, '2026-02-18', 'Expedita earum enim suscipit illum quo non.', 15, 2, 2),
-(41, '2026-02-16', 'Aut ab corporis sed consequatur aut sed nobis.', 15, 2, 3),
-(42, NULL, NULL, 15, 2, 4),
-(43, '2026-01-23', NULL, 16, 1, 1),
-(44, NULL, NULL, 16, 2, 3),
-(45, NULL, 'Voluptas impedit consectetur in quia nisi hic.', 17, 3, 1),
-(46, '2026-03-06', NULL, 17, 2, 2),
-(47, NULL, 'Aut est qui quia quis accusamus sit soluta.', 17, 2, 3),
-(48, NULL, 'Est harum enim qui aspernatur voluptate.', 17, 1, 4),
-(49, NULL, NULL, 18, 2, 2),
-(50, NULL, NULL, 18, 1, 4),
-(51, '2026-02-08', 'Rerum reiciendis ut excepturi aut laborum tempora.', 19, 3, 1),
-(52, NULL, NULL, 19, 2, 3),
-(53, NULL, NULL, 19, 2, 4),
-(54, NULL, NULL, 20, 2, 1),
-(55, NULL, NULL, 20, 3, 2),
-(56, '2026-03-05', NULL, 20, 2, 3),
-(57, NULL, NULL, 21, 2, 1),
-(58, NULL, NULL, 22, 1, 1),
-(59, NULL, 'Dolore facere et officia molestias non.', 22, 1, 2),
-(60, '2026-03-07', NULL, 22, 3, 3),
-(61, NULL, NULL, 22, 2, 4),
-(62, NULL, 'Aliquam porro ipsa sit non tempore aut voluptate sapiente.', 23, 3, 1),
-(63, NULL, NULL, 23, 2, 3),
-(64, '2026-02-10', NULL, 23, 2, 4),
-(65, NULL, NULL, 24, 1, 1),
-(66, '2026-02-21', NULL, 24, 1, 2),
-(67, '2026-03-05', NULL, 24, 1, 3),
-(68, '2026-01-15', 'Id quod et repellendus culpa eos minima rem tenetur.', 25, 3, 1),
-(69, '2026-02-22', NULL, 25, 3, 2),
-(70, NULL, NULL, 25, 1, 3),
-(71, '2026-03-10', NULL, 25, 1, 4),
-(72, '2026-01-25', NULL, 26, 2, 3),
-(73, '2026-02-28', NULL, 26, 3, 4),
-(74, '2026-02-26', NULL, 27, 2, 1),
-(75, NULL, 'Recusandae exercitationem dignissimos facilis qui unde eaque officiis.', 27, 3, 2),
-(76, '2026-03-02', NULL, 27, 3, 3),
-(77, NULL, NULL, 28, 1, 1),
-(78, NULL, NULL, 28, 1, 2),
-(79, '2026-03-10', NULL, 28, 2, 3),
-(80, '2026-01-21', 'Aut enim vel ratione eos.', 28, 2, 4),
-(81, NULL, NULL, 29, 3, 1),
-(82, '2026-02-14', NULL, 29, 1, 2),
-(83, NULL, NULL, 30, 1, 1),
-(84, NULL, NULL, 30, 1, 2),
-(85, NULL, NULL, 31, 3, 2),
-(86, '2026-03-07', 'Ut et accusamus temporibus sint possimus quaerat possimus molestiae.', 31, 2, 4),
-(87, '2026-02-23', NULL, 32, 2, 1),
-(88, '2026-03-01', NULL, 32, 1, 2),
-(89, NULL, NULL, 32, 3, 4),
-(90, NULL, 'Eos eius dolorem eaque quam nam ipsam quasi.', 33, 3, 1),
-(91, NULL, NULL, 33, 1, 2),
-(92, '2026-01-25', NULL, 33, 1, 3),
-(93, '2026-01-31', NULL, 33, 1, 4),
-(94, '2026-01-15', NULL, 34, 2, 2),
-(95, NULL, NULL, 34, 3, 4),
-(96, NULL, NULL, 35, 3, 1),
-(97, '2026-01-17', 'Qui maiores autem aut reiciendis deserunt unde.', 35, 2, 3),
-(98, NULL, NULL, 35, 1, 4);
+(34, NULL, NULL, 12, 3, 1),
+(35, NULL, NULL, 12, 3, 3),
+(36, NULL, NULL, 12, 2, 4),
+(37, NULL, NULL, 13, 1, 3),
+(38, NULL, NULL, 13, 1, 4),
+(39, NULL, NULL, 14, 3, 1),
+(40, NULL, NULL, 14, 3, 2),
+(41, NULL, NULL, 14, 2, 3),
+(42, NULL, NULL, 15, 2, 1),
+(43, NULL, NULL, 15, 3, 2),
+(44, NULL, NULL, 15, 1, 3),
+(45, NULL, NULL, 15, 1, 4),
+(46, NULL, NULL, 16, 3, 1),
+(47, NULL, NULL, 16, 2, 2),
+(48, NULL, NULL, 16, 1, 3),
+(49, NULL, NULL, 16, 1, 4),
+(50, NULL, NULL, 17, 2, 3),
+(51, NULL, NULL, 18, 2, 1),
+(52, NULL, NULL, 18, 3, 2),
+(53, NULL, NULL, 18, 2, 3),
+(54, NULL, NULL, 18, 3, 4),
+(55, NULL, NULL, 19, 2, 1),
+(56, NULL, NULL, 19, 2, 3),
+(57, NULL, NULL, 19, 3, 4),
+(58, NULL, NULL, 20, 3, 1),
+(59, NULL, NULL, 20, 1, 2),
+(60, NULL, NULL, 20, 1, 3),
+(61, NULL, NULL, 20, 2, 4),
+(62, NULL, NULL, 21, 1, 1),
+(63, NULL, NULL, 21, 1, 2),
+(64, NULL, NULL, 22, 1, 2),
+(65, NULL, NULL, 22, 2, 3),
+(66, NULL, NULL, 22, 3, 4),
+(67, NULL, NULL, 23, 1, 1),
+(68, NULL, NULL, 23, 3, 2),
+(69, NULL, NULL, 23, 3, 4),
+(70, NULL, NULL, 24, 3, 1),
+(71, NULL, NULL, 24, 1, 2),
+(72, NULL, NULL, 24, 1, 3),
+(73, NULL, NULL, 24, 2, 4),
+(74, NULL, NULL, 25, 1, 3),
+(75, NULL, NULL, 26, 1, 1),
+(76, NULL, NULL, 26, 1, 2),
+(77, NULL, NULL, 26, 2, 3),
+(78, NULL, NULL, 26, 2, 4),
+(79, NULL, NULL, 27, 1, 1),
+(80, NULL, NULL, 27, 1, 2),
+(81, NULL, NULL, 27, 1, 3),
+(82, NULL, NULL, 27, 3, 4),
+(83, NULL, NULL, 28, 3, 1),
+(84, NULL, NULL, 28, 3, 2),
+(85, NULL, NULL, 28, 2, 3),
+(86, NULL, NULL, 28, 3, 4),
+(87, NULL, NULL, 29, 3, 1),
+(88, NULL, NULL, 29, 1, 2),
+(89, NULL, NULL, 29, 2, 4),
+(90, NULL, NULL, 30, 1, 2),
+(91, NULL, NULL, 30, 2, 3),
+(92, NULL, NULL, 30, 1, 4),
+(93, NULL, NULL, 31, 2, 1),
+(94, NULL, NULL, 31, 1, 2),
+(95, NULL, NULL, 31, 3, 3),
+(96, NULL, NULL, 32, 1, 1),
+(97, NULL, NULL, 32, 1, 2),
+(98, NULL, NULL, 32, 3, 4),
+(99, NULL, NULL, 33, 2, 3),
+(100, NULL, NULL, 34, 2, 1),
+(101, NULL, NULL, 34, 2, 2),
+(102, NULL, NULL, 34, 1, 3),
+(103, NULL, NULL, 35, 2, 1),
+(104, NULL, NULL, 35, 2, 4),
+(105, NULL, NULL, 36, 2, 1),
+(106, NULL, NULL, 36, 3, 3),
+(107, NULL, NULL, 37, 3, 1),
+(108, NULL, NULL, 37, 2, 2),
+(109, NULL, NULL, 37, 3, 3),
+(110, NULL, NULL, 37, 1, 4),
+(111, NULL, NULL, 38, 1, 1),
+(112, NULL, NULL, 39, 1, 2),
+(113, NULL, NULL, 39, 3, 4),
+(114, NULL, NULL, 40, 2, 1),
+(115, NULL, NULL, 40, 1, 2),
+(116, NULL, NULL, 40, 3, 3);
 
 -- --------------------------------------------------------
 
@@ -373,6 +396,26 @@ INSERT INTO `milestone_status` (`id`, `code`, `label`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `promotion`
+--
+
+CREATE TABLE `promotion` (
+  `id` int NOT NULL,
+  `year` int NOT NULL,
+  `is_archived` tinyint NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `promotion`
+--
+
+INSERT INTO `promotion` (`id`, `year`, `is_archived`) VALUES
+(1, 2026, 0),
+(2, 2025, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `role`
 --
 
@@ -401,51 +444,55 @@ CREATE TABLE `student` (
   `id` int NOT NULL,
   `first_name` varchar(100) NOT NULL,
   `last_name` varchar(100) NOT NULL,
-  `promotion_year` int NOT NULL,
-  `is_archived` tinyint NOT NULL,
-  `major_id` int NOT NULL
+  `major_id` int NOT NULL,
+  `promotion_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `student`
 --
 
-INSERT INTO `student` (`id`, `first_name`, `last_name`, `promotion_year`, `is_archived`, `major_id`) VALUES
-(1, 'Claude', 'Brunel', 2026, 0, 2),
-(2, 'Éléonore', 'Cousin', 2026, 0, 2),
-(3, 'Adrien', 'Blanc', 2026, 0, 2),
-(4, 'Inès', 'Gimenez', 2026, 0, 1),
-(5, 'Élise', 'Leduc', 2026, 0, 2),
-(6, 'Christelle', 'Perret', 2026, 0, 1),
-(7, 'Xavier', 'Fischer', 2026, 0, 2),
-(8, 'Rémy', 'Daniel', 2026, 0, 2),
-(9, 'Daniel', 'Fournier', 2026, 0, 1),
-(10, 'Lucas', 'Pereira', 2026, 1, 2),
-(11, 'Marcelle', 'Gilles', 2026, 0, 1),
-(12, 'Virginie', 'Chevallier', 2026, 0, 2),
-(13, 'Virginie', 'Lefebvre', 2026, 0, 1),
-(14, 'Marthe', 'Bonnet', 2026, 0, 2),
-(15, 'Nicolas', 'Marchand', 2026, 0, 2),
-(16, 'Aurélie', 'Carre', 2026, 0, 2),
-(17, 'Constance', 'Masson', 2026, 0, 1),
-(18, 'Susanne', 'Boucher', 2026, 0, 1),
-(19, 'Louise', 'Leconte', 2026, 0, 2),
-(20, 'Arthur', 'Vincent', 2026, 0, 1),
-(21, 'Susanne', 'Breton', 2026, 0, 1),
-(22, 'Adèle', 'Roux', 2026, 0, 1),
-(23, 'Éric', 'Renard', 2026, 1, 1),
-(24, 'Margot', 'Perez', 2026, 0, 2),
-(25, 'Isabelle', 'Girard', 2026, 0, 2),
-(26, 'Aurélie', 'Pereira', 2026, 0, 2),
-(27, 'Matthieu', 'Gomes', 2026, 0, 1),
-(28, 'Denise', 'Maury', 2026, 0, 1),
-(29, 'Jules', 'Imbert', 2026, 0, 2),
-(30, 'Henri', 'Lucas', 2026, 0, 1),
-(31, 'Frédérique', 'Mathieu', 2026, 0, 2),
-(32, 'Thibaut', 'Jacques', 2026, 0, 2),
-(33, 'Étienne', 'Bouvet', 2026, 0, 2),
-(34, 'Céline', 'Tanguy', 2026, 0, 1),
-(35, 'Julien', 'Laporte', 2026, 0, 1);
+INSERT INTO `student` (`id`, `first_name`, `last_name`, `major_id`, `promotion_id`) VALUES
+(1, 'Antoinette', 'Lesage', 2, 1),
+(2, 'Alfred', 'Prevost', 1, 2),
+(3, 'Emmanuel', 'Lebon', 1, 2),
+(4, 'Élisabeth', 'Clerc', 2, 2),
+(5, 'Noël', 'Peltier', 1, 2),
+(6, 'Timothée', 'Gonzalez', 1, 1),
+(7, 'Caroline', 'Traore', 1, 2),
+(8, 'Auguste', 'Verdier', 2, 1),
+(9, 'Étienne', 'Roux', 2, 2),
+(10, 'Aurore', 'Verdier', 2, 2),
+(11, 'Aurore', 'Germain', 1, 2),
+(12, 'Alexandre', 'Delannoy', 2, 1),
+(13, 'Alphonse', 'Riviere', 1, 1),
+(14, 'Victoire', 'Garnier', 2, 2),
+(15, 'Alexandria', 'Parent', 2, 2),
+(16, 'Honoré', 'Delannoy', 1, 1),
+(17, 'Lorraine', 'Marechal', 1, 1),
+(18, 'Pauline', 'Voisin', 1, 1),
+(19, 'Constance', 'Lombard', 1, 1),
+(20, 'Zacharie', 'Jourdan', 2, 2),
+(21, 'Anastasie', 'Letellier', 2, 2),
+(22, 'Émile', 'Letellier', 1, 1),
+(23, 'André', 'Bousquet', 2, 1),
+(24, 'René', 'Gaillard', 1, 2),
+(25, 'Dominique', 'Letellier', 2, 2),
+(26, 'Jacqueline', 'Giraud', 1, 2),
+(27, 'Suzanne', 'Germain', 1, 2),
+(28, 'Georges', 'Lelievre', 1, 1),
+(29, 'Élise', 'Lelievre', 2, 1),
+(30, 'Pierre', 'Ribeiro', 1, 1),
+(31, 'Margaux', 'Remy', 2, 2),
+(32, 'Marcelle', 'Cordier', 1, 1),
+(33, 'Christophe', 'Mallet', 1, 1),
+(34, 'Jérôme', 'Leger', 2, 1),
+(35, 'Alfred', 'Weber', 2, 1),
+(36, 'Rémy', 'Gilbert', 2, 2),
+(37, 'William', 'Jourdan', 1, 2),
+(38, 'Claude', 'Jacob', 1, 2),
+(39, 'Clémence', 'Collin', 1, 2),
+(40, 'Henriette', 'Ferreira', 2, 2);
 
 -- --------------------------------------------------------
 
@@ -466,18 +513,18 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `email`, `password`, `first_name`, `last_name`) VALUES
-(1, 'admin@campus-la-chataigneraie.org', '$2y$13$FPz9ZmFncD655sDtlJ.Bu.jtcP.//8w0W62GwK3o8U4E8WzWlncwG', 'Admin', 'Lycée'),
-(2, 'secretaire@campus-la-chataigneraie.org', '$2y$13$1/AYpBGVlFI8jZ0to64FXOdkNF2TqxC6LfcfjzMoF6lgqjfbxaJsG', 'Secrétaire', 'Lycée'),
-(3, 'catherine.baranger@campus-la-chataigneraie.org', '$2y$13$VZeAN.hH.LWVBSeoHhr4ZO3r9rWQAP9xLL6GhUtDk0laAG7RZuZZe', 'Catherine', 'Baranger'),
-(4, 'rejane.boursier@campus-la-chataigneraie.org', '$2y$13$FeHX/br1wIFrrGmvoR9JveiD9Rxf/x3K13ahCpL3bnEBBCrdfMyae', 'Réjane', 'Boursier'),
-(5, 'sandrine.ternisien@campus-la-chataigneraie.org', '$2y$13$Cg1QVZhW.dpAEuP6vy3Gru1g4OM.R9aGATa4h32FW7U.cud1Equh.', 'Sandrine', 'Ternisien'),
-(6, 'nathalie.grandin@campus-la-chataigneraie.org', '$2y$13$I.kY1sqmaTuVJ3.LzXmEYe2cvtcMD2RCSGC7lE/HTU8e33qBOvGo2', 'Nathalie', 'Grandin'),
-(7, 'marie.serrault@campus-la-chataigneraie.org', '$2y$13$qX//xCHNdei1vFjGYJqOl.AJOOGQ70rv6oh9yEN3oH7mJPot6hvAq', 'Marie', 'Serrault'),
-(8, 'christophe.baudoux@campus-la-chataigneraie.org', '$2y$13$VgU5VkJ7scRBzqWFr4/2puVNT4odvviutPsud9Nn/fEYaPHmuhSwq', 'Christophe', 'Baudoux'),
-(9, 'antoine.bloyet@campus-la-chataigneraie.org', '$2y$13$ifzbFkMzkrwL3R8v3eR9du1.RSBAT6bCXgxBSQMI4uF1mLamH95hy', 'Antoine', 'Bloyet'),
-(10, 'kevin.bayeul@campus-la-chataigneraie.org', '$2y$13$01dXczAAXxTLNVyxhkIQcu35HW/eVhqJQYfl.XH3kcWAew17qzCPC', 'Kévin', 'Bayeul'),
-(11, 'laurent.maurice@campus-la-chataigneraie.org', '$2y$13$x8OQPV/pOOu07nyoWA2Rse4zrueCBZzsyBnJUEN5GUEOLIprBJC6O', 'Laurent', 'Maurice'),
-(12, 'robin.szylobryt@campus-la-chataigneraie.org', '$2y$13$zZOi0gb4j8FN7IBmfluNFO9b3lQDon5QF8Ay0Jq8dxX.8gq.VmOZm', 'Robin', 'Szylobryt');
+(1, 'admin@campus-la-chataigneraie.org', '$2y$13$pZrZDZTQ.c/S9VZVrQ24bun2sovJoYM5ecVB2j2qYR8t.cy0vgxY.', 'Admin', 'Lycée'),
+(2, 'secretaire@campus-la-chataigneraie.org', '$2y$13$PFSh1HC9li6JenZAEz7IwO8xQXKU5Vr4SWR5hl1d2SD5yoBaqwWni', 'Secrétaire', 'Lycée'),
+(3, 'catherine.baranger@campus-la-chataigneraie.org', '$2y$13$fbCFEkZUjaEHDdHXTBtgLODn37QRf5.BgZFjwsrpp5IG9/TV3LMXy', 'Catherine', 'Baranger'),
+(4, 'rejane.boursier@campus-la-chataigneraie.org', '$2y$13$GVkr/SrAzCkmN0Ak8mgi5Owt.OyPTULdfs.m7.9mRdEXaKYmokZzi', 'Réjane', 'Boursier'),
+(5, 'sandrine.ternisien@campus-la-chataigneraie.org', '$2y$13$hhLWfu5o0h8DehtW1KxHBOemNzt36aTfrLKzGqwHRK3owWv9osLaG', 'Sandrine', 'Ternisien'),
+(6, 'nathalie.grandin@campus-la-chataigneraie.org', '$2y$13$ZeX5wJbfF/89XoLraDXicuXN.fwF2vHJfgHVvXD5j/R.GN0TvaIlS', 'Nathalie', 'Grandin'),
+(7, 'marie.serrault@campus-la-chataigneraie.org', '$2y$13$GEZxdPQYo50XN0BvFoquuOH8/BPJZLtjjz.kDSWBfALfrsuSvraB.', 'Marie', 'Serrault'),
+(8, 'christophe.baudoux@campus-la-chataigneraie.org', '$2y$13$sg0BYQo2KH6ZWcgjCaA/N.49G3/mJFbSh.X39Ifb6sefRr.VXWVeC', 'Christophe', 'Baudoux'),
+(9, 'antoine.bloyet@campus-la-chataigneraie.org', '$2y$13$0Go3TEGebYTYZr2qLm7zxu5PnQGnOnFgEDtLQnU1OnVNuvN.T3xM6', 'Antoine', 'Bloyet'),
+(10, 'kevin.bayeul@campus-la-chataigneraie.org', '$2y$13$W.BAxwkLuIyNJUWfLAv.Zust2GmyftUasVT8CaHT2N.dgVOeqGVGq', 'Kévin', 'Bayeul'),
+(11, 'laurent.maurice@campus-la-chataigneraie.org', '$2y$13$PWYr/9niqdpMBM4PId6DmeFGE4jJe8he7ZEKprTuXawebR18fLyFG', 'Laurent', 'Maurice'),
+(12, 'robin.szylobryt@campus-la-chataigneraie.org', '$2y$13$cWvqsxumqSvnZPLZEp/8ceotBspGyxzO8aiYD1Wgi296H7XD5r.UO', 'Robin', 'Szylobryt');
 
 -- --------------------------------------------------------
 
@@ -577,6 +624,12 @@ ALTER TABLE `milestone_status`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `promotion`
+--
+ALTER TABLE `promotion`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `role`
 --
 ALTER TABLE `role`
@@ -587,7 +640,8 @@ ALTER TABLE `role`
 --
 ALTER TABLE `student`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `IDX_B723AF33E93695C7` (`major_id`);
+  ADD KEY `IDX_B723AF33E93695C7` (`major_id`),
+  ADD KEY `IDX_B723AF33139DF194` (`promotion_id`);
 
 --
 -- Indexes for table `user`
@@ -630,13 +684,13 @@ ALTER TABLE `history_log`
 -- AUTO_INCREMENT for table `internship`
 --
 ALTER TABLE `internship`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `internship_milestone`
 --
 ALTER TABLE `internship_milestone`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=117;
 
 --
 -- AUTO_INCREMENT for table `major`
@@ -657,6 +711,12 @@ ALTER TABLE `milestone_status`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `promotion`
+--
+ALTER TABLE `promotion`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `role`
 --
 ALTER TABLE `role`
@@ -666,7 +726,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `student`
 --
 ALTER TABLE `student`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `user`
@@ -707,6 +767,7 @@ ALTER TABLE `internship_milestone`
 -- Constraints for table `student`
 --
 ALTER TABLE `student`
+  ADD CONSTRAINT `FK_B723AF33139DF194` FOREIGN KEY (`promotion_id`) REFERENCES `promotion` (`id`),
   ADD CONSTRAINT `FK_B723AF33E93695C7` FOREIGN KEY (`major_id`) REFERENCES `major` (`id`);
 
 --
