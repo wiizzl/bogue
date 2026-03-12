@@ -1,0 +1,56 @@
+<?php
+
+namespace App\Form;
+
+use App\Entity\Major;
+use App\Entity\Student;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+class StudentType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            ->add('firstName', TextType::class, [
+                'label' => 'Prénom',
+            ])
+            ->add('lastName', TextType::class, [
+                'label' => 'Nom',
+            ])
+            ->add('promotionYear', IntegerType::class, [
+                'label' => 'Année de promotion',
+                'attr' => [
+                    'min' => 2020,
+                    'max' => 2030,
+                ],
+                'help' => 'Année de sortie prévue du BTS'
+            ])
+            ->add('major', EntityType::class, [
+                'class' => Major::class,
+                'label' => 'Filière spécialisée',
+                'choice_label' => function (Major $major) {
+                    return $major->getLabel() . '  (' . $major->getCode() . ')';
+                },
+                'placeholder' => 'Choisir une filière...',
+            ])
+            ->add('isArchived', CheckboxType::class, [
+                'label' => 'Étudiant archivé (RGPD)',
+                'required' => false,
+                'help' => 'Cocher pour retirer l\'étudiant des listes actives conformément au RGPD'
+            ])
+        ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'data_class' => Student::class,
+        ]);
+    }
+}
