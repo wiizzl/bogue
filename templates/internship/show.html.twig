@@ -1,34 +1,73 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Internship{% endblock %}
+{% block title %}Détail du Stage{% endblock %}
 
 {% block body %}
-    <h1>Internship</h1>
+    <h1>Fiche détaillée du Stage</h1>
 
-    <table class="table">
+    <h2>Informations Générales</h2>
+    <table border="1" cellpadding="5">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ internship.id }}</td>
+                <th>Étudiant</th>
+                <td>{{ internship.student.firstName }} {{ internship.student.lastName|upper }} ({{ internship.student.major.code }})</td>
             </tr>
             <tr>
-                <th>StartDate</th>
-                <td>{{ internship.startDate ? internship.startDate|date('Y-m-d') : '' }}</td>
+                <th>Entreprise</th>
+                <td>
+                    <a href="{{ path('app_company_show', {'id': internship.company.id}) }}">
+                        {{ internship.company.name }}
+                    </a> - {{ internship.company.city }}
+                </td>
             </tr>
             <tr>
-                <th>EndDate</th>
-                <td>{{ internship.endDate ? internship.endDate|date('Y-m-d') : '' }}</td>
+                <th>Période</th>
+                <td>Du {{ internship.startDate ? internship.startDate|date('d/m/Y') : 'N/C' }} au {{ internship.endDate ? internship.endDate|date('d/m/Y') : 'N/C' }}</td>
             </tr>
             <tr>
-                <th>Remarks</th>
+                <th>Professeur de Suivi</th>
+                <td>{{ internship.trackingTeacher ? internship.trackingTeacher.firstName ~ ' ' ~ internship.trackingTeacher.lastName : 'Non affecté' }}</td>
+            </tr>
+            <tr>
+                <th>Professeur de Visite</th>
+                <td>{{ internship.visitingTeacher ? internship.visitingTeacher.firstName ~ ' ' ~ internship.visitingTeacher.lastName : 'Non affecté' }}</td>
+            </tr>
+            <tr>
+                <th>Remarques</th>
                 <td>{{ internship.remarks }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('app_internship_index') }}">back to list</a>
+    <h2>Historique des modifications (Traçabilité)</h2>
+    <table border="1" cellpadding="5">
+        <thead>
+            <tr>
+                <th>Date & Heure</th>
+                <th>Auteur</th>
+                <th>Action</th>
+                <th>Ancienne valeur</th>
+                <th>Nouvelle valeur</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in internship.historyLogs %}
+                <tr>
+                    <td>{{ log.createdAt|date('d/m/Y H:i') }}</td>
+                    <td>{{ log.author.firstName }} {{ log.author.lastName }}</td>
+                    <td>{{ log.actionType.label }}</td>
+                    <td>{{ log.oldValue }}</td>
+                    <td>{{ log.newValue }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">Aucune modification enregistrée pour ce stage pour le moment.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
-    <a href="{{ path('app_internship_edit', {'id': internship.id}) }}">edit</a>
-
-    {{ include('internship/_delete_form.html.twig') }}
+    <br>
+    <a href="{{ path('app_home') }}">Retour au tableau de bord</a> |
+    <a href="{{ path('app_internship_edit', {'id': internship.id}) }}">Modifier les infos du stage</a>
 {% endblock %}
