@@ -9,6 +9,7 @@
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Student</th>
                 <th>StartDate</th>
                 <th>EndDate</th>
                 <th>Remarks</th>
@@ -19,6 +20,8 @@
         {% for internship in internships %}
             <tr>
                 <td>{{ internship.id }}</td>
+                <td>{{ internship.student.firstName }} {{ internship.student.lastName }}</td>
+                <td>{{ internship.company.name }}</td>
                 <td>{{ internship.startDate ? internship.startDate|date('Y-m-d') : '' }}</td>
                 <td>{{ internship.endDate ? internship.endDate|date('Y-m-d') : '' }}</td>
                 <td>{{ internship.remarks }}</td>

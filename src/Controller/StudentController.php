@@ -10,8 +10,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/student')]
+#[IsGranted('ROLE_ADMIN')]
 final class StudentController extends AbstractController
 {
     #[Route(name: 'app_student_index', methods: ['GET'])]
@@ -39,14 +41,6 @@ final class StudentController extends AbstractController
         return $this->render('student/new.html.twig', [
             'student' => $student,
             'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}', name: 'app_student_show', methods: ['GET'])]
-    public function show(Student $student): Response
-    {
-        return $this->render('student/show.html.twig', [
-            'student' => $student,
         ]);
     }
 
