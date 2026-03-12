@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Major;
+use App\Entity\Promotion;
 use App\Entity\Student;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -23,12 +24,12 @@ class StudentType extends AbstractType
             ->add('lastName', TextType::class, [
                 'label' => 'Nom',
             ])
-            ->add('promotionYear', IntegerType::class, [
+            ->add('promotion', EntityType::class, [
+                'class' => Promotion::class,
+                'label' => 'Promotion',
+                'choice_label' => 'year',
+                'placeholder' => 'Choisir une promotion...',
                 'label' => 'Année de promotion',
-                'attr' => [
-                    'min' => 2020,
-                    'max' => 2030,
-                ],
                 'help' => 'Année de sortie prévue du BTS'
             ])
             ->add('major', EntityType::class, [

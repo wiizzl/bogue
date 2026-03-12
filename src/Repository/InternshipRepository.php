@@ -24,15 +24,16 @@ class InternshipRepository extends ServiceEntityRepository
     public function findForTracking(array $filters, ?User $user = null, int $page = 1, ?int $limit = null): Paginator|array
     {
         $qb = $this->createQueryBuilder('i')
-            ->addSelect('s', 'm', 'c', 'tt', 'vt', 'im', 'mst')
+            ->addSelect('s', 'm', 'c', 'tt', 'vt', 'im', 'mst', 'p')
             ->join('i.student', 's')
+            ->join('s.promotion', 'p')
             ->join('s.major', 'm')
             ->join('i.company', 'c')
             ->leftJoin('i.trackingTeacher', 'tt')
             ->leftJoin('i.visitingTeacher', 'vt')
             ->leftJoin('i.milestones', 'im')
             ->leftJoin('im.status', 'mst')
-            ->where('s.isArchived = false')
+            ->where('p.isArchived = false')
             ->orderBy('s.lastName', 'ASC');
 
         $isAdmin = $user && in_array('ROLE_ADMIN', $user->getRoles());

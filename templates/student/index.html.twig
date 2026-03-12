@@ -11,7 +11,7 @@
                 <th>Id</th>
                 <th>FirstName</th>
                 <th>LastName</th>
-                <th>PromotionYear</th>
+                <th>Promotion</th>
                 <th>Major</th>
                 <th>IsArchived</th>
                 <th>actions</th>
@@ -23,7 +23,7 @@
                 <td>{{ student.id }}</td>
                 <td>{{ student.firstName }}</td>
                 <td>{{ student.lastName }}</td>
-                <td>{{ student.promotionYear }}</td>
+                <td>{{ student.promotion.year }}</td>
                 <td>{{ student.major.code }}</td>
                 <td>{{ student.isArchived ? 'Yes' : 'No' }}</td>
                 <td>

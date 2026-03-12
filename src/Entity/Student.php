@@ -31,11 +31,6 @@ class Student
     private ?string $lastName = null;
 
     #[ORM\Column]
-    #[Assert\NotBlank(message: "L'année de promotion est obligatoire.")]
-    #[Assert\Range(min: 2020, max: 2050, notInRangeMessage: "L'année doit être entre {{ min }} et {{ max }}.")]
-    private ?int $promotionYear = null;
-
-    #[ORM\Column]
     #[Assert\NotNull(message: "L'état d'archivage doit être défini.")]
     private ?bool $isArchived = null;
 
@@ -44,6 +39,10 @@ class Student
      */
     #[ORM\OneToMany(targetEntity: Internship::class, mappedBy: 'student')]
     private Collection $internships;
+
+    #[ORM\ManyToOne(inversedBy: 'students')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Promotion $promotion = null;
 
     public function __construct()
     {
@@ -91,18 +90,6 @@ class Student
         return $this;
     }
 
-    public function getPromotionYear(): ?int
-    {
-        return $this->promotionYear;
-    }
-
-    public function setPromotionYear(int $promotionYear): static
-    {
-        $this->promotionYear = $promotionYear;
-
-        return $this;
-    }
-
     public function isArchived(): ?bool
     {
         return $this->isArchived;
@@ -141,6 +128,18 @@ class Student
                 $internship->setStudent(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPromotion(): ?Promotion
+    {
+        return $this->promotion;
+    }
+
+    public function setPromotion(?Promotion $promotion): static
+    {
+        $this->promotion = $promotion;
 
         return $this;
     }
