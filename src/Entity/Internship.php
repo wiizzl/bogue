@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: InternshipRepository::class)]
 class Internship
@@ -31,12 +32,16 @@ class Internship
     private ?User $visitingTeacher = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\NotBlank(message: "La date de début est obligatoire.")]
     private ?\DateTime $startDate = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\NotBlank(message: "La date de fin est obligatoire.")]
+    #[Assert\GreaterThan(propertyPath: "startDate", message: "La date de fin doit être après la date de début.")]
     private ?\DateTime $endDate = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Assert\Type('string')]
     private ?string $remarks = null;
 
     /**

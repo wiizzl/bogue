@@ -6,6 +6,7 @@ use App\Repository\StudentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
 class Student
@@ -20,15 +21,23 @@ class Student
     private ?Major $major = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank(message: "Le prénom est obligatoire.")]
+    #[Assert\Length(max: 100)]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100)]
+    #[Assert\NotBlank(message: "Le nom est obligatoire.")]
+    #[Assert\Length(max: 100)]
     private ?string $lastName = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "L'année de promotion est obligatoire.")]
+    #[Assert\Range(min: 2020, max: 2050, notInRangeMessage: "L'année doit être entre {{ min }} et {{ max }}.")]
     private ?int $promotionYear = null;
 
     #[ORM\Column]
+    #[Assert\NotNull(message: "L'état d'archivage doit être défini.")]
     private ?bool $isArchived = null;
 
     /**

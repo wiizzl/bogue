@@ -6,6 +6,7 @@ use App\Repository\MajorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MajorRepository::class)]
 class Major
@@ -16,9 +17,13 @@ class Major
     private ?int $id = null;
 
     #[ORM\Column(length: 10)]
+    #[Assert\NotBlank(message: "Le code est obligatoire.")]
+    #[Assert\Length(max: 10, maxMessage: "Le code ne peut pas dépasser {{ limit }} caractères.")]
     private ?string $code = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank(message: "Le libellé est obligatoire.")]
+    #[Assert\Length(max: 100, maxMessage: "Le libellé ne peut pas dépasser {{ limit }} caractères.")]
     private ?string $label = null;
 
     /**

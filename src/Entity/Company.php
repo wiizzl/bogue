@@ -6,6 +6,7 @@ use App\Repository\CompanyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
 class Company
@@ -16,24 +17,34 @@ class Company
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le nom de l'entreprise est obligatoire.")]
+    #[Assert\Length(min: 2, max: 255)]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
     private ?string $address = null;
 
     #[ORM\Column(length: 20, nullable: true)]
+    #[Assert\Length(max: 20)]
+    #[Assert\Regex(pattern: "/^[0-9A-Za-z\s\-]+$/", message: "Le code postal contient des caractères non autorisés.")]
     private ?string $zipCode = null;
 
     #[ORM\Column(length: 100, nullable: true)]
+    #[Assert\Length(max: 100)]
     private ?string $city = null;
 
     #[ORM\Column(length: 150, nullable: true)]
+    #[Assert\Length(max: 150)]
     private ?string $contactName = null;
 
     #[ORM\Column(length: 30, nullable: true)]
+    #[Assert\Length(max: 30)]
     private ?string $phone = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Email(message: "L'adresse email n'est pas valide.")]
+    #[Assert\Length(max: 255)]
     private ?string $email = null;
 
     /**
