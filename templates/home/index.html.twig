@@ -9,22 +9,21 @@
         <select name="major">
             <option value="">Toutes les filières</option>
             {% for major in majors %}
-                <option value="{{ major.id }}" {{ current_filters.major == major.id ? 'selected' }}>{{ major.code }}</option>
+                <option value="{{ major.id }}" {{ (current_filters.major|default('')) == major.id ? 'selected' }}>{{ major.code }}</option>
             {% endfor %}
         </select>
 
         <select name="teacher">
             <option value="">Tous les enseignants</option>
             {% for teacher in teachers %}
-                <option value="{{ teacher.id }}" {{ current_filters.teacher == teacher.id ? 'selected' }}>{{ teacher.firstName }} {{ teacher.lastName }}</option>
+                <option value="{{ teacher.id }}" {{ (current_filters.teacher|default('')) == teacher.id ? 'selected' }}>{{ teacher.firstName }} {{ teacher.lastName }}</option>
             {% endfor %}
         </select>
 
         <button type="submit">Filtrer</button>
         <a href="{{ path('app_home_index') }}">Réinitialiser</a>
-
-        <a href="{{ path('app_home_export', {'major': current_filters.major, 'teacher': current_filters.teacher}) }}">
-           Exporter en CSV
+        <a href="{{ path('app_home_export', {'major': current_filters.major|default(''), 'teacher': current_filters.teacher|default('')}) }}">
+            Exporter en CSV
         </a>
     </form>
 

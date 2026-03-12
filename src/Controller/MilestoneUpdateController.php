@@ -9,18 +9,38 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 final class MilestoneUpdateController extends AbstractController
 {
+    /**
+     * Edit a specific milestone status for an internship.
+     *
+     * Access is controlled by InternshipMilestoneVoter:
+     * - ADMIN: always allowed
+     * - TEACHER: only for their assigned internships (tracking or visiting)
+     * - SECRETARY: not allowed
+     */
     #[Route('/milestone/{id}/edit', name: 'app_milestone_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, InternshipMilestone $internshipMilestone, EntityManagerInterface $entityManager): Response {
-        $this->denyAccessUnlessGranted('EDIT_MILESTONE', $internshipMilestone);
+    public function edit(Request $request, InternshipMilestone $internshipMilestone, EntityManagerInterface $entityManager): Response
+    {
+        try {
+            $this->denyAccessUnlessGranted('EDIT_MILESTONE', $internshipMilestone);
+        } catch (AccessDeniedException) {
+            $this->addFlash('error', 'Vous n\'avez pas les permissions pour modifier ce jalon.');
+            return $this->redirectToRoute('app_home_index');
+        }
 
         $form = $this->createForm(InternshipMilestoneType::class, $internshipMilestone);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+            try {
+                $entityManager->flush();
+                $this->addFlash('success', 'Jalon mis à jour avec succès.');
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Erreur lors de la mise à jour du jalon : ' . $e->getMessage());
+            }
 
             return $this->redirectToRoute('app_home_index');
         }

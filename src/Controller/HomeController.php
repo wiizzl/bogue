@@ -2,111 +2,122 @@
 
 namespace App\Controller;
 
-use App\Repository\InternshipRepository;
-use App\Repository\MajorRepository;
-use App\Repository\MilestoneRepository;
-use App\Repository\UserRepository;
+use App\Service\CsvExportService;
+use App\Service\InternshipTrackingService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class HomeController extends AbstractController
 {
-    #[Route(name: 'app_home_index', methods: ['GET'])]
-    public function index(Request $request, InternshipRepository $internshipRepo, MajorRepository $majorRepo, UserRepository $userRepo): Response
-    {
-        $page = $request->query->getInt('page', 1);
-        $limit = $request->query->getInt('limit', 10);
-
-        $filters = [
-            'major' => $request->query->get('major'),
-            'teacher' => $request->query->get('teacher'),
-        ];
-
-        $paginator = $internshipRepo->findForTracking($filters, $this->getUser(), $page, $limit);
-
-        $totalItems = count($paginator);
-        $pagesCount = ceil($totalItems / $limit);
-
-        return $this->render('home/index.html.twig', [
-            'internships' => $paginator,
-            'current_page' => $page,
-            'current_limit' => $limit,
-            'pages_count' => $pagesCount,
-            'total_items' => $totalItems,
-            'majors' => $majorRepo->findAll(),
-            'teachers' => $userRepo->findAll(),
-            'current_filters' => $filters
-        ]);
+    public function __construct(
+        private InternshipTrackingService $internshipTrackingService,
+        private CsvExportService $csvExportService
+    ) {
     }
 
-    #[Route('/export', name: 'app_home_export', methods: ['GET'])]
-    public function exportCsv(Request $request, InternshipRepository $internshipRepo, MilestoneRepository $milestoneRepo): Response
+    /**
+     * Display internship tracking dashboard with filtering and pagination.
+     *
+     * Handles role-based access control and data filtering for tracking teachers.
+     * Provides pagination and filtering capabilities for efficient data navigation.
+     */
+    #[Route(name: 'app_home_index', methods: ['GET'])]
+    public function index(Request $request): Response
     {
-        $filters = [
+        // Validate user has access to internship data
+        if (!$this->internshipTrackingService->canViewInternships($this->getUser())) {
+            return $this->handleAccessDenied('consulter les stages');
+        }
+
+        // Parse and validate request parameters
+        $page = max(1, $request->query->getInt('page', 1));
+        $limit = max(1, min(100, $request->query->getInt('limit', 10))); // Cap at 100 for performance
+
+        // Sanitize filters to prevent injection
+        $rawFilters = [
             'major' => $request->query->get('major'),
             'teacher' => $request->query->get('teacher'),
         ];
+        $filters = $this->internshipTrackingService->sanitizeFilters($rawFilters);
 
-        $internships = $internshipRepo->findForTracking($filters, $this->getUser(), 1, null);
-        $allMilestones = $milestoneRepo->findAll();
+        try {
+            // Get filtered data with pagination
+            $result = $this->internshipTrackingService->getFilteredInternships(
+                $filters,
+                $this->getUser(),
+                $page,
+                $limit
+            );
 
-        $fp = fopen('php://temp', 'w');
+            // Get filter options for dropdowns
+            $filterOptions = $this->internshipTrackingService->getFilterOptions();
 
-        $headers = [
-            'Étudiant',
-            'Filière',
-            'Entreprise',
-            'Ville',
-            'Prof. Suivi',
-            'Prof. Visite'
-        ];
+            return $this->render('home/index.html.twig', array_merge($result['pagination'], [
+                'internships' => $result['data'],
+                'majors' => $filterOptions['majors'],
+                'teachers' => $filterOptions['teachers'],
+                'current_filters' => $filters
+            ]));
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Erreur lors du chargement des données : ' . $e->getMessage());
 
-        foreach ($allMilestones as $milestone) {
-            $headers[] = $milestone->getLabel();
+            return $this->render('home/index.html.twig', [
+                'internships' => [],
+                'current_page' => 1,
+                'pages_count' => 0,
+                'total_items' => 0,
+                'current_limit' => $limit,
+                'majors' => [],
+                'teachers' => [],
+                'current_filters' => []
+            ]);
         }
+    }
 
-        fputcsv($fp, $headers, ';');
-
-        foreach ($internships as $internship) {
-            $row = [
-                strtoupper($internship->getStudent()->getLastName()) . ' ' . $internship->getStudent()->getFirstName(),
-                $internship->getStudent()->getMajor()->getCode(),
-                $internship->getCompany()->getName(),
-                $internship->getCompany()->getCity(),
-                $internship->getTrackingTeacher() ? $internship->getTrackingTeacher()->getLastName() : 'Non affecté',
-                $internship->getVisitingTeacher() ? $internship->getVisitingTeacher()->getLastName() : 'Non affecté',
+    /**
+     * Export internship tracking data as CSV.
+     *
+     * Generates a CSV file with all filtered internship data including
+     * student information, company details, and milestone statuses.
+     */
+    #[Route('/export', name: 'app_home_export', methods: ['GET'])]
+    #[IsGranted('ROLE_TEACHER')]
+    public function exportCsv(Request $request): Response
+    {
+        try {
+            // Sanitize filters for export (same as index)
+            $rawFilters = [
+                'major' => $request->query->get('major'),
+                'teacher' => $request->query->get('teacher'),
             ];
+            $filters = $this->internshipTrackingService->sanitizeFilters($rawFilters);
 
-            foreach ($allMilestones as $milestone) {
-                $statusLabel = 'Non défini';
+            // Get all internships for export (no pagination)
+            $internships = $this->internshipTrackingService->getInternshipsForExport(
+                $filters,
+                $this->getUser()
+            );
 
-                foreach ($internship->getMilestones() as $internshipMilestone) {
-                    if ($internshipMilestone->getMilestone()->getId() === $milestone->getId()) {
-                        $statusLabel = $internshipMilestone->getStatus()->getLabel();
-                        break;
-                    }
-                }
-
-                $row[] = $statusLabel;
-            }
-
-            fputcsv($fp, $row, ';');
+            // Generate and return CSV response
+            return $this->csvExportService->generateInternshipCsv($internships);
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Erreur lors de l\'export CSV : ' . $e->getMessage());
+            return $this->redirectToRoute('app_home_index');
         }
+    }
 
-        rewind($fp);
-        $csvContent = stream_get_contents($fp);
-        fclose($fp);
-
-        $response = new Response($csvContent);
-        $response->headers->set('Content-Type', 'text/csv; charset=UTF-8');
-        $response->headers->set('Content-Disposition', $response->headers->makeDisposition(
-            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            'suivi_stages_' . date('Y-m-d') . '.csv'
-        ));
-
-        return $response;
+    /**
+     * Handle access denied scenarios with user feedback.
+     *
+     * @param string $action Action being denied
+     * @return Response
+     */
+    private function handleAccessDenied(string $action): Response
+    {
+        $this->addFlash('error', "Vous n'avez pas les permissions pour $action.");
+        return $this->redirectToRoute('app_login');
     }
 }

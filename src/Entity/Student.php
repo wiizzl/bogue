@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
+#[ORM\Index(columns: ['promotion_id', 'major_id'], name: 'idx_student_promotion_major')]
+#[ORM\Index(columns: ['last_name', 'first_name'], name: 'idx_student_name')]
 class Student
 {
     #[ORM\Id]

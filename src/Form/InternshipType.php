@@ -41,7 +41,8 @@ class InternshipType extends AbstractType
                 'label' => 'Étudiant',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('s')
-                        ->where('s.isArchived = false')
+                        ->join('s.promotion', 'p')
+                        ->where('p.isArchived = false')
                         ->orderBy('s.lastName', 'ASC');
                 },
             ])

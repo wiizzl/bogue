@@ -7,6 +7,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: HistoryLogRepository::class)]
+#[ORM\Index(columns: ['internship_id', 'created_at'], name: 'idx_history_internship_date')]
+#[ORM\Index(columns: ['author_id', 'created_at'], name: 'idx_history_author_date')]
 class HistoryLog
 {
     #[ORM\Id]

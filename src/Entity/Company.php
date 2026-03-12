@@ -111,12 +111,12 @@ class Company
         return $this;
     }
 
-    public function getcontactName(): ?string
+    public function getContactName(): ?string
     {
         return $this->contactName;
     }
 
-    public function setcontactName(?string $contactName): static
+    public function setContactName(?string $contactName): static
     {
         $this->contactName = $contactName;
 

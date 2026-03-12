@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Étudiant — {{ student.firstName }} {{ student.lastName }}{% endblock %}
+
+{% block body %}
+    <h1>{{ student.lastName|upper }} {{ student.firstName }}</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Filière</th>
+                <td>{{ student.major.label }} ({{ student.major.code }})</td>
+            </tr>
+            <tr>
+                <th>Promotion</th>
+                <td>{{ student.promotion.year }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_student_edit', {'id': student.id}) }}">Modifier</a>
+    <a href="{{ path('app_student_index') }}">Retour à la liste</a>
+
+    {% include 'student/_delete_form.html.twig' %}
+{% endblock %}

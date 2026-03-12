@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Controller\Trait\CrudControllerTrait;
 use App\Entity\Company;
 use App\Form\CompanyType;
 use App\Repository\CompanyRepository;
@@ -16,12 +17,19 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 final class CompanyController extends AbstractController
 {
+        use CrudControllerTrait;
+
     #[Route(name: 'app_company_index', methods: ['GET'])]
     public function index(CompanyRepository $companyRepository): Response
     {
-        return $this->render('company/index.html.twig', [
-            'companies' => $companyRepository->findAll(),
-        ]);
+        try {
+            return $this->render('company/index.html.twig', [
+                'companies' => $companyRepository->findAll(),
+            ]);
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Erreur lors du chargement des entreprises : ' . $e->getMessage());
+            return $this->render('company/index.html.twig', ['companies' => []]);
+        }
     }
 
     #[Route('/new', name: 'app_company_new', methods: ['GET', 'POST'])]
@@ -29,19 +37,8 @@ final class CompanyController extends AbstractController
     {
         $company = new Company();
         $form = $this->createForm(CompanyType::class, $company);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($company);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_company_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('company/new.html.twig', [
-            'company' => $company,
-            'form' => $form,
-        ]);
+        return $this->handleCreate($request, $company, $form, $entityManager, 'company/new.html.twig', 'app_company_index');
     }
 
     #[Route('/{id}', name: 'app_company_show', methods: ['GET'])]
@@ -56,28 +53,23 @@ final class CompanyController extends AbstractController
     public function edit(Request $request, Company $company, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(CompanyType::class, $company);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_company_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('company/edit.html.twig', [
-            'company' => $company,
-            'form' => $form,
-        ]);
+        return $this->handleUpdate($request, $company, $form, $entityManager, 'company/edit.html.twig', 'app_company_index');
     }
 
     #[Route('/{id}', name: 'app_company_delete', methods: ['POST'])]
     public function delete(Request $request, Company $company, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$company->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($company);
-            $entityManager->flush();
+        if (!$this->isCsrfTokenValid('delete'.$company->getId(), $request->getPayload()->getString('_token'))) {
+            $this->addFlash('error', 'Token de sécurité invalide.');
+            return $this->redirectToRoute('app_company_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->redirectToRoute('app_company_index', [], Response::HTTP_SEE_OTHER);
+        return $this->handleDelete($company, $entityManager, 'app_company_index');
+    }
+
+    protected function getEntityDisplayName(object $entity): string
+    {
+        return 'Entreprise';
     }
 }

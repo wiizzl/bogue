@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Controller\Trait\CrudControllerTrait;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
@@ -14,18 +15,26 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/user')]
-#[IsGranted('ROLE_ADMIN')]
 final class UserController extends AbstractController
 {
+    use CrudControllerTrait;
+
     #[Route(name: 'app_user_index', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function index(UserRepository $userRepository): Response
     {
-        return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
-        ]);
+        try {
+            return $this->render('user/index.html.twig', [
+                'users' => $userRepository->findAll(),
+            ]);
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Erreur lors du chargement des utilisateurs : ' . $e->getMessage());
+            return $this->render('user/index.html.twig', ['users' => []]);
+        }
     }
 
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher): Response
     {
         $user = new User();
@@ -33,15 +42,15 @@ final class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $plainPassword = $form->get('password')->getData();
-            if ($plainPassword) {
-                $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
+            try {
+                $this->hashUserPasswordIfProvided($user, $form->get('password')->getData(), $userPasswordHasher);
+                $entityManager->persist($user);
+                $entityManager->flush();
+                $this->addFlash('success', 'Utilisateur cree avec succes.');
+                return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Erreur lors de la creation : ' . $e->getMessage());
             }
-
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('user/new.html.twig', [
@@ -50,21 +59,37 @@ final class UserController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}', name: 'app_user_show', methods: ['GET'], requirements: ['id' => '\\d+'])]
+    public function show(User $user): Response
+    {
+        if (!$this->canManageUser($user)) {
+            return $this->handleAccessDenied('consulter', $user);
+        }
+
+        return $this->render('user/show.html.twig', [
+            'user' => $user,
+        ]);
+    }
+
     #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher): Response
     {
+        if (!$this->canManageUser($user)) {
+            return $this->handleAccessDenied('modifier', $user);
+        }
+
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $plainPassword = $form->get('password')->getData();
-            if ($plainPassword) {
-                $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
+            try {
+                $this->hashUserPasswordIfProvided($user, $form->get('password')->getData(), $userPasswordHasher);
+                $entityManager->flush();
+                $this->addFlash('success', 'Utilisateur mis a jour avec succes.');
+                return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Erreur lors de la mise a jour : ' . $e->getMessage());
             }
-
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('user/edit.html.twig', [
@@ -74,13 +99,42 @@ final class UserController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($user);
-            $entityManager->flush();
+        if ($this->getUser() === $user) {
+            $this->addFlash('error', 'Vous ne pouvez pas supprimer votre propre compte.');
+            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+        if (!$this->isCsrfTokenValid('delete'.$user->getId(), $request->getPayload()->getString('_token'))) {
+            $this->addFlash('error', 'Token de securite invalide.');
+            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->handleDelete($user, $entityManager, 'app_user_index');
+    }
+
+    private function hashUserPasswordIfProvided(User $user, ?string $plainPassword, UserPasswordHasherInterface $hasher): void
+    {
+        if ($plainPassword) {
+            $user->setPassword($hasher->hashPassword($user, $plainPassword));
+        }
+    }
+
+    private function canManageUser(User $target): bool
+    {
+        $current = $this->getUser();
+
+        if (!$current instanceof User) {
+            return false;
+        }
+
+        return $this->isGranted('ROLE_ADMIN') || $current->getId() === $target->getId();
+    }
+
+    protected function getEntityDisplayName(object $entity): string
+    {
+        return 'Utilisateur';
     }
 }

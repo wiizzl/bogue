@@ -13,7 +13,6 @@
                 <th>LastName</th>
                 <th>Promotion</th>
                 <th>Major</th>
-                <th>IsArchived</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -25,15 +24,14 @@
                 <td>{{ student.lastName }}</td>
                 <td>{{ student.promotion.year }}</td>
                 <td>{{ student.major.code }}</td>
-                <td>{{ student.isArchived ? 'Yes' : 'No' }}</td>
                 <td>
-                    <a href="{{ path('app_student_show', {'id': student.id}) }}">show</a>
+                    <a href="{{ path('app_student_show', {'id': student.id}) }}">voir</a>
                     <a href="{{ path('app_student_edit', {'id': student.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="6">no records found</td>
+                <td colspan="5">no records found</td>
             </tr>
         {% endfor %}
         </tbody>

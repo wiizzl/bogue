@@ -7,8 +7,6 @@ use App\Entity\Promotion;
 use App\Entity\Student;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -39,11 +37,6 @@ class StudentType extends AbstractType
                     return $major->getLabel() . '  (' . $major->getCode() . ')';
                 },
                 'placeholder' => 'Choisir une filière...',
-            ])
-            ->add('isArchived', CheckboxType::class, [
-                'label' => 'Étudiant archivé (RGPD)',
-                'required' => false,
-                'help' => 'Cocher pour retirer l\'étudiant des listes actives conformément au RGPD'
             ])
         ;
     }
