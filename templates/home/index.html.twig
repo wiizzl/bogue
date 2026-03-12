@@ -1,12 +1,68 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil{% endblock %}
-
-{% block stylesheets %}
-{% endblock %}
+{% block title %}Suivi et Visite des Stages{% endblock %}
 
 {% block body %}
-<div>
-    <h1>Hello World!</h1>
-</div>
+    <h1>Vue Consolidée : Suivi & Visite</h1>
+
+    <form method="get" action="{{ path('app_internship_tracking') }}">
+        <select name="major">
+            <option value="">Toutes les filières</option>
+            {% for major in majors %}
+                <option value="{{ major.id }}" {{ current_filters.major == major.id ? 'selected' }}>{{ major.code }}</option>
+            {% endfor %}
+        </select>
+
+        <select name="teacher">
+            <option value="">Tous les enseignants</option>
+            {% for teacher in teachers %}
+                <option value="{{ teacher.id }}" {{ current_filters.teacher == teacher.id ? 'selected' }}>{{ teacher.firstName }} {{ teacher.lastName }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Filtrer</button>
+        <a href="{{ path('app_internship_tracking') }}">Réinitialiser</a>
+    </form>
+
+    <hr>
+
+    <table border="1" cellpadding="5">
+        <thead>
+            <tr>
+                <th>Étudiant</th>
+                <th>Filière</th>
+                <th>Entreprise (Ville)</th>
+                <th>Suivi / Visite</th>
+                <th>Remerciement</th>
+                <th>Bilan/Suivi</th>
+                <th>Jury</th>
+                <th>Attestation</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for internship in internships %}
+            <tr>
+                <td>{{ internship.student.lastName|upper }} {{ internship.student.firstName }}</td>
+                <td>{{ internship.student.major.code }}</td>
+                <td>{{ internship.company.name }} ({{ internship.company.city }})</td>
+                <td>
+                    S: {{ internship.trackingTeacher ? internship.trackingTeacher.lastName : 'Non affecté' }}<br>
+                    V: {{ internship.visitingTeacher ? internship.visitingTeacher.lastName : 'Non affecté' }}
+                </td>
+
+                {% for item in internship.milestones %}
+                    <td>
+                        <a href="{{ path('app_milestone_edit', {'id': item.id}) }}">
+                            {{ item.status.label }}
+                        </a>
+                    </td>
+                {% endfor %}
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">Aucun stage ne correspond à vos critères.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
