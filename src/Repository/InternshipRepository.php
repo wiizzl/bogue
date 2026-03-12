@@ -31,6 +31,7 @@ class InternshipRepository extends ServiceEntityRepository
             ->leftJoin('i.visitingTeacher', 'vt')
             ->leftJoin('i.milestones', 'im')
             ->leftJoin('im.status', 'mst')
+            ->where('s.isArchived = false')
             ->orderBy('s.lastName', 'ASC');
 
         if ($user && !in_array('ROLE_ADMIN', $user->getRoles())) {

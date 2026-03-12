@@ -7,6 +7,7 @@ use App\Entity\Internship;
 use App\Entity\Student;
 use App\Entity\User;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -34,10 +35,14 @@ class InternshipType extends AbstractType
             ])
             ->add('student', EntityType::class, [
                 'class' => Student::class,
-                'label' => 'Étudiant',
-                'placeholder' => 'Sélectionnez un étudiant...',
-                'choice_label' => function (Student $student) {
+                'choice_label' => function(Student $student) {
                     return strtoupper($student->getLastName()) . ' ' . $student->getFirstName();
+                },
+                'label' => 'Étudiant',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('s')
+                        ->where('s.isArchived = false')
+                        ->orderBy('s.lastName', 'ASC');
                 },
             ])
             ->add('company', EntityType::class, [
