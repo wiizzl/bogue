@@ -27,7 +27,7 @@
             </select>
 
             <button type="submit">Filtrer</button>
-            <a href="{{ path('app_home_index') }}">Reinitialiser</a>
+            <a href="{{ path('app_home_index') }}">Réinitialiser</a>
             {% if is_granted('ROLE_SECRETARY') %}
                 <a href="{{ path('app_home_export', {'major': current_filters.major|default(''), 'teacher': current_filters.teacher|default('')}) }}">Exporter CSV</a>
             {% endif %}
