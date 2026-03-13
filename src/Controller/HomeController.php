@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Service\CsvExportService;
 use App\Service\InternshipTrackingService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -85,7 +86,7 @@ final class HomeController extends AbstractController
     #[Route('/export', name: 'app_home_export', methods: ['GET'])]
     public function exportCsv(Request $request): Response
     {
-        if (!$this->internshipTrackingService->canViewInternships($this->getUser())) {
+        if (!$this->isGranted('ROLE_SECRETARY')) {
             return $this->handleAccessDenied('exporter les stages');
         }
 
@@ -120,6 +121,12 @@ final class HomeController extends AbstractController
     private function handleAccessDenied(string $action): Response
     {
         $this->addFlash('error', "Vous n'avez pas les permissions pour $action.");
+
+        $user = $this->getUser();
+        if ($user instanceof User) {
+            return $this->redirectToRoute('app_user_show', ['id' => $user->getId()]);
+        }
+
         return $this->redirectToRoute('app_login');
     }
 }

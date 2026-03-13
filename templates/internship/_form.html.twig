@@ -1,4 +1,13 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    <fieldset>
+        <legend>Informations stage</legend>
+        {{ form_row(form.student) }}
+        {{ form_row(form.company) }}
+        {{ form_row(form.startDate) }}
+        {{ form_row(form.endDate) }}
+        {{ form_row(form.trackingTeacher) }}
+        {{ form_row(form.visitingTeacher) }}
+        {{ form_row(form.remarks) }}
+    </fieldset>
+    <button type="submit">{{ button_label|default('Enregistrer') }}</button>
 {{ form_end(form) }}

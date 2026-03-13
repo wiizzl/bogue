@@ -1,4 +1,13 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    <fieldset>
+        <legend>Informations utilisateur</legend>
+        {{ form_row(form.email) }}
+        {{ form_row(form.password) }}
+        {{ form_row(form.firstName) }}
+        {{ form_row(form.lastName) }}
+        {% if form.userRoles is defined %}
+            {{ form_row(form.userRoles) }}
+        {% endif %}
+    </fieldset>
+    <button type="submit">{{ button_label|default('Enregistrer') }}</button>
 {{ form_end(form) }}

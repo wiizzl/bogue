@@ -1,42 +1,59 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Internship index{% endblock %}
+{% block title %}Stages{% endblock %}
 
 {% block body %}
-    <h1>Internship index</h1>
+    <section>
+        <h2>Liste des stages</h2>
+        {% if is_granted('ROLE_ADMIN') %}
+            <p><a href="{{ path('app_internship_new') }}">Ajouter un stage</a></p>
+        {% endif %}
+    </section>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Student</th>
-                <th>StartDate</th>
-                <th>EndDate</th>
-                <th>Remarks</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for internship in internships %}
-            <tr>
-                <td>{{ internship.id }}</td>
-                <td>{{ internship.student.firstName }} {{ internship.student.lastName }}</td>
-                <td>{{ internship.company.name }}</td>
-                <td>{{ internship.startDate ? internship.startDate|date('Y-m-d') : '' }}</td>
-                <td>{{ internship.endDate ? internship.endDate|date('Y-m-d') : '' }}</td>
-                <td>{{ internship.remarks }}</td>
-                <td>
-                    <a href="{{ path('app_internship_show', {'id': internship.id}) }}">show</a>
-                    <a href="{{ path('app_internship_edit', {'id': internship.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_internship_new') }}">Create new</a>
+    <section class="table-section">
+        <table>
+            <thead>
+                <tr>
+                    <th>Étudiant</th>
+                    <th>Entreprise</th>
+                    <th>Durée</th>
+                    <th class="table-actions-header">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for internship in internships %}
+                <tr>
+                    <td>{{ internship.student.firstName }} {{ internship.student.lastName }}</td>
+                    <td>{{ internship.company.name }}</td>
+                    {% if internship.startDate and internship.endDate %}
+                        <td title="Du {{ internship.startDate|date('d/m/Y') }} au {{ internship.endDate|date('d/m/Y') }}">
+                            {{ internship.durationInWeeks }} semaine{{ internship.durationInWeeks > 1 ? 's' : '' }}
+                        </td>
+                    {% else %}
+                        <td>-</td>
+                    {% endif %}
+                    <td class="table-actions">
+                        <a href="{{ path('app_internship_show', {'id': internship.id}) }}" aria-label="Voir le stage" title="Voir">
+                            {{ ux_icon('eye', { 'class': 'action-icon' }) }}
+                            <span class="visually-hidden">Voir</span>
+                        </a>
+                        {% if is_granted('EDIT_INTERNSHIP', internship) %}
+                            <a href="{{ path('app_internship_edit', {'id': internship.id}) }}" aria-label="Modifier le stage" title="Modifier">
+                                {{ ux_icon('pen-line', { 'class': 'action-icon' }) }}
+                                <span class="visually-hidden">Modifier</span>
+                            </a>
+                        {% endif %}
+                        {% if is_granted('ROLE_ADMIN') %}
+                            {{ include('internship/_delete_form.html.twig', {'internship': internship}) }}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">Aucun stage enregistré.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
 {% endblock %}

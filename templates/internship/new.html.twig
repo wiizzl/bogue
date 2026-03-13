@@ -1,11 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Internship{% endblock %}
+{% block title %}Nouveau stage{% endblock %}
 
 {% block body %}
-    <h1>Create new Internship</h1>
+    <section>
+        <h2>Ajouter un stage</h2>
+        <p>Definition du dossier stage et affectation des enseignants.</p>
+    </section>
 
-    {{ include('internship/_form.html.twig') }}
+    <section>
+        {{ include('internship/_form.html.twig', {'button_label': 'Enregistrer'}) }}
+    </section>
 
-    <a href="{{ path('app_internship_index') }}">back to list</a>
+    <section>
+        <a href="{{ path('app_internship_index') }}">Retour a la liste</a>
+    </section>
 {% endblock %}

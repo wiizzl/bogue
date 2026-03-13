@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Promotions{% endblock %}
+
+{% block body %}
+    <section>
+        <h2>Liste des promotions</h2>
+        <p>Gestion des promotions et de leur archivage.</p>
+        <p><a href="{{ path('app_promotion_new') }}">Ajouter une promotion</a></p>
+    </section>
+
+    <section class="table-section">
+        <table>
+            <thead>
+                <tr>
+                    <th>Année</th>
+                    <th>Statut</th>
+                    <th>Étudiants</th>
+                    <th class="table-actions-header">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for promotion in promotions %}
+                <tr>
+                    <td>{{ promotion.year }}</td>
+                    <td>{{ promotion.isArchived ? 'Archivée' : 'Active' }}</td>
+                    <td>{{ promotion.students|length }}</td>
+                    <td class="table-actions">
+                        <a href="{{ path('app_promotion_edit', {'id': promotion.id}) }}" aria-label="Modifier la promotion" title="Modifier">
+                            {{ ux_icon('pen-line', { 'class': 'action-icon' }) }}
+                            <span class="visually-hidden">Modifier</span>
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">Aucune promotion enregistrée.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
+{% endblock %}

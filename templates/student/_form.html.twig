@@ -1,4 +1,10 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    <fieldset>
+        <legend>Informations étudiant</legend>
+        {{ form_row(form.firstName) }}
+        {{ form_row(form.lastName) }}
+        {{ form_row(form.promotion) }}
+        {{ form_row(form.major) }}
+    </fieldset>
+    <button type="submit">{{ button_label|default('Enregistrer') }}</button>
 {{ form_end(form) }}

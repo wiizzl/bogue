@@ -114,7 +114,12 @@ class InternshipRepository extends ServiceEntityRepository
             }
 
             // Teachers only see their assigned internships
-            $qb->andWhere('i.trackingTeacher = :user OR i.visitingTeacher = :user')
+            $qb->andWhere(
+                $qb->expr()->orX(
+                    'i.trackingTeacher = :user',
+                    'i.visitingTeacher = :user'
+                )
+            )
                ->setParameter('user', $user);
         }
         // No additional filter for admin/secretary - they see all
@@ -138,7 +143,12 @@ class InternshipRepository extends ServiceEntityRepository
 
         // Filter by teacher (either tracking or visiting)
         if (!empty($filters['teacher'])) {
-            $qb->andWhere('tt.id = :teacherId OR vt.id = :teacherId')
+            $qb->andWhere(
+                $qb->expr()->orX(
+                    'tt.id = :teacherId',
+                    'vt.id = :teacherId'
+                )
+            )
                ->setParameter('teacherId', $filters['teacher']);
         }
     }
@@ -154,17 +164,18 @@ class InternshipRepository extends ServiceEntityRepository
      */
     public function findByTeacher(User $teacher): array
     {
-        return $this->createQueryBuilder('i')
+        $qb = $this->createQueryBuilder('i');
+        $qb
             ->addSelect('s', 'm', 'c', 'p')
             ->innerJoin('i.student', 's')
             ->innerJoin('s.promotion', 'p')
             ->innerJoin('s.major', 'm')
             ->innerJoin('i.company', 'c')
             ->where('p.isArchived = false')
-            ->andWhere('i.trackingTeacher = :teacher OR i.visitingTeacher = :teacher')
+            ->andWhere($qb->expr()->orX('i.trackingTeacher = :teacher', 'i.visitingTeacher = :teacher'))
             ->setParameter('teacher', $teacher)
-            ->orderBy('s.lastName', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->orderBy('s.lastName', 'ASC');
+
+        return $qb->getQuery()->getResult();
     }
 }

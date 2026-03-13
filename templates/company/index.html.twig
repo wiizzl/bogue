@@ -1,47 +1,52 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Company index{% endblock %}
+{% block title %}Entreprises{% endblock %}
 
 {% block body %}
-    <h1>Company index</h1>
+    <section>
+        <h2>Liste des entreprises</h2>
+        <p>Reference des structures d'accueil des stages.</p>
+        <p><a href="{{ path('app_company_new') }}">Ajouter une entreprise</a></p>
+    </section>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Address</th>
-                <th>ZipCode</th>
-                <th>City</th>
-                <th>ContactName</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for company in companies %}
-            <tr>
-                <td>{{ company.id }}</td>
-                <td>{{ company.name }}</td>
-                <td>{{ company.address }}</td>
-                <td>{{ company.zipCode }}</td>
-                <td>{{ company.city }}</td>
-                <td>{{ company.contactName }}</td>
-                <td>{{ company.phone }}</td>
-                <td>{{ company.email }}</td>
-                <td>
-                    <a href="{{ path('app_company_show', {'id': company.id}) }}">show</a>
-                    <a href="{{ path('app_company_edit', {'id': company.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="9">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_company_new') }}">Create new</a>
+    <section class="table-section">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Ville</th>
+                    <th>Contact</th>
+                    <th>Telephone</th>
+                    <th>Email</th>
+                    <th class="table-actions-header">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for company in companies %}
+                <tr>
+                    <td>{{ company.name }}</td>
+                    <td>{{ company.city|default('-') }}</td>
+                    <td>{{ company.contactName|default('-') }}</td>
+                    <td>{{ company.phone|default('-') }}</td>
+                    <td>{{ company.email|default('-') }}</td>
+                    <td class="table-actions">
+                        <a href="{{ path('app_company_show', {'id': company.id}) }}" aria-label="Voir l'entreprise" title="Voir">
+                            {{ ux_icon('eye', { 'class': 'action-icon' }) }}
+                            <span class="visually-hidden">Voir</span>
+                        </a>
+                        <a href="{{ path('app_company_edit', {'id': company.id}) }}" aria-label="Modifier l'entreprise" title="Modifier">
+                            {{ ux_icon('pen-line', { 'class': 'action-icon' }) }}
+                            <span class="visually-hidden">Modifier</span>
+                        </a>
+                        {{ include('company/_delete_form.html.twig', {'company': company}) }}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">Aucune entreprise enregistrée.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
 {% endblock %}

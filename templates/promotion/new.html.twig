@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle promotion{% endblock %}
+
+{% block body %}
+    <section>
+        <h2>Ajouter une promotion</h2>
+        <p>Créer une nouvelle promotion accessible aux étudiants actifs.</p>
+    </section>
+
+    <section>
+        {{ include('promotion/_form.html.twig', {'button_label': 'Enregistrer'}) }}
+    </section>
+
+    <section>
+        <a href="{{ path('app_promotion_index') }}">Retour a la liste</a>
+    </section>
+{% endblock %}

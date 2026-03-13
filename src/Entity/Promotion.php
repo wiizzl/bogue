@@ -23,7 +23,7 @@ class Promotion
 
     #[ORM\Column]
     #[Assert\NotNull(message: "L'état d'archivage doit être défini.")]
-    private ?bool $isArchived = null;
+    private ?bool $isArchived = false;
 
     /**
      * @var Collection<int, Student>
@@ -34,6 +34,7 @@ class Promotion
     public function __construct()
     {
         $this->students = new ArrayCollection();
+        $this->isArchived = false;
     }
 
     public function getId(): ?int

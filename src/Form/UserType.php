@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Role;
 use App\Entity\User;
+use App\Repository\RoleRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -23,24 +24,29 @@ class UserType extends AbstractType
             ->add('password', PasswordType::class, [
                 'label' => 'Mot de passe',
                 'always_empty' => true,
+                'mapped' => false,
                 'required' => $options['action'] === 'new',
-                'help' => $options['action'] === 'edit' ? 'Laissez vide pour conserver le mot de passe actuel' : 'Le mot de passe sera automatiquement haché en base de données'
             ])
             ->add('firstName', TextType::class, [
                 'label' => 'Prénom',
             ])
             ->add('lastName', TextType::class, [
                 'label' => 'Nom',
-            ])
-            ->add('userRoles', EntityType::class, [
+            ]);
+
+        if ($options['can_edit_roles']) {
+            $builder->add('userRoles', EntityType::class, [
                 'class' => Role::class,
-                'label' => 'Rôles / Droits d\'accès',
+                'label' => 'Rôles',
                 'choice_label' => 'label',
                 'multiple' => true,
                 'expanded' => true,
-                'help' => 'Un utilisateur peut cumuler plusieurs rôles'
-            ])
-        ;
+                'query_builder' => static function (RoleRepository $er) {
+                    return $er->createQueryBuilder('r')
+                        ->orderBy('r.label', 'ASC');
+                },
+            ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -48,6 +54,10 @@ class UserType extends AbstractType
         $resolver->setDefaults([
             'data_class' => User::class,
             'action' => 'new',
+            'can_edit_roles' => false,
         ]);
+
+        $resolver->setAllowedTypes('can_edit_roles', 'bool');
+        $resolver->setAllowedValues('action', static fn (string $value): bool => in_array($value, ['new', 'edit'], true));
     }
 }

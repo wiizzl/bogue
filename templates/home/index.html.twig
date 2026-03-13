@@ -3,94 +3,101 @@
 {% block title %}Suivi et Visite des Stages{% endblock %}
 
 {% block body %}
-    <h1>Vue Consolidée : Suivi & Visite</h1>
+    <section>
+        <h2>Tableau de bord des stages</h2>
+        <p>Vue d'ensemble des dossiers avec filtres et suivi des jalons.</p>
+    </section>
 
-    <form method="get" action="{{ path('app_home_index') }}">
-        <select name="major">
-            <option value="">Toutes les filières</option>
-            {% for major in majors %}
-                <option value="{{ major.id }}" {{ (current_filters.major|default('')) == major.id ? 'selected' }}>{{ major.code }}</option>
-            {% endfor %}
-        </select>
-
-        <select name="teacher">
-            <option value="">Tous les enseignants</option>
-            {% for teacher in teachers %}
-                <option value="{{ teacher.id }}" {{ (current_filters.teacher|default('')) == teacher.id ? 'selected' }}>{{ teacher.firstName }} {{ teacher.lastName }}</option>
-            {% endfor %}
-        </select>
-
-        <button type="submit">Filtrer</button>
-        <a href="{{ path('app_home_index') }}">Réinitialiser</a>
-        <a href="{{ path('app_home_export', {'major': current_filters.major|default(''), 'teacher': current_filters.teacher|default('')}) }}">
-            Exporter en CSV
-        </a>
-    </form>
-
-    <hr>
-
-    <table border="1" cellpadding="5">
-        <thead>
-            <tr>
-                <th>Étudiant</th>
-                <th>Filière</th>
-                <th>Entreprise (Ville)</th>
-                <th>Suivi / Visite</th>
-                <th>Remerciement</th>
-                <th>Bilan/Suivi</th>
-                <th>Jury</th>
-                <th>Attestation</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for internship in internships %}
-            <tr>
-                <td>{{ internship.student.lastName|upper }} {{ internship.student.firstName }}</td>
-                <td>{{ internship.student.major.code }}</td>
-                <td>{{ internship.company.name }} ({{ internship.company.city }})</td>
-                <td>
-                    S: {{ internship.trackingTeacher ? internship.trackingTeacher.lastName : 'Non affecté' }}<br>
-                    V: {{ internship.visitingTeacher ? internship.visitingTeacher.lastName : 'Non affecté' }}
-                </td>
-
-                {% for item in internship.milestones %}
-                    <td>
-                        {% if is_granted('EDIT_MILESTONE', item) %}
-                            <a href="{{ path('app_milestone_edit', {'id': item.id}) }}">
-                                {{ item.status.label }}
-                            </a>
-                        {% else %}
-                            {{ item.status.label }}
-                        {% endif %}
-                    </td>
+    <section>
+        <form method="get" action="{{ path('app_home_index') }}">
+            <label for="major">Option</label>
+            <select id="major" name="major">
+                <option value="">Toutes les options</option>
+                {% for major in majors %}
+                    <option value="{{ major.id }}" {{ (current_filters.major|default('')) == major.id ? 'selected' }}>{{ major.code }}</option>
                 {% endfor %}
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">Aucun stage ne correspond à vos critères.</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </select>
 
-    <div class="pagination">
-        {% if pages_count > 1 %}
-            {% for i in 1..pages_count %}
-                <a href="{{ path('app_home_index', current_filters|merge({'page': i, 'limit': current_limit})) }}"
-                style="{{ i == current_page ? 'font-weight: bold; font-size: 1.2em;' : '' }}">
-                    {{ i }}
-                </a>
+            <label for="teacher">Enseignant</label>
+            <select id="teacher" name="teacher">
+                <option value="">Tous les enseignants</option>
+                {% for teacher in teachers %}
+                    <option value="{{ teacher.id }}" {{ (current_filters.teacher|default('')) == teacher.id ? 'selected' }}>{{ teacher.firstName }} {{ teacher.lastName }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit">Filtrer</button>
+            <a href="{{ path('app_home_index') }}">Reinitialiser</a>
+            {% if is_granted('ROLE_SECRETARY') %}
+                <a href="{{ path('app_home_export', {'major': current_filters.major|default(''), 'teacher': current_filters.teacher|default('')}) }}">Exporter CSV</a>
+            {% endif %}
+        </form>
+    </section>
+
+    <section class="table-section">
+        <table>
+            <thead>
+                <tr>
+                    <th>Étudiant</th>
+                    <th>Option</th>
+                    <th>Entreprise</th>
+                    <th>Suivi / Visite</th>
+                    <th>Remerciement</th>
+                    <th>Bilan</th>
+                    <th>Jury</th>
+                    <th>Attestation</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for internship in internships %}
+                <tr>
+                    <td>{{ internship.student.lastName|upper }} {{ internship.student.firstName }}</td>
+                    <td>{{ internship.student.major.code }}</td>
+                    <td>{{ internship.company.name }} ({{ internship.company.city }})</td>
+                    <td>
+                        S: {{ internship.trackingTeacher ? internship.trackingTeacher.lastName : 'Non affecte' }}<br>
+                        V: {{ internship.visitingTeacher ? internship.visitingTeacher.lastName : 'Non affecte' }}
+                    </td>
+                    {% for item in internship.milestones %}
+                        <td>
+                            {% if is_granted('EDIT_MILESTONE', item) %}
+                                <a href="{{ path('app_milestone_edit', {'id': item.id}) }}">{{ item.status.label }}</a>
+                            {% else %}
+                                {{ item.status.label }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8">Aucun stage ne correspond aux filtres.</td>
+                </tr>
             {% endfor %}
-        {% endif %}
-    </div>
+            </tbody>
+        </table>
+        <p>Total: {{ total_items }} dossiers.</p>
+    </section>
 
-    <div class="options">
-        <small>Afficher :
-            <a href="{{ path('app_home_index', current_filters|merge({'limit': 10})) }}">10</a> |
-            <a href="{{ path('app_home_index', current_filters|merge({'limit': 20})) }}">20</a> |
+    <section>
+        <p>
+            {% if pages_count > 1 %}
+                Pages:
+                {% for i in 1..pages_count %}
+                    {% if i == current_page %}
+                        <strong>{{ i }}</strong>
+                    {% else %}
+                        <a href="{{ path('app_home_index', current_filters|merge({'page': i, 'limit': current_limit})) }}">{{ i }}</a>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                Une seule page.
+            {% endif %}
+        </p>
+        <p>
+            Lignes par page:
+            <a href="{{ path('app_home_index', current_filters|merge({'limit': 10})) }}">10</a>
+            <a href="{{ path('app_home_index', current_filters|merge({'limit': 20})) }}">20</a>
             <a href="{{ path('app_home_index', current_filters|merge({'limit': 50})) }}">50</a>
-        </small>
-    </div>
-
-    <p>Total : {{ total_items }} dossiers trouvés.</p>
+        </p>
+    </section>
 {% endblock %}

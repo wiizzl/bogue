@@ -1,11 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Milestone{% endblock %}
+{% block title %}Modifier jalon{% endblock %}
 
 {% block body %}
-    <h1>Edit Milestone</h1>
+    <section>
+        <h2>Modifier un jalon</h2>
+        <p>Mise a jour du statut d'un document du dossier de stage.</p>
+    </section>
 
-    {{ include('milestone/_form.html.twig', {'button_label': 'Update'}) }}
+    <section>
+        {{ include('milestone/_form.html.twig', {'button_label': 'Mettre a jour'}) }}
+    </section>
 
-    <a href="{{ path('app_home_index') }}">back to home</a>
+    <section>
+        <a href="{{ path('app_home_index') }}">Retour à l'accueil</a>
+    </section>
 {% endblock %}

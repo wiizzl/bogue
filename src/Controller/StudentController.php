@@ -29,29 +29,24 @@ final class StudentController extends AbstractController
      * List all students with pagination support.
      */
     #[Route(name: 'app_student_index', methods: ['GET'])]
-    public function index(StudentRepository $studentRepository): Response
+    public function index(Request $request, StudentRepository $studentRepository): Response
     {
+        $includeArchived = $request->query->getBoolean('showArchived', false);
+
         try {
-            $students = $studentRepository->findAll();
+            $students = $studentRepository->findForIndex($includeArchived);
 
             return $this->render('student/index.html.twig', [
                 'students' => $students,
+                'showArchived' => $includeArchived,
             ]);
         } catch (\Exception $e) {
             $this->addFlash('error', 'Erreur lors du chargement des étudiants.');
-            return $this->render('student/index.html.twig', ['students' => []]);
+            return $this->render('student/index.html.twig', [
+                'students' => [],
+                'showArchived' => $includeArchived,
+            ]);
         }
-    }
-
-    /**
-     * Display a specific student's details.
-     */
-    #[Route('/{id}', name: 'app_student_show', methods: ['GET'], requirements: ['id' => '\d+'])]
-    public function show(Student $student): Response
-    {
-        return $this->render('student/show.html.twig', [
-            'student' => $student,
-        ]);
     }
 
     /**

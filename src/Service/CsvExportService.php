@@ -86,7 +86,7 @@ class CsvExportService
     {
         $headers = [
             'Étudiant',
-            'Filière',
+            'Option',
             'Entreprise',
             'Ville',
             'Prof. Suivi',

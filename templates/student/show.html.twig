@@ -3,23 +3,28 @@
 {% block title %}Étudiant — {{ student.firstName }} {{ student.lastName }}{% endblock %}
 
 {% block body %}
-    <h1>{{ student.lastName|upper }} {{ student.firstName }}</h1>
+    <section>
+        <h2>Fiche étudiant</h2>
+        <p>{{ student.lastName|upper }} {{ student.firstName }}</p>
+    </section>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Filière</th>
-                <td>{{ student.major.label }} ({{ student.major.code }})</td>
-            </tr>
-            <tr>
-                <th>Promotion</th>
-                <td>{{ student.promotion.year }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <section>
+        <table>
+            <tbody>
+                <tr>
+                    <th>Option</th>
+                    <td>{{ student.major.label }} ({{ student.major.code }})</td>
+                </tr>
+                <tr>
+                    <th>Promotion</th>
+                    <td>{{ student.promotion.year }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
 
-    <a href="{{ path('app_student_edit', {'id': student.id}) }}">Modifier</a>
-    <a href="{{ path('app_student_index') }}">Retour à la liste</a>
-
-    {% include 'student/_delete_form.html.twig' %}
+    <section>
+        <a href="{{ path('app_student_edit', {'id': student.id}) }}">Modifier</a>
+        <a href="{{ path('app_student_index') }}">Retour a la liste</a>
+    </section>
 {% endblock %}

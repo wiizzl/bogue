@@ -2,26 +2,29 @@
 
 {% block title %}Connexion{% endblock %}
 
-{% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
-{% endblock %}
-
 {% block body %}
-    <div class="page-wrapper">
-        <div class="login-box">
-            <form method="post">
-                <input type="email" value="{{ last_username }}" name="_username" id="username" class="custom-input" autocomplete="email" placeholder="Email" required autofocus>
-                <input type="password" name="_password" id="password" class="custom-input" autocomplete="current-password" placeholder="Mot de passe" required>
+    <section>
+        <h2>Connexion</h2>
+        <p>Acces a l'application de suivi des stages.</p>
+
+        {% if error %}
+            <p><strong>Erreur</strong> - {{ error.messageKey|trans(error.messageData, 'security') }}</p>
+        {% endif %}
+
+        <form method="post">
+            <fieldset>
+                <legend>Identifiants</legend>
+                <p>
+                    <label for="username">Email</label><br>
+                    <input type="email" value="{{ last_username }}" name="_username" id="username" autocomplete="email" required autofocus>
+                </p>
+                <p>
+                    <label for="password">Mot de passe</label><br>
+                    <input type="password" name="_password" id="password" autocomplete="current-password" required>
+                </p>
                 <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
-
-                {% if error %}
-                    <div class="error-msg">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                {% endif %}
-
-                <button class="custom-btn" type="submit">
-                    Se connecter
-                </button>
-            </form>
-        </div>
-    </div>
+                <button type="submit">Se connecter</button>
+            </fieldset>
+        </form>
+    </section>
 {% endblock %}

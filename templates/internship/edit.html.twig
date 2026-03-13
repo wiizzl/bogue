@@ -1,13 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Internship{% endblock %}
+{% block title %}Modifier stage{% endblock %}
 
 {% block body %}
-    <h1>Edit Internship</h1>
+    <section>
+        <h2>Modifier le stage</h2>
+    </section>
 
-    {{ include('internship/_form.html.twig', {'button_label': 'Update'}) }}
+    <section>
+        {{ include('internship/_form.html.twig', {'button_label': 'Mettre a jour'}) }}
+    </section>
 
-    <a href="{{ path('app_internship_index') }}">back to list</a>
-
-    {{ include('internship/_delete_form.html.twig') }}
+    <section>
+        {% if is_granted('ROLE_SECRETARY') %}
+            <a href="{{ path('app_internship_index') }}">Retour a la liste</a>
+        {% else %}
+            <a href="{{ path('app_home_index') }}">Retour à l'accueil</a>
+        {% endif %}
+    </section>
 {% endblock %}

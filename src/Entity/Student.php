@@ -20,7 +20,7 @@ class Student
 
     #[ORM\ManyToOne(inversedBy: 'students')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotBlank(message: "La filière est obligatoire.")]
+    #[Assert\NotBlank(message: "L'option est obligatoire.")]
     private ?Major $major = null;
 
     #[ORM\Column(length: 100)]

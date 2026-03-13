@@ -16,6 +16,19 @@ class PromotionRepository extends ServiceEntityRepository
         parent::__construct($registry, Promotion::class);
     }
 
+    /**
+     * @return Promotion[]
+     */
+    public function findAllOrdered(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.students', 's')
+            ->addSelect('s')
+            ->orderBy('p.year', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Promotion[] Returns an array of Promotion objects
     //     */

@@ -1,24 +1,47 @@
 <!doctype html>
 <html lang="fr">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block title %}{% endblock %} - Bogue</title>
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %} - Bogue</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
 
-        <link rel="stylesheet" href="{{ asset('css/globals.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/header.css') }}">
-        {% block stylesheets %}{% endblock %}
-    </head>
-    <body>
-        <header>
-            <a href="{{ path('app_home_index') }}">
-                <img src="{{ asset('images/logo.png') }}" alt="Bogue">
-            </a>
-        </header>
-        <main>
-            {% block body %}{% endblock %}
-        </main>
-        {% block javascripts %}{% endblock %}
-    </body>
+    <link rel="stylesheet" href="{{ asset('css/globals.css') }}">
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+    <header class="site-header">
+        <img src="{{ asset('images/logo.png') }}" alt="Bogue" class="site-logo">
+
+        {% if app.user %}
+            <nav aria-label="Navigation principale">
+                <a href="{{ path('app_home_index') }}">Accueil</a>
+                {% if is_granted('ROLE_SECRETARY') %}
+                    <a href="{{ path('app_internship_index') }}">Stages</a>
+                {% endif %}
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('app_student_index') }}">Étudiants</a>
+                    <a href="{{ path('app_promotion_index') }}">Promotions</a>
+                    <a href="{{ path('app_company_index') }}">Entreprises</a>
+                    <a href="{{ path('app_user_index') }}">Utilisateurs</a>
+                    <a href="{{ path('app_history_index') }}">Historique</a>
+                {% endif %}
+                <a href="{{ path('app_user_show', {'id': app.user.id}) }}">Mon profil</a>
+                <a href="{{ path('app_logout') }}">Déconnexion</a>
+            </nav>
+        {% endif %}
+    </header>
+
+    <main>
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <p><strong>{{ label|upper }}</strong> - {{ message }}</p>
+            {% endfor %}
+        {% endfor %}
+
+        {% block body %}{% endblock %}
+    </main>
+
+    {% block javascripts %}{% endblock %}
+</body>
 </html>

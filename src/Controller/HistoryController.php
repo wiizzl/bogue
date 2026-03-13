@@ -16,7 +16,7 @@ final class HistoryController extends AbstractController
     #[Route(name: 'app_history_index', methods: ['GET'])]
     public function index(Request $request, HistoryLogRepository $historyRepo): Response
     {
-        $page = $request->query->getInt('page', 1);
+        $page = max(1, $request->query->getInt('page', 1));
         $limit = 25;
 
         $logs = $historyRepo->findGlobalHistory($page, $limit);

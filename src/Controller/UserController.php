@@ -38,7 +38,10 @@ final class UserController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher): Response
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserType::class, $user, [
+            'action' => 'new',
+            'can_edit_roles' => true,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -78,7 +81,10 @@ final class UserController extends AbstractController
             return $this->handleAccessDenied('modifier', $user);
         }
 
-        $form = $this->createForm(UserType::class, $user, ['action' => 'edit']);
+        $form = $this->createForm(UserType::class, $user, [
+            'action' => 'edit',
+            'can_edit_roles' => $this->isGranted('ROLE_ADMIN'),
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

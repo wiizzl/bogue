@@ -3,29 +3,35 @@
 {% block title %}Utilisateur{% endblock %}
 
 {% block body %}
-    <h1>{{ user.firstName }} {{ user.lastName }}</h1>
+    <section>
+        <h2>Fiche utilisateur</h2>
+        <p>{{ user.firstName }} {{ user.lastName }}</p>
+    </section>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Email</th>
-                <td>{{ user.email }}</td>
-            </tr>
-            <tr>
-                <th>Roles</th>
-                <td>
-                    {% for role in user.roles %}
-                        <span class="badge">{{ role }}</span>
-                    {% endfor %}
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <section>
+        <table>
+            <tbody>
+                <tr>
+                    <th>Email</th>
+                    <td>{{ user.email }}</td>
+                </tr>
+                <tr>
+                    <th>Rôles</th>
+                    <td>
+                        {% set roleLabels = user.userRoles|map(role => role.label)|filter(label => label is not empty) %}
+                        {{ roleLabels is not empty ? roleLabels|join(', ') : 'Utilisateur' }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
 
-    <a href="{{ path('app_user_edit', {'id': user.id}) }}">Modifier</a>
-    {% if is_granted('ROLE_ADMIN') %}
-        <a href="{{ path('app_user_index') }}">Retour a la liste</a>
-    {% else %}
-        <a href="{{ path('app_home_index') }}">Retour</a>
-    {% endif %}
+    <section>
+        <a href="{{ path('app_user_edit', {'id': user.id}) }}">Modifier</a>
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('app_user_index') }}">Retour a la liste</a>
+        {% else %}
+            <a href="{{ path('app_home_index') }}">Retour</a>
+        {% endif %}
+    </section>
 {% endblock %}
