@@ -39,7 +39,7 @@ final class MilestoneUpdateController extends AbstractController
                 $entityManager->flush();
                 $this->addFlash('success', 'Jalon mis à jour avec succès.');
             } catch (\Exception $e) {
-                $this->addFlash('error', 'Erreur lors de la mise à jour du jalon : ' . $e->getMessage());
+                $this->addFlash('error', 'Erreur lors de la mise à jour du jalon.');
             }
 
             return $this->redirectToRoute('app_home_index');

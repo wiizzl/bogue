@@ -51,7 +51,7 @@ trait CrudControllerTrait
                 return $this->redirectToRoute($redirectRoute, [], Response::HTTP_SEE_OTHER);
             } catch (\Exception $e) {
                 $this->addFlash('error',
-                    sprintf('Erreur lors de la création : %s', $e->getMessage())
+                    'Erreur lors de la création.'
                 );
             }
         }
@@ -98,7 +98,7 @@ trait CrudControllerTrait
                 return $this->redirectToRoute($redirectRoute, [], Response::HTTP_SEE_OTHER);
             } catch (\Exception $e) {
                 $this->addFlash('error',
-                    sprintf('Erreur lors de la mise à jour : %s', $e->getMessage())
+                    'Erreur lors de la mise à jour.'
                 );
             }
         }
@@ -135,7 +135,7 @@ trait CrudControllerTrait
             );
         } catch (\Exception $e) {
             $this->addFlash('error',
-                sprintf('Erreur lors de la suppression : %s', $e->getMessage())
+                'Erreur lors de la suppression.'
             );
         }
 

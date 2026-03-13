@@ -27,7 +27,7 @@ final class CompanyController extends AbstractController
                 'companies' => $companyRepository->findAll(),
             ]);
         } catch (\Exception $e) {
-            $this->addFlash('error', 'Erreur lors du chargement des entreprises : ' . $e->getMessage());
+            $this->addFlash('error', 'Erreur lors du chargement des entreprises.');
             return $this->render('company/index.html.twig', ['companies' => []]);
         }
     }

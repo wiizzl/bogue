@@ -8,7 +8,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class HomeController extends AbstractController
 {
@@ -62,7 +61,7 @@ final class HomeController extends AbstractController
                 'current_filters' => $filters
             ]));
         } catch (\Exception $e) {
-            $this->addFlash('error', 'Erreur lors du chargement des données : ' . $e->getMessage());
+            $this->addFlash('error', 'Erreur lors du chargement des données.');
 
             return $this->render('home/index.html.twig', [
                 'internships' => [],
@@ -84,9 +83,12 @@ final class HomeController extends AbstractController
      * student information, company details, and milestone statuses.
      */
     #[Route('/export', name: 'app_home_export', methods: ['GET'])]
-    #[IsGranted('ROLE_TEACHER')]
     public function exportCsv(Request $request): Response
     {
+        if (!$this->internshipTrackingService->canViewInternships($this->getUser())) {
+            return $this->handleAccessDenied('exporter les stages');
+        }
+
         try {
             // Sanitize filters for export (same as index)
             $rawFilters = [
@@ -104,7 +106,7 @@ final class HomeController extends AbstractController
             // Generate and return CSV response
             return $this->csvExportService->generateInternshipCsv($internships);
         } catch (\Exception $e) {
-            $this->addFlash('error', 'Erreur lors de l\'export CSV : ' . $e->getMessage());
+            $this->addFlash('error', 'Erreur lors de l\'export CSV.');
             return $this->redirectToRoute('app_home_index');
         }
     }

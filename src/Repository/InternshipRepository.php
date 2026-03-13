@@ -105,8 +105,14 @@ class InternshipRepository extends ServiceEntityRepository
         // Admins and secretaries see everything
         $isAdmin = in_array('ROLE_ADMIN', $userRoles);
         $isSecretary = in_array('ROLE_SECRETARY', $userRoles);
+        $isTeacher = in_array('ROLE_TEACHER', $userRoles);
 
         if (!$isAdmin && !$isSecretary) {
+            if (!$isTeacher) {
+                $qb->andWhere('1 = 0');
+                return;
+            }
+
             // Teachers only see their assigned internships
             $qb->andWhere('i.trackingTeacher = :user OR i.visitingTeacher = :user')
                ->setParameter('user', $user);

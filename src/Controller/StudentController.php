@@ -38,7 +38,7 @@ final class StudentController extends AbstractController
                 'students' => $students,
             ]);
         } catch (\Exception $e) {
-            $this->addFlash('error', 'Erreur lors du chargement des étudiants : ' . $e->getMessage());
+            $this->addFlash('error', 'Erreur lors du chargement des étudiants.');
             return $this->render('student/index.html.twig', ['students' => []]);
         }
     }

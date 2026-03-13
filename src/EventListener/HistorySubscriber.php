@@ -4,7 +4,9 @@ namespace App\EventListener;
 
 use App\Entity\ActionType;
 use App\Entity\HistoryLog;
+use App\Entity\Internship;
 use App\Entity\InternshipMilestone;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Events;
@@ -24,38 +26,98 @@ class HistorySubscriber
 
         $user = $this->security->getUser();
 
-        if (!$user) {
+        if (!$user instanceof User) {
             return;
         }
 
-        foreach ($uow->getScheduledEntityUpdates() as $entity) {
-            if (!$entity instanceof InternshipMilestone) {
-                continue;
-            }
+        $statusUpdateActionType = $em->getRepository(ActionType::class)->findOneBy(['code' => 'STATUS_UPDATE']);
+        $teacherUpdateActionType = $em->getRepository(ActionType::class)->findOneBy(['code' => 'TEACHER_UPDATE']);
 
+        foreach ($uow->getScheduledEntityUpdates() as $entity) {
             $changeSet = $uow->getEntityChangeSet($entity);
 
-            if (isset($changeSet['status'])) {
+            if ($entity instanceof InternshipMilestone && isset($changeSet['status']) && $statusUpdateActionType) {
                 $oldStatus = $changeSet['status'][0];
                 $newStatus = $changeSet['status'][1];
 
-                $log = new HistoryLog();
-                $log->setInternship($entity->getInternship());
-                $log->setAuthor($user);
+                $this->createHistoryLog(
+                    $em,
+                    $uow,
+                    $entity->getInternship(),
+                    $user,
+                    $statusUpdateActionType,
+                    $oldStatus ? $oldStatus->getLabel() : 'Non défini',
+                    $newStatus ? $newStatus->getLabel() : 'Non défini'
+                );
+            }
 
-                $actionType = $em->getRepository(ActionType::class)->findOneBy(['code' => 'UPDATE']);
-                $log->setActionType($actionType);
+            if ($entity instanceof Internship && $teacherUpdateActionType) {
+                if (isset($changeSet['trackingTeacher'])) {
+                    /** @var User|null $oldTeacher */
+                    $oldTeacher = $changeSet['trackingTeacher'][0];
+                    /** @var User|null $newTeacher */
+                    $newTeacher = $changeSet['trackingTeacher'][1];
 
-                $log->setOldValue($oldStatus ? $oldStatus->getLabel() : 'Non défini');
-                $log->setNewValue($newStatus ? $newStatus->getLabel() : 'Non défini');
+                    $this->createHistoryLog(
+                        $em,
+                        $uow,
+                        $entity,
+                        $user,
+                        $teacherUpdateActionType,
+                        'Professeur de suivi: ' . $this->formatTeacher($oldTeacher),
+                        'Professeur de suivi: ' . $this->formatTeacher($newTeacher)
+                    );
+                }
 
-                $log->setCreatedAt(new \DateTime());
+                if (isset($changeSet['visitingTeacher'])) {
+                    /** @var User|null $oldTeacher */
+                    $oldTeacher = $changeSet['visitingTeacher'][0];
+                    /** @var User|null $newTeacher */
+                    $newTeacher = $changeSet['visitingTeacher'][1];
 
-                $em->persist($log);
-
-                $classMetadata = $em->getClassMetadata(HistoryLog::class);
-                $uow->computeChangeSet($classMetadata, $log);
+                    $this->createHistoryLog(
+                        $em,
+                        $uow,
+                        $entity,
+                        $user,
+                        $teacherUpdateActionType,
+                        'Professeur de visite: ' . $this->formatTeacher($oldTeacher),
+                        'Professeur de visite: ' . $this->formatTeacher($newTeacher)
+                    );
+                }
             }
         }
+    }
+
+    private function createHistoryLog(
+        $em,
+        $uow,
+        Internship $internship,
+        User $author,
+        ActionType $actionType,
+        string $oldValue,
+        string $newValue
+    ): void {
+        $log = new HistoryLog();
+        $log->setInternship($internship);
+        $log->setAuthor($author);
+        $log->setActionType($actionType);
+        $log->setOldValue($oldValue);
+        $log->setNewValue($newValue);
+        $log->setCreatedAt(new \DateTime());
+
+        $em->persist($log);
+
+        $classMetadata = $em->getClassMetadata(HistoryLog::class);
+        $uow->computeChangeSet($classMetadata, $log);
+    }
+
+    private function formatTeacher(?User $teacher): string
+    {
+        if (!$teacher) {
+            return 'Non défini';
+        }
+
+        return trim($teacher->getFirstName() . ' ' . $teacher->getLastName());
     }
 }

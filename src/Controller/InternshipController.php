@@ -23,7 +23,6 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
  * Uses voters to ensure teachers can only access their assigned internships.
  */
 #[Route('/internship')]
-#[IsGranted('ROLE_TEACHER')] // Teachers can access, but voters control specific actions
 final class InternshipController extends AbstractController
 {
     use CrudControllerTrait;
@@ -43,7 +42,7 @@ final class InternshipController extends AbstractController
                 'internships' => $internshipRepository->findAll(),
             ]);
         } catch (\Exception $e) {
-            $this->addFlash('error', 'Erreur lors du chargement des stages : ' . $e->getMessage());
+            $this->addFlash('error', 'Erreur lors du chargement des stages.');
             return $this->render('internship/index.html.twig', ['internships' => []]);
         }
     }
@@ -82,7 +81,7 @@ final class InternshipController extends AbstractController
                 return $this->redirectToRoute('app_internship_index', [], Response::HTTP_SEE_OTHER);
             } catch (\Exception $e) {
                 $entityManager->rollback();
-                $this->addFlash('error', 'Erreur lors de la création du stage : ' . $e->getMessage());
+                $this->addFlash('error', 'Erreur lors de la création du stage.');
             }
         }
 

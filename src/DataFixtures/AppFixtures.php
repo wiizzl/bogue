@@ -68,8 +68,20 @@ class AppFixtures extends Fixture
             $savedStatuses[$code] = $status;
         }
 
-        $actionUpdate = (new ActionType())->setCode('STATUS_UPDATE')->setLabel('Mise à jour d\'un statut');
-        $manager->persist($actionUpdate);
+        $actionTypes = [
+            'STATUS_UPDATE' => 'Mise à jour d\'un statut',
+            'TEACHER_UPDATE' => 'Mise à jour d\'un enseignant',
+        ];
+        $existingActionTypes = $manager->getRepository(ActionType::class)->findAll();
+        $existingActionTypeCodes = [];
+        foreach ($existingActionTypes as $existingActionType) {
+            $existingActionTypeCodes[] = $existingActionType->getCode();
+        }
+        foreach ($actionTypes as $code => $label) {
+            if (!in_array($code, $existingActionTypeCodes, true)) {
+                $manager->persist((new ActionType())->setCode($code)->setLabel($label));
+            }
+        }
 
         $admin = (new User())->setEmail('admin@campus-la-chataigneraie.org')->setFirstName('Admin')->setLastName('Lycée');
         $admin->addUserRole($savedRoles['ROLE_ADMIN'])->setPassword($this->hasher->hashPassword($admin, 'pass_1234'));

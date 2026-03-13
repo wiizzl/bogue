@@ -74,7 +74,7 @@ class InternshipTrackingService
     {
         return [
             'majors' => $this->majorRepository->findAll(),
-            'teachers' => $this->userRepository->findAll()
+            'teachers' => $this->userRepository->findTeachers()
         ];
     }
 

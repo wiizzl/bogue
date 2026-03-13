@@ -28,7 +28,7 @@ final class UserController extends AbstractController
                 'users' => $userRepository->findAll(),
             ]);
         } catch (\Exception $e) {
-            $this->addFlash('error', 'Erreur lors du chargement des utilisateurs : ' . $e->getMessage());
+            $this->addFlash('error', 'Erreur lors du chargement des utilisateurs.');
             return $this->render('user/index.html.twig', ['users' => []]);
         }
     }
@@ -49,7 +49,7 @@ final class UserController extends AbstractController
                 $this->addFlash('success', 'Utilisateur cree avec succes.');
                 return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
             } catch (\Exception $e) {
-                $this->addFlash('error', 'Erreur lors de la creation : ' . $e->getMessage());
+                $this->addFlash('error', 'Erreur lors de la creation.');
             }
         }
 
@@ -78,7 +78,7 @@ final class UserController extends AbstractController
             return $this->handleAccessDenied('modifier', $user);
         }
 
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserType::class, $user, ['action' => 'edit']);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -88,7 +88,7 @@ final class UserController extends AbstractController
                 $this->addFlash('success', 'Utilisateur mis a jour avec succes.');
                 return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
             } catch (\Exception $e) {
-                $this->addFlash('error', 'Erreur lors de la mise a jour : ' . $e->getMessage());
+                $this->addFlash('error', 'Erreur lors de la mise a jour.');
             }
         }
 
