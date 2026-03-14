@@ -4,29 +4,7 @@
 
 {% block body %}
     <section>
-        <h2>Connexion</h2>
-
-        {% if error %}
-            <p><strong>Erreur</strong> - {{ error.messageKey|trans(error.messageData, 'security') }}</p>
-        {% endif %}
-
-        <form method="post">
-            <fieldset>
-                <legend>Identifiants</legend>
-                <label data-field for="username">
-                    Email
-                    <input type="email" value="{{ last_username }}" name="_username" id="username" autocomplete="email" required autofocus>
-                </label>
-
-                <label data-field for="password">
-                    Mot de passe
-                    <input type="password" name="_password" id="password" autocomplete="current-password" aria-describedby="password-hint" required>
-                    <small id="password-hint" data-hint>Saisissez votre mot de passe.</small>
-                </label>
-
-                <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
-                <button type="submit">Se connecter</button>
-            </fieldset>
-        </form>
+        <img src="{{ asset('images/logo.webp') }}" alt="Bogue">
+        {{ include('security/_form.html.twig', {form: loginForm}) }}
     </section>
 {% endblock %}

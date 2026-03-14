@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\LoginType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -19,9 +20,16 @@ class SecurityController extends AbstractController
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('security/login.html.twig', [
+        if ($error) {
+            $this->addFlash('error', 'Identifiants invalides.');
+        }
+
+        $form = $this->createForm(LoginType::class, null, [
             'last_username' => $lastUsername,
-            'error' => $error,
+        ]);
+
+        return $this->render('security/login.html.twig', [
+            'loginForm' => $form->createView(),
         ]);
     }
 

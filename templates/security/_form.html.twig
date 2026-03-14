@@ -1,0 +1,20 @@
+{{ form_start(form) }}
+    <fieldset>
+        <legend>Identifiants</legend>
+
+        <label data-field for="{{ form._username.vars.id }}">
+            {{ form._username.vars.label }}
+            {{ form_widget(form._username) }}
+            {{ form_errors(form._username) }}
+        </label>
+
+        <label data-field for="{{ form._password.vars.id }}">
+            {{ form._password.vars.label }}
+            {{ form_widget(form._password) }}
+            {{ form_errors(form._password) }}
+        </label>
+
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+    </fieldset>
+    <button type="submit">Se connecter</button>
+{{ form_end(form, {'render_rest': false}) }}
