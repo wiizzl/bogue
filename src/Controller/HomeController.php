@@ -12,6 +12,8 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class HomeController extends AbstractController
 {
+    private const ITEMS_PER_PAGE = 15;
+
     public function __construct(
         private InternshipTrackingService $internshipTrackingService,
         private CsvExportService $csvExportService
@@ -34,7 +36,7 @@ final class HomeController extends AbstractController
 
         // Parse and validate request parameters
         $page = max(1, $request->query->getInt('page', 1));
-        $limit = max(1, min(100, $request->query->getInt('limit', 10))); // Cap at 100 for performance
+        $limit = self::ITEMS_PER_PAGE;
 
         // Sanitize filters to prevent injection
         $rawFilters = [

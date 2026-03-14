@@ -1,12 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier promotion{% endblock %}
+{% block title %}Modifier la promotion{% endblock %}
 
 {% block body %}
-    <section>
-        <h2>Modifier la promotion</h2>
-    </section>
-
     <section>
         {{ include('promotion/_form.html.twig', {'button_label': 'Mettre a jour'}) }}
     </section>

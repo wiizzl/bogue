@@ -4,11 +4,10 @@
 
 {% block body %}
     <section>
-        <h2>Entreprises</h2>
-        <p><a href="{{ path('app_company_new') }}">Ajouter une entreprise</a></p>
+        <a href="{{ path('app_company_new') }}">Ajouter une entreprise</a>
     </section>
 
-    <section>
+    <section class="table">
         <table>
             <thead>
                 <tr>
@@ -29,13 +28,11 @@
                     <td>{{ company.phone|default('-') }}</td>
                     <td>{{ company.email|default('-') }}</td>
                     <td>
-                        <a href="{{ path('app_company_show', {'id': company.id}) }}" aria-label="Voir l'entreprise" title="Voir">
+                        <a href="{{ path('app_company_show', {'id': company.id}) }}" class="button outline small" aria-label="Voir l'entreprise" title="Voir">
                             {{ ux_icon('eye') }}
-                            <span>Voir</span>
                         </a>
-                        <a href="{{ path('app_company_edit', {'id': company.id}) }}" aria-label="Modifier l'entreprise" title="Modifier">
+                        <a href="{{ path('app_company_edit', {'id': company.id}) }}" class="button outline small" aria-label="Modifier l'entreprise" title="Modifier">
                             {{ ux_icon('pen-line') }}
-                            <span>Modifier</span>
                         </a>
                         {{ include('company/_delete_form.html.twig', {'company': company}) }}
                     </td>

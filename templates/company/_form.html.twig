@@ -1,13 +1,48 @@
 {{ form_start(form) }}
     <fieldset>
         <legend>Informations entreprise</legend>
-        {{ form_row(form.name) }}
-        {{ form_row(form.address) }}
-        {{ form_row(form.zipCode) }}
-        {{ form_row(form.city) }}
-        {{ form_row(form.contactName) }}
-        {{ form_row(form.phone) }}
-        {{ form_row(form.email) }}
+
+        <label data-field for="{{ form.name.vars.id }}">
+            {{ form.name.vars.label }}
+            {{ form_widget(form.name) }}
+            {{ form_errors(form.name) }}
+        </label>
+
+        <label data-field for="{{ form.address.vars.id }}">
+            {{ form.address.vars.label }}
+            {{ form_widget(form.address) }}
+            {{ form_errors(form.address) }}
+        </label>
+
+        <label data-field for="{{ form.zipCode.vars.id }}">
+            {{ form.zipCode.vars.label }}
+            {{ form_widget(form.zipCode) }}
+            {{ form_errors(form.zipCode) }}
+        </label>
+
+        <label data-field for="{{ form.city.vars.id }}">
+            {{ form.city.vars.label }}
+            {{ form_widget(form.city) }}
+            {{ form_errors(form.city) }}
+        </label>
+
+        <label data-field for="{{ form.contactName.vars.id }}">
+            {{ form.contactName.vars.label }}
+            {{ form_widget(form.contactName) }}
+            {{ form_errors(form.contactName) }}
+        </label>
+
+        <label data-field for="{{ form.phone.vars.id }}">
+            {{ form.phone.vars.label }}
+            {{ form_widget(form.phone) }}
+            {{ form_errors(form.phone) }}
+        </label>
+
+        <label data-field for="{{ form.email.vars.id }}">
+            {{ form.email.vars.label }}
+            {{ form_widget(form.email) }}
+            {{ form_errors(form.email) }}
+        </label>
     </fieldset>
     <button type="submit">{{ button_label|default('Enregistrer') }}</button>
 {{ form_end(form) }}

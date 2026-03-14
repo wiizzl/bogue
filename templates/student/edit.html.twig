@@ -1,12 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier étudiant{% endblock %}
+{% block title %}Modifier l'étudiant{% endblock %}
 
 {% block body %}
-    <section>
-        <h2>Modifier l'étudiant</h2>
-    </section>
-
     <section>
         {{ include('student/_form.html.twig', {'button_label': 'Mettre a jour'}) }}
     </section>

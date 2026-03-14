@@ -3,10 +3,7 @@
 {% block title %}Historique{% endblock %}
 
 {% block body %}
-    <section>
-        <h2>Historique</h2>
-    </section>
-    <section>
+    <section class="table">
         <table>
             <thead>
                 <tr>
@@ -45,18 +42,38 @@
     </section>
 
     <section>
-        <p>
-            {% if pages_count > 1 %}
-                {% for i in 1..pages_count %}
-                    {% if i == current_page %}
-                        <strong>{{ i }}</strong>
-                    {% else %}
-                        <a href="{{ path('app_history_index', {'page': i}) }}">{{ i }}</a>
-                    {% endif %}
-                {% endfor %}
-            {% else %}
-                Une seule page.
-            {% endif %}
-        </p>
+        {% if pages_count > 1 %}
+            <nav aria-label="Pagination">
+                <menu class="buttons">
+                    <li>
+                        {% if current_page > 1 %}
+                            <a href="{{ path('app_history_index', {'page': current_page - 1}) }}" class="button outline small">&larr; Précédent</a>
+                        {% else %}
+                            <span class="button outline small" aria-disabled="true">&larr; Précédent</span>
+                        {% endif %}
+                    </li>
+
+                    {% for i in 1..pages_count %}
+                        <li>
+                            {% if i == current_page %}
+                                <a href="{{ path('app_history_index', {'page': i}) }}" class="button small" aria-current="page">{{ i }}</a>
+                            {% else %}
+                                <a href="{{ path('app_history_index', {'page': i}) }}" class="button outline small">{{ i }}</a>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+
+                    <li>
+                        {% if current_page < pages_count %}
+                            <a href="{{ path('app_history_index', {'page': current_page + 1}) }}" class="button outline small">Suivant &rarr;</a>
+                        {% else %}
+                            <span class="button outline small" aria-disabled="true">Suivant &rarr;</span>
+                        {% endif %}
+                    </li>
+                </menu>
+            </nav>
+        {% else %}
+            <p>Une seule page.</p>
+        {% endif %}
     </section>
 {% endblock %}

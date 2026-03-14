@@ -1,13 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Utilisateur{% endblock %}
+{% block title %}{{ user.fullName }}{% endblock %}
 
 {% block body %}
-    <section>
-        <h2>Fiche utilisateur</h2>
-    </section>
-
-    <section>
+    <section class="table">
         <table>
             <tbody>
                 <tr>

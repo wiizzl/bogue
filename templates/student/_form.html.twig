@@ -1,10 +1,30 @@
 {{ form_start(form) }}
     <fieldset>
         <legend>Informations étudiant</legend>
-        {{ form_row(form.firstName) }}
-        {{ form_row(form.lastName) }}
-        {{ form_row(form.promotion) }}
-        {{ form_row(form.major) }}
+
+        <label data-field for="{{ form.firstName.vars.id }}">
+            {{ form.firstName.vars.label }}
+            {{ form_widget(form.firstName) }}
+            {{ form_errors(form.firstName) }}
+        </label>
+
+        <label data-field for="{{ form.lastName.vars.id }}">
+            {{ form.lastName.vars.label }}
+            {{ form_widget(form.lastName) }}
+            {{ form_errors(form.lastName) }}
+        </label>
+
+        <label data-field for="{{ form.promotion.vars.id }}">
+            {{ form.promotion.vars.label }}
+            {{ form_widget(form.promotion) }}
+            {{ form_errors(form.promotion) }}
+        </label>
+
+        <label data-field for="{{ form.major.vars.id }}">
+            {{ form.major.vars.label }}
+            {{ form_widget(form.major) }}
+            {{ form_errors(form.major) }}
+        </label>
     </fieldset>
     <button type="submit">{{ button_label|default('Enregistrer') }}</button>
 {{ form_end(form) }}

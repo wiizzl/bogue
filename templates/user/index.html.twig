@@ -4,11 +4,10 @@
 
 {% block body %}
     <section>
-        <h2>Utilisateurs</h2>
         <p><a href="{{ path('app_user_new') }}">Ajouter un utilisateur</a></p>
     </section>
 
-    <section>
+    <section class="table">
         <table>
             <thead>
                 <tr>
@@ -28,13 +27,11 @@
                         {{ roleLabels is not empty ? roleLabels|join(', ') : 'Utilisateur' }}
                     </td>
                     <td>
-                        <a href="{{ path('app_user_show', {'id': user.id}) }}" aria-label="Voir l'utilisateur" title="Voir">
+                        <a href="{{ path('app_user_show', {'id': user.id}) }}" class="button outline small" aria-label="Voir l'utilisateur" title="Voir">
                             {{ ux_icon('eye') }}
-                            <span>Voir</span>
                         </a>
-                        <a href="{{ path('app_user_edit', {'id': user.id}) }}" aria-label="Modifier l'utilisateur" title="Modifier">
+                        <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="button outline small" aria-label="Modifier l'utilisateur" title="Modifier">
                             {{ ux_icon('pen-line') }}
-                            <span>Modifier</span>
                         </a>
                         {% if app.user and app.user.id != user.id %}
                             {{ include('user/_delete_form.html.twig', {'user': user}) }}

@@ -1,8 +1,18 @@
 {{ form_start(form) }}
     <fieldset>
         <legend>Informations promotion</legend>
-        {{ form_row(form.year) }}
-        {{ form_row(form.isArchived) }}
+
+        <label data-field for="{{ form.year.vars.id }}">
+            {{ form.year.vars.label }}
+            {{ form_widget(form.year) }}
+            {{ form_errors(form.year) }}
+        </label>
+
+        <label data-field for="{{ form.isArchived.vars.id }}">
+            {{ form_widget(form.isArchived) }}
+            {{ form.isArchived.vars.label }}
+            {{ form_errors(form.isArchived) }}
+        </label>
     </fieldset>
     <button type="submit">{{ button_label|default('Enregistrer') }}</button>
 {{ form_end(form) }}

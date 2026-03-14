@@ -4,11 +4,6 @@
 
 {% block body %}
     <section>
-        <h2>Ajouter une promotion</h2>
-        <p>Créer une nouvelle promotion accessible aux étudiants actifs.</p>
-    </section>
-
-    <section>
         {{ include('promotion/_form.html.twig', {'button_label': 'Enregistrer'}) }}
     </section>
 {% endblock %}

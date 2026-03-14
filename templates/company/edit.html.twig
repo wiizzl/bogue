@@ -1,12 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier entreprise{% endblock %}
+{% block title %}Modifier l'entreprise{% endblock %}
 
 {% block body %}
-    <section>
-        <h2>Modifier l'entreprise</h2>
-    </section>
-
     <section>
         {{ include('company/_form.html.twig', {'button_label': 'Mettre a jour'}) }}
     </section>

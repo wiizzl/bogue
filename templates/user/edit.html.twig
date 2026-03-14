@@ -1,12 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier utilisateur{% endblock %}
+{% block title %}Modifier l'utilisateur{% endblock %}
 
 {% block body %}
-    <section>
-        <h2>Modifier l'utilisateur</h2>
-    </section>
-
     <section>
         {{ include('user/_form.html.twig', {'button_label': 'Mettre a jour'}) }}
     </section>

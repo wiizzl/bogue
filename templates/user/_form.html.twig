@@ -1,12 +1,34 @@
 {{ form_start(form) }}
     <fieldset>
         <legend>Informations utilisateur</legend>
-        {{ form_row(form.email) }}
-        {{ form_row(form.password) }}
-        {{ form_row(form.firstName) }}
-        {{ form_row(form.lastName) }}
+
+        <label data-field for="{{ form.email.vars.id }}">
+            {{ form.email.vars.label }}
+            {{ form_widget(form.email) }}
+            {{ form_errors(form.email) }}
+        </label>
+
+        <label data-field for="{{ form.password.vars.id }}">
+            {{ form.password.vars.label }}
+            {{ form_widget(form.password, {'attr': {'aria-describedby': form.password.vars.id ~ '_hint'}}) }}
+            <small id="{{ form.password.vars.id }}_hint" data-hint>Renseignez un mot de passe fort.</small>
+            {{ form_errors(form.password) }}
+        </label>
+
+        <label data-field for="{{ form.firstName.vars.id }}">
+            {{ form.firstName.vars.label }}
+            {{ form_widget(form.firstName) }}
+            {{ form_errors(form.firstName) }}
+        </label>
+
+        <label data-field for="{{ form.lastName.vars.id }}">
+            {{ form.lastName.vars.label }}
+            {{ form_widget(form.lastName) }}
+            {{ form_errors(form.lastName) }}
+        </label>
+
         {% if form.userRoles is defined %}
-            <div>
+            <div data-field>
                 {{ form_label(form.userRoles) }}
                 <div>
                     {% for roleField in form.userRoles %}

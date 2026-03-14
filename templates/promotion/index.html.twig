@@ -4,11 +4,10 @@
 
 {% block body %}
     <section>
-        <h2>Promotions</h2>
-        <p><a href="{{ path('app_promotion_new') }}">Ajouter une promotion</a></p>
+        <a href="{{ path('app_promotion_new') }}">Ajouter une promotion</a>
     </section>
 
-    <section>
+    <section class="table">
         <table>
             <thead>
                 <tr>
@@ -25,9 +24,8 @@
                     <td>{{ promotion.isArchived ? 'Archivée' : 'Active' }}</td>
                     <td>{{ promotion.students|length }}</td>
                     <td>
-                        <a href="{{ path('app_promotion_edit', {'id': promotion.id}) }}" aria-label="Modifier la promotion" title="Modifier">
+                        <a href="{{ path('app_promotion_edit', {'id': promotion.id}) }}" class="button outline small" aria-label="Modifier la promotion" title="Modifier">
                             {{ ux_icon('pen-line') }}
-                            <span>Modifier</span>
                         </a>
                     </td>
                 </tr>

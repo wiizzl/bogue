@@ -1,29 +1,29 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil{% endblock %}
+{% block title %}Dashboard{% endblock %}
 
 {% block body %}
     <section>
-        <h2>Accueil</h2>
-    </section>
-
-    <section>
         <form method="get" action="{{ path('app_home_index') }}">
-            <label for="major">Option</label>
-            <select id="major" name="major">
-                <option value="">Toutes les options</option>
-                {% for major in majors %}
-                    <option value="{{ major.id }}" {{ (current_filters.major|default('')) == major.id ? 'selected' }}>{{ major.code }}</option>
-                {% endfor %}
-            </select>
+            <div data-field>
+                <label for="major">Option</label>
+                <select id="major" name="major" aria-label="Filtrer par option">
+                    <option value="">Toutes les options</option>
+                    {% for major in majors %}
+                        <option value="{{ major.id }}" {{ (current_filters.major|default('')) == major.id ? 'selected' }}>{{ major.code }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-            <label for="teacher">Enseignant</label>
-            <select id="teacher" name="teacher">
-                <option value="">Tous les enseignants</option>
-                {% for teacher in teachers %}
-                    <option value="{{ teacher.id }}" {{ (current_filters.teacher|default('')) == teacher.id ? 'selected' }}>{{ teacher.firstName }} {{ teacher.lastName }}</option>
-                {% endfor %}
-            </select>
+            <div data-field>
+                <label for="teacher">Enseignant</label>
+                <select id="teacher" name="teacher" aria-label="Filtrer par enseignant">
+                    <option value="">Tous les enseignants</option>
+                    {% for teacher in teachers %}
+                        <option value="{{ teacher.id }}" {{ (current_filters.teacher|default('')) == teacher.id ? 'selected' }}>{{ teacher.firstName }} {{ teacher.lastName }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
             <button type="submit">Filtrer</button>
             <a href="{{ path('app_home_index') }}">Réinitialiser</a>
@@ -33,7 +33,7 @@
         </form>
     </section>
 
-    <section>
+    <section class="table">
         <table>
             <thead>
                 <tr>
@@ -51,7 +51,7 @@
             <tbody>
             {% for internship in internships %}
                 <tr>
-                    <td>{{ internship.student.lastName|upper }} {{ internship.student.firstName }}</td>
+                    <td>{{ internship.student.fullName }}</td>
                     <td title="{{ internship.student.major.label }}">{{ internship.student.major.code }}</td>
                     <td>{{ internship.company.name }} ({{ internship.company.city }})</td>
                     <td title="{{ internship.trackingTeacher ? internship.trackingTeacher.fullName : '' }}">{{ internship.trackingTeacher ? internship.trackingTeacher.trigram : 'Non affecte' }}</td>
@@ -73,29 +73,37 @@
             {% endfor %}
             </tbody>
         </table>
-        <p>Total: {{ total_items }} dossiers.</p>
     </section>
 
     <section>
-        <p>
-            {% if pages_count > 1 %}
-                Pages:
-                {% for i in 1..pages_count %}
-                    {% if i == current_page %}
-                        <strong>{{ i }}</strong>
-                    {% else %}
-                        <a href="{{ path('app_home_index', current_filters|merge({'page': i, 'limit': current_limit})) }}">{{ i }}</a>
-                    {% endif %}
-                {% endfor %}
-            {% else %}
-                Une seule page.
-            {% endif %}
-        </p>
-        <p>
-            Lignes par page:
-            <a href="{{ path('app_home_index', current_filters|merge({'limit': 10})) }}">10</a>
-            <a href="{{ path('app_home_index', current_filters|merge({'limit': 20})) }}">20</a>
-            <a href="{{ path('app_home_index', current_filters|merge({'limit': 50})) }}">50</a>
-        </p>
+        <nav aria-label="Pagination">
+                <menu class="buttons">
+                    <li>
+                        {% if current_page > 1 %}
+                            <a href="{{ path('app_home_index', current_filters|merge({'page': current_page - 1})) }}" class="button outline small">&larr;</a>
+                        {% else %}
+                            <a class="button outline small" aria-disabled="true">&larr;</a>
+                        {% endif %}
+                    </li>
+
+                    {% for i in 1..pages_count %}
+                        <li>
+                            {% if i == current_page %}
+                                <a href="{{ path('app_home_index', current_filters|merge({'page': i})) }}" class="button small" aria-current="page">{{ i }}</a>
+                            {% else %}
+                                <a href="{{ path('app_home_index', current_filters|merge({'page': i})) }}" class="button outline small">{{ i }}</a>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+
+                    <li>
+                        {% if current_page < pages_count %}
+                            <a href="{{ path('app_home_index', current_filters|merge({'page': current_page + 1})) }}" class="button outline small">&rarr;</a>
+                        {% else %}
+                            <a class="button outline small" aria-disabled="true">&rarr;</a>
+                        {% endif %}
+                    </li>
+                </menu>
+            </nav>
     </section>
 {% endblock %}

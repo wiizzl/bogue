@@ -4,11 +4,6 @@
 
 {% block body %}
     <section>
-        <h2>Ajouter une entreprise</h2>
-        <p>Renseigner les informations principales de la structure d'accueil.</p>
-    </section>
-
-    <section>
         {{ include('company/_form.html.twig', {'button_label': 'Enregistrer'}) }}
     </section>
 {% endblock %}

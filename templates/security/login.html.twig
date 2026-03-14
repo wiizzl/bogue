@@ -13,14 +13,17 @@
         <form method="post">
             <fieldset>
                 <legend>Identifiants</legend>
-                <p>
-                    <label for="username">Email</label><br>
+                <label data-field for="username">
+                    Email
                     <input type="email" value="{{ last_username }}" name="_username" id="username" autocomplete="email" required autofocus>
-                </p>
-                <p>
-                    <label for="password">Mot de passe</label><br>
-                    <input type="password" name="_password" id="password" autocomplete="current-password" required>
-                </p>
+                </label>
+
+                <label data-field for="password">
+                    Mot de passe
+                    <input type="password" name="_password" id="password" autocomplete="current-password" aria-describedby="password-hint" required>
+                    <small id="password-hint" data-hint>Saisissez votre mot de passe.</small>
+                </label>
+
                 <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
                 <button type="submit">Se connecter</button>
             </fieldset>

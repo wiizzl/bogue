@@ -1,9 +1,24 @@
 {{ form_start(form) }}
     <fieldset>
         <legend>Etat du jalon</legend>
-        {{ form_row(form.status) }}
-        {{ form_row(form.validatedAt) }}
-        {{ form_row(form.comment) }}
+
+        <label data-field for="{{ form.status.vars.id }}">
+            {{ form.status.vars.label }}
+            {{ form_widget(form.status) }}
+            {{ form_errors(form.status) }}
+        </label>
+
+        <label data-field for="{{ form.validatedAt.vars.id }}">
+            {{ form.validatedAt.vars.label }}
+            {{ form_widget(form.validatedAt) }}
+            {{ form_errors(form.validatedAt) }}
+        </label>
+
+        <label data-field for="{{ form.comment.vars.id }}">
+            {{ form.comment.vars.label }}
+            {{ form_widget(form.comment) }}
+            {{ form_errors(form.comment) }}
+        </label>
     </fieldset>
     <button type="submit">{{ button_label|default('Enregistrer') }}</button>
 {{ form_end(form) }}

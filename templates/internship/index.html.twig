@@ -4,13 +4,12 @@
 
 {% block body %}
     <section>
-        <h2>Stages</h2>
         {% if is_granted('ROLE_ADMIN') %}
-            <p><a href="{{ path('app_internship_new') }}">Ajouter un stage</a></p>
+            <a href="{{ path('app_internship_new') }}">Ajouter un stage</a>
         {% endif %}
     </section>
 
-    <section>
+    <section class="table">
         <table>
             <thead>
                 <tr>
@@ -33,14 +32,12 @@
                         <td>-</td>
                     {% endif %}
                     <td>
-                        <a href="{{ path('app_internship_show', {'id': internship.id}) }}" aria-label="Voir le stage" title="Voir">
+                        <a href="{{ path('app_internship_show', {'id': internship.id}) }}" class="button outline small" aria-label="Voir le stage" title="Voir">
                             {{ ux_icon('eye') }}
-                            <span>Voir</span>
                         </a>
                         {% if is_granted('EDIT_INTERNSHIP', internship) %}
-                            <a href="{{ path('app_internship_edit', {'id': internship.id}) }}" aria-label="Modifier le stage" title="Modifier">
+                            <a href="{{ path('app_internship_edit', {'id': internship.id}) }}" class="button outline small" aria-label="Modifier le stage" title="Modifier">
                                 {{ ux_icon('pen-line') }}
-                                <span>Modifier</span>
                             </a>
                         {% endif %}
                         {% if is_granted('ROLE_ADMIN') %}

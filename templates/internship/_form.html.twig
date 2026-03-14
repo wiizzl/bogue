@@ -1,13 +1,48 @@
 {{ form_start(form) }}
     <fieldset>
         <legend>Informations stage</legend>
-        {{ form_row(form.student) }}
-        {{ form_row(form.company) }}
-        {{ form_row(form.startDate) }}
-        {{ form_row(form.endDate) }}
-        {{ form_row(form.trackingTeacher) }}
-        {{ form_row(form.visitingTeacher) }}
-        {{ form_row(form.remarks) }}
+
+        <label data-field for="{{ form.student.vars.id }}">
+            {{ form.student.vars.label }}
+            {{ form_widget(form.student) }}
+            {{ form_errors(form.student) }}
+        </label>
+
+        <label data-field for="{{ form.company.vars.id }}">
+            {{ form.company.vars.label }}
+            {{ form_widget(form.company) }}
+            {{ form_errors(form.company) }}
+        </label>
+
+        <label data-field for="{{ form.startDate.vars.id }}">
+            {{ form.startDate.vars.label }}
+            {{ form_widget(form.startDate) }}
+            {{ form_errors(form.startDate) }}
+        </label>
+
+        <label data-field for="{{ form.endDate.vars.id }}">
+            {{ form.endDate.vars.label }}
+            {{ form_widget(form.endDate) }}
+            {{ form_errors(form.endDate) }}
+        </label>
+
+        <label data-field for="{{ form.trackingTeacher.vars.id }}">
+            {{ form.trackingTeacher.vars.label }}
+            {{ form_widget(form.trackingTeacher) }}
+            {{ form_errors(form.trackingTeacher) }}
+        </label>
+
+        <label data-field for="{{ form.visitingTeacher.vars.id }}">
+            {{ form.visitingTeacher.vars.label }}
+            {{ form_widget(form.visitingTeacher) }}
+            {{ form_errors(form.visitingTeacher) }}
+        </label>
+
+        <label data-field for="{{ form.remarks.vars.id }}">
+            {{ form.remarks.vars.label }}
+            {{ form_widget(form.remarks) }}
+            {{ form_errors(form.remarks) }}
+        </label>
     </fieldset>
     <button type="submit">{{ button_label|default('Enregistrer') }}</button>
 {{ form_end(form) }}
