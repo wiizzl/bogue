@@ -5,7 +5,6 @@
 {% block body %}
     <section>
         <h2>Tableau de bord des stages</h2>
-        <p>Vue d'ensemble des dossiers avec filtres et suivi des jalons.</p>
     </section>
 
     <section>
@@ -34,14 +33,15 @@
         </form>
     </section>
 
-    <section class="table-section">
+    <section>
         <table>
             <thead>
                 <tr>
                     <th>Étudiant</th>
                     <th>Option</th>
                     <th>Entreprise</th>
-                    <th>Suivi / Visite</th>
+                    <th>Suivi</th>
+                    <th>Visite</th>
                     <th>Remerciement</th>
                     <th>Bilan</th>
                     <th>Jury</th>
@@ -52,25 +52,23 @@
             {% for internship in internships %}
                 <tr>
                     <td>{{ internship.student.lastName|upper }} {{ internship.student.firstName }}</td>
-                    <td>{{ internship.student.major.code }}</td>
+                    <td title="{{ internship.student.major.label }}">{{ internship.student.major.code }}</td>
                     <td>{{ internship.company.name }} ({{ internship.company.city }})</td>
-                    <td>
-                        S: {{ internship.trackingTeacher ? internship.trackingTeacher.lastName : 'Non affecte' }}<br>
-                        V: {{ internship.visitingTeacher ? internship.visitingTeacher.lastName : 'Non affecte' }}
-                    </td>
+                    <td title="{{ internship.trackingTeacher ? internship.trackingTeacher.fullName : '' }}">{{ internship.trackingTeacher ? internship.trackingTeacher.trigram : 'Non affecte' }}</td>
+                    <td title="{{ internship.visitingTeacher ? internship.visitingTeacher.fullName : '' }}">{{ internship.visitingTeacher ? internship.visitingTeacher.trigram : 'Non affecte' }}</td>
                     {% for item in internship.milestones %}
                         <td>
                             {% if is_granted('EDIT_MILESTONE', item) %}
-                                <a href="{{ path('app_milestone_edit', {'id': item.id}) }}">{{ item.status.label }}</a>
+                                <a href="{{ path('app_milestone_edit', {'id': item.id}) }}" title="{{ item.status.label }}">{{ include('milestone/_status_icon.html.twig', {'status': item.status, 'comment': item.comment}) }}</a>
                             {% else %}
-                                {{ item.status.label }}
+                                {{ include('milestone/_status_icon.html.twig', {'status': item.status, 'comment': item.comment}) }}
                             {% endif %}
                         </td>
                     {% endfor %}
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="8">Aucun stage ne correspond aux filtres.</td>
+                    <td colspan="9">Aucun stage ne correspond aux filtres.</td>
                 </tr>
             {% endfor %}
             </tbody>

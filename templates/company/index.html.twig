@@ -5,11 +5,10 @@
 {% block body %}
     <section>
         <h2>Liste des entreprises</h2>
-        <p>Reference des structures d'accueil des stages.</p>
         <p><a href="{{ path('app_company_new') }}">Ajouter une entreprise</a></p>
     </section>
 
-    <section class="table-section">
+    <section>
         <table>
             <thead>
                 <tr>
@@ -18,7 +17,7 @@
                     <th>Contact</th>
                     <th>Telephone</th>
                     <th>Email</th>
-                    <th class="table-actions-header">Actions</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -29,14 +28,14 @@
                     <td>{{ company.contactName|default('-') }}</td>
                     <td>{{ company.phone|default('-') }}</td>
                     <td>{{ company.email|default('-') }}</td>
-                    <td class="table-actions">
+                    <td>
                         <a href="{{ path('app_company_show', {'id': company.id}) }}" aria-label="Voir l'entreprise" title="Voir">
-                            {{ ux_icon('eye', { 'class': 'action-icon' }) }}
-                            <span class="visually-hidden">Voir</span>
+                            {{ ux_icon('eye') }}
+                            <span>Voir</span>
                         </a>
                         <a href="{{ path('app_company_edit', {'id': company.id}) }}" aria-label="Modifier l'entreprise" title="Modifier">
-                            {{ ux_icon('pen-line', { 'class': 'action-icon' }) }}
-                            <span class="visually-hidden">Modifier</span>
+                            {{ ux_icon('pen-line') }}
+                            <span>Modifier</span>
                         </a>
                         {{ include('company/_delete_form.html.twig', {'company': company}) }}
                     </td>

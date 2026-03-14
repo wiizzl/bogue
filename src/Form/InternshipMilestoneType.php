@@ -29,7 +29,7 @@ class InternshipMilestoneType extends AbstractType
                 'required' => false,
             ])
             ->add('comment', TextareaType::class, [
-                'label' => 'Commentaire / Remarque',
+                'label' => 'Commentaire',
                 'required' => false,
                 'attr' => ['rows' => 3]
             ])

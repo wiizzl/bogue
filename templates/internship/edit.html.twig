@@ -10,12 +10,4 @@
     <section>
         {{ include('internship/_form.html.twig', {'button_label': 'Mettre a jour'}) }}
     </section>
-
-    <section>
-        {% if is_granted('ROLE_SECRETARY') %}
-            <a href="{{ path('app_internship_index') }}">Retour a la liste</a>
-        {% else %}
-            <a href="{{ path('app_home_index') }}">Retour à l'accueil</a>
-        {% endif %}
-    </section>
 {% endblock %}

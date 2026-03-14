@@ -10,20 +10,20 @@
         {% endif %}
     </section>
 
-    <section class="table-section">
+    <section>
         <table>
             <thead>
                 <tr>
                     <th>Étudiant</th>
                     <th>Entreprise</th>
                     <th>Durée</th>
-                    <th class="table-actions-header">Actions</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
             {% for internship in internships %}
                 <tr>
-                    <td>{{ internship.student.firstName }} {{ internship.student.lastName }}</td>
+                    <td>{{ internship.student.fullName }}</td>
                     <td>{{ internship.company.name }}</td>
                     {% if internship.startDate and internship.endDate %}
                         <td title="Du {{ internship.startDate|date('d/m/Y') }} au {{ internship.endDate|date('d/m/Y') }}">
@@ -32,15 +32,15 @@
                     {% else %}
                         <td>-</td>
                     {% endif %}
-                    <td class="table-actions">
+                    <td>
                         <a href="{{ path('app_internship_show', {'id': internship.id}) }}" aria-label="Voir le stage" title="Voir">
-                            {{ ux_icon('eye', { 'class': 'action-icon' }) }}
-                            <span class="visually-hidden">Voir</span>
+                            {{ ux_icon('eye') }}
+                            <span>Voir</span>
                         </a>
                         {% if is_granted('EDIT_INTERNSHIP', internship) %}
                             <a href="{{ path('app_internship_edit', {'id': internship.id}) }}" aria-label="Modifier le stage" title="Modifier">
-                                {{ ux_icon('pen-line', { 'class': 'action-icon' }) }}
-                                <span class="visually-hidden">Modifier</span>
+                                {{ ux_icon('pen-line') }}
+                                <span>Modifier</span>
                             </a>
                         {% endif %}
                         {% if is_granted('ROLE_ADMIN') %}

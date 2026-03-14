@@ -1,0 +1,16 @@
+{% set statusCode = status.code|default('') %}
+{% set statusLabel = status.label|default('') %}
+{% set commentText = comment|default('') %}
+
+<span title="{{ commentText }}" aria-label="{{ statusLabel }}{{ commentText ? ' : ' ~ commentText }}">
+    {% if statusCode == 'OK' %}
+        {{ ux_icon('check') }}
+    {% elseif statusCode == 'NOK' %}
+        {{ ux_icon('x') }}
+    {% else %}
+        {{ ux_icon('minus') }}
+    {% endif %}
+    {% if commentText %}
+        {{ ux_icon('message-square') }}
+    {% endif %}
+</span>

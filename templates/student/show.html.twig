@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Étudiant — {{ student.firstName }} {{ student.lastName }}{% endblock %}
+{% block title %}Étudiant — {{ student.fullName }}{% endblock %}
 
 {% block body %}
     <section>
         <h2>Fiche étudiant</h2>
-        <p>{{ student.lastName|upper }} {{ student.firstName }}</p>
+        <p>{{ student.fullName }}</p>
     </section>
 
     <section>
@@ -25,6 +25,5 @@
 
     <section>
         <a href="{{ path('app_student_edit', {'id': student.id}) }}">Modifier</a>
-        <a href="{{ path('app_student_index') }}">Retour a la liste</a>
     </section>
 {% endblock %}

@@ -131,12 +131,12 @@ class CsvExportService
         $company = $internship->getCompany();
 
         $row = [
-            strtoupper($student->getLastName()) . ' ' . $student->getFirstName(),
+            $student->getFullName(),
             $student->getMajor()->getCode(),
             $company->getName(),
             $company->getCity(),
-            $internship->getTrackingTeacher()?->getLastName() ?? 'Non affecté',
-            $internship->getVisitingTeacher()?->getLastName() ?? 'Non affecté',
+            $internship->getTrackingTeacher()?->getFullName() ?? 'Non affecté',
+            $internship->getVisitingTeacher()?->getFullName() ?? 'Non affecté',
         ];
 
         // Add milestone status for each milestone

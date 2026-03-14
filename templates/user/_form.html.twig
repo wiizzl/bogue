@@ -6,7 +6,18 @@
         {{ form_row(form.firstName) }}
         {{ form_row(form.lastName) }}
         {% if form.userRoles is defined %}
-            {{ form_row(form.userRoles) }}
+            <div>
+                {{ form_label(form.userRoles) }}
+                <div>
+                    {% for roleField in form.userRoles %}
+                        <label for="{{ roleField.vars.id }}">
+                            {{ form_widget(roleField) }}
+                            <span>{{ roleField.vars.label }}</span>
+                        </label>
+                    {% endfor %}
+                </div>
+                {{ form_errors(form.userRoles) }}
+            </div>
         {% endif %}
     </fieldset>
     <button type="submit">{{ button_label|default('Enregistrer') }}</button>

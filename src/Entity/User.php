@@ -193,6 +193,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getFullName(): string
+    {
+        return trim(sprintf('%s %s', $this->firstName ?? '', $this->lastName ?? ''));
+    }
+
+    public function getTrigram(): string
+    {
+        $firstName = trim((string) $this->firstName);
+        $lastName = trim((string) $this->lastName);
+
+        if ($firstName === '' || $lastName === '') {
+            return '';
+        }
+
+        $firstInitial = mb_substr($firstName, 0, 1);
+        $lastPrefix = mb_substr($lastName, 0, 2);
+
+        return mb_strtoupper($firstInitial.$lastPrefix);
+    }
+
     /**
      * @return Collection<int, Internship>
      */

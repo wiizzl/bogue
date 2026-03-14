@@ -13,7 +13,7 @@
             <tbody>
                 <tr>
                     <th>Étudiant</th>
-                    <td>{{ internship.student.firstName }} {{ internship.student.lastName|upper }} ({{ internship.student.major.code }})</td>
+                    <td title="{{ internship.student.major.label }}">{{ internship.student.fullName }} ({{ internship.student.major.code }})</td>
                 </tr>
                 <tr>
                     <th>Entreprise</th>
@@ -31,12 +31,12 @@
                     <td>Du {{ internship.startDate ? internship.startDate|date('d/m/Y') : 'N/C' }} au {{ internship.endDate ? internship.endDate|date('d/m/Y') : 'N/C' }}</td>
                 </tr>
                 <tr>
-                    <th>Professeur de suivi</th>
-                    <td>{{ internship.trackingTeacher ? internship.trackingTeacher.firstName ~ ' ' ~ internship.trackingTeacher.lastName : 'Non affecte' }}</td>
+                    <th>Suivi</th>
+                    <td title="{{ internship.trackingTeacher ? internship.trackingTeacher.fullName : '' }}">{{ internship.trackingTeacher ? internship.trackingTeacher.trigram : 'Non affecte' }}</td>
                 </tr>
                 <tr>
-                    <th>Professeur de visite</th>
-                    <td>{{ internship.visitingTeacher ? internship.visitingTeacher.firstName ~ ' ' ~ internship.visitingTeacher.lastName : 'Non affecte' }}</td>
+                    <th>Visite</th>
+                    <td title="{{ internship.visitingTeacher ? internship.visitingTeacher.fullName : '' }}">{{ internship.visitingTeacher ? internship.visitingTeacher.trigram : 'Non affecte' }}</td>
                 </tr>
                 <tr>
                     <th>Remarques</th>
@@ -62,7 +62,7 @@
                 {% for log in internship.historyLogs %}
                     <tr>
                         <td>{{ log.createdAt|date('d/m/Y H:i') }}</td>
-                        <td>{{ log.author.firstName }} {{ log.author.lastName }}</td>
+                        <td>{{ log.author.fullName }}</td>
                         <td>{{ log.actionType.label }}</td>
                         <td>{{ log.oldValue|default('-') }}</td>
                         <td>{{ log.newValue|default('-') }}</td>
@@ -74,12 +74,5 @@
                 {% endfor %}
             </tbody>
         </table>
-    </section>
-
-    <section>
-        <a href="{{ path('app_home_index') }}">Retour à l'accueil</a>
-        {% if is_granted('EDIT_INTERNSHIP', internship) %}
-            <a href="{{ path('app_internship_edit', {'id': internship.id}) }}">Modifier le stage</a>
-        {% endif %}
     </section>
 {% endblock %}

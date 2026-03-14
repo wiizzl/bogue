@@ -5,12 +5,19 @@
 {% block body %}
     <section>
         <h2>Fiche utilisateur</h2>
-        <p>{{ user.firstName }} {{ user.lastName }}</p>
     </section>
 
     <section>
         <table>
             <tbody>
+                <tr>
+                    <th>Nom</th>
+                    <td>{{ user.lastName }}</td>
+                </tr>
+                <tr>
+                    <th>Prénom</th>
+                    <td>{{ user.firstName }}</td>
+                </tr>
                 <tr>
                     <th>Email</th>
                     <td>{{ user.email }}</td>
@@ -24,14 +31,5 @@
                 </tr>
             </tbody>
         </table>
-    </section>
-
-    <section>
-        <a href="{{ path('app_user_edit', {'id': user.id}) }}">Modifier</a>
-        {% if is_granted('ROLE_ADMIN') %}
-            <a href="{{ path('app_user_index') }}">Retour a la liste</a>
-        {% else %}
-            <a href="{{ path('app_home_index') }}">Retour</a>
-        {% endif %}
     </section>
 {% endblock %}

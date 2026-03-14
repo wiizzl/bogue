@@ -64,8 +64,8 @@ class HistorySubscriber
                         $entity,
                         $user,
                         $teacherUpdateActionType,
-                        'Professeur de suivi: ' . $this->formatTeacher($oldTeacher),
-                        'Professeur de suivi: ' . $this->formatTeacher($newTeacher)
+                        'Suivi: ' . $this->formatTeacher($oldTeacher),
+                        'Suivi: ' . $this->formatTeacher($newTeacher)
                     );
                 }
 
@@ -81,8 +81,8 @@ class HistorySubscriber
                         $entity,
                         $user,
                         $teacherUpdateActionType,
-                        'Professeur de visite: ' . $this->formatTeacher($oldTeacher),
-                        'Professeur de visite: ' . $this->formatTeacher($newTeacher)
+                        'Visite: ' . $this->formatTeacher($oldTeacher),
+                        'Visite: ' . $this->formatTeacher($newTeacher)
                     );
                 }
             }
@@ -118,6 +118,6 @@ class HistorySubscriber
             return 'Non défini';
         }
 
-        return trim($teacher->getFirstName() . ' ' . $teacher->getLastName());
+        return $teacher->getFullName();
     }
 }

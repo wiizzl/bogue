@@ -2,7 +2,7 @@
 
 ![](./public/favicon.ico)
 
-Bogue est un projet scolaire réalisé en équipe. Il s'agit d'une application web de suivi de stage destinée aux professeurs, leur permettant de gérer et suivre les stages de leurs élèves.
+Bogue est un projet scolaire réalisé en équipe. Il s'agit d'une application web de suivi de stage destinée aux enseignants, leur permettant de gérer et suivre les stages de leurs élèves.
 
 ## Environnement d'exécution
 

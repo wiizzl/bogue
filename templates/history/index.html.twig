@@ -5,9 +5,8 @@
 {% block body %}
     <section>
         <h2>Journal d'audit</h2>
-        <p>Historique des modifications effectuees sur les dossiers de stage.</p>
     </section>
-    <section class="table-section">
+    <section>
         <table>
             <thead>
                 <tr>
@@ -22,11 +21,11 @@
                 {% for log in logs %}
                     <tr>
                         <td>{{ log.createdAt|date('d/m/Y H:i') }}</td>
-                        <td>{{ log.author.firstName }} {{ log.author.lastName }}</td>
+                        <td>{{ log.author.fullName }}</td>
                         <td>{{ log.actionType.label }}</td>
                         <td>
                             {% if log.internship %}
-                                {{ log.internship.student.lastName|upper }} - {{ log.internship.company.name }}
+                                {{ log.internship.student.fullName }} - {{ log.internship.company.name }}
                             {% else %}
                                 N/A
                             {% endif %}

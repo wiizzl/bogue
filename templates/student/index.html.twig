@@ -15,7 +15,7 @@
         </form>
     </section>
 
-    <section class="table-section">
+    <section>
         <table>
             <thead>
                 <tr>
@@ -23,7 +23,7 @@
                     <th>Nom</th>
                     <th>Promotion</th>
                     <th>Option</th>
-                    <th class="table-actions-header">Actions</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,11 +32,11 @@
                     <td>{{ student.firstName }}</td>
                     <td>{{ student.lastName }}</td>
                     <td>{{ student.promotion.year }}</td>
-                    <td>{{ student.major.code }}</td>
-                    <td class="table-actions">
+                    <td title="{{ student.major.label }}">{{ student.major.code }}</td>
+                    <td>
                         <a href="{{ path('app_student_edit', {'id': student.id}) }}" aria-label="Modifier l'étudiant" title="Modifier">
-                            {{ ux_icon('pen-line', { 'class': 'action-icon' }) }}
-                            <span class="visually-hidden">Modifier</span>
+                            {{ ux_icon('pen-line') }}
+                            <span>Modifier</span>
                         </a>
                         {{ include('student/_delete_form.html.twig', {'student': student}) }}
                     </td>

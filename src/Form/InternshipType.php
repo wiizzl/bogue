@@ -29,14 +29,14 @@ class InternshipType extends AbstractType
                 'label' => 'Date de fin',
             ])
             ->add('remarks', TextareaType::class, [
-                'label' => 'Remarques / Commentaires',
+                'label' => 'Remarques',
                 'required' => false,
                 'attr' => ['rows' => 3]
             ])
             ->add('student', EntityType::class, [
                 'class' => Student::class,
-                'choice_label' => function(Student $student) {
-                    return strtoupper($student->getLastName()) . ' ' . $student->getFirstName();
+                'choice_label' => static function (Student $student): string {
+                    return $student->getFullName();
                 },
                 'label' => 'Étudiant',
                 'query_builder' => function (EntityRepository $er) {
@@ -56,7 +56,7 @@ class InternshipType extends AbstractType
             ])
             ->add('trackingTeacher', EntityType::class, [
                 'class' => User::class,
-                'label' => 'Professeur de suivi',
+                'label' => 'Suivi',
                 'placeholder' => 'Choisir l\'enseignant...',
                 'query_builder' => function (UserRepository $er) {
                     return $er->createQueryBuilder('u')
@@ -65,13 +65,13 @@ class InternshipType extends AbstractType
                         ->setParameter('role', 'ROLE_TEACHER')
                         ->orderBy('u.lastName', 'ASC');
                 },
-                'choice_label' => function (User $user) {
-                    return $user->getFirstName() . ' ' . $user->getLastName();
+                'choice_label' => static function (User $user): string {
+                    return $user->getFullName();
                 },
             ])
             ->add('visitingTeacher', EntityType::class, [
                 'class' => User::class,
-                'label' => 'Professeur de visite',
+                'label' => 'Visite',
                 'placeholder' => 'Choisir l\'enseignant...',
                 'query_builder' => function (UserRepository $er) {
                     return $er->createQueryBuilder('u')
@@ -80,8 +80,8 @@ class InternshipType extends AbstractType
                         ->setParameter('role', 'ROLE_TEACHER')
                         ->orderBy('u.lastName', 'ASC');
                 },
-                'choice_label' => function (User $user) {
-                    return $user->getFirstName() . ' ' . $user->getLastName();
+                'choice_label' => static function (User $user): string {
+                    return $user->getFullName();
                 },
             ])
         ;

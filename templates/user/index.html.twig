@@ -8,33 +8,33 @@
         <p><a href="{{ path('app_user_new') }}">Ajouter un utilisateur</a></p>
     </section>
 
-    <section class="table-section">
+    <section>
         <table>
             <thead>
                 <tr>
                     <th>Nom</th>
                     <th>Email</th>
                     <th>Rôles</th>
-                    <th class="table-actions-header">Actions</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
             {% for user in users %}
                 <tr>
-                    <td>{{ user.firstName }} {{ user.lastName }}</td>
+                    <td>{{ user.fullName }}</td>
                     <td>{{ user.email }}</td>
                     <td>
                         {% set roleLabels = user.userRoles|map(role => role.label)|filter(label => label is not empty) %}
                         {{ roleLabels is not empty ? roleLabels|join(', ') : 'Utilisateur' }}
                     </td>
-                    <td class="table-actions">
+                    <td>
                         <a href="{{ path('app_user_show', {'id': user.id}) }}" aria-label="Voir l'utilisateur" title="Voir">
-                            {{ ux_icon('eye', { 'class': 'action-icon' }) }}
-                            <span class="visually-hidden">Voir</span>
+                            {{ ux_icon('eye') }}
+                            <span>Voir</span>
                         </a>
                         <a href="{{ path('app_user_edit', {'id': user.id}) }}" aria-label="Modifier l'utilisateur" title="Modifier">
-                            {{ ux_icon('pen-line', { 'class': 'action-icon' }) }}
-                            <span class="visually-hidden">Modifier</span>
+                            {{ ux_icon('pen-line') }}
+                            <span>Modifier</span>
                         </a>
                         {% if app.user and app.user.id != user.id %}
                             {{ include('user/_delete_form.html.twig', {'user': user}) }}

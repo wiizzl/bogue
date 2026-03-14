@@ -90,6 +90,11 @@ class Student
         return $this;
     }
 
+    public function getFullName(): string
+    {
+        return trim(sprintf('%s %s', $this->firstName ?? '', $this->lastName ?? ''));
+    }
+
     /**
      * @return Collection<int, Internship>
      */
