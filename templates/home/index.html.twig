@@ -42,10 +42,10 @@
                     <th>Entreprise</th>
                     <th>Suivi</th>
                     <th>Visite</th>
-                    <th>Remerciement</th>
-                    <th>Bilan</th>
-                    <th>Jury</th>
-                    <th>Attestation</th>
+                    <th style="text-align: right;">Bilan</th>
+                    <th style="text-align: right;">Jury</th>
+                    <th style="text-align: right;">Attestation</th>
+                    <th style="text-align: right;">Remerciement</th>
                 </tr>
             </thead>
             <tbody>
@@ -54,12 +54,14 @@
                     <td>{{ internship.student.fullName }}</td>
                     <td title="{{ internship.student.major.label }}">{{ internship.student.major.code }}</td>
                     <td>{{ internship.company.name }} ({{ internship.company.city }})</td>
-                    <td title="{{ internship.trackingTeacher ? internship.trackingTeacher.fullName : '' }}">{{ internship.trackingTeacher ? internship.trackingTeacher.trigram : 'Non affecte' }}</td>
-                    <td title="{{ internship.visitingTeacher ? internship.visitingTeacher.fullName : '' }}">{{ internship.visitingTeacher ? internship.visitingTeacher.trigram : 'Non affecte' }}</td>
+                    <td title="{{ internship.trackingTeacher ? internship.trackingTeacher.fullName : '' }}">{{ internship.trackingTeacher ? internship.trackingTeacher.trigram : 'Aucun' }}</td>
+                    <td title="{{ internship.visitingTeacher ? internship.visitingTeacher.fullName : '' }}">{{ internship.visitingTeacher ? internship.visitingTeacher.trigram : 'Aucun' }}</td>
                     {% for item in internship.milestones %}
-                        <td>
+                        <td style="text-align: right;">
                             {% if is_granted('EDIT_MILESTONE', item) %}
-                                <a href="{{ path('app_milestone_edit', {'id': item.id}) }}" title="{{ item.status.label }}">{{ include('milestone/_status_icon.html.twig', {'status': item.status, 'comment': item.comment}) }}</a>
+                                <a href="{{ path('app_milestone_edit', {'id': item.id}) }}" title="{{ item.status.label }}">
+                                    {{ include('milestone/_status_icon.html.twig', {'status': item.status, 'comment': item.comment}) }}
+                                </a>
                             {% else %}
                                 {{ include('milestone/_status_icon.html.twig', {'status': item.status, 'comment': item.comment}) }}
                             {% endif %}

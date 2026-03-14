@@ -9,8 +9,8 @@ ux_icons:
         stroke: currentColor
 
         # Default dimensions
-        height: "1em"
-        width: "1em"
+        height: "1.1em"
+        width: "1.1em"
 
     # Throw an exception if an icon is not
     ignore_not_found: false

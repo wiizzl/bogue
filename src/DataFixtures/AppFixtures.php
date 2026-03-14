@@ -3,21 +3,14 @@
 namespace App\DataFixtures;
 
 use App\Entity\ActionType;
-use App\Entity\Company;
-use App\Entity\Internship;
-use App\Entity\InternshipMilestone;
 use App\Entity\Major;
 use App\Entity\Milestone;
 use App\Entity\MilestoneStatus;
-use App\Entity\Promotion;
 use App\Entity\Role;
-use App\Entity\Student;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Faker\Factory;
-use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class AppFixtures extends Fixture
 {
@@ -30,16 +23,6 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $faker = Factory::create('fr_FR');
-
-        $promo2026 = (new Promotion())->setYear(2026)->setIsArchived(false);
-        $manager->persist($promo2026);
-
-        $promo2025 = (new Promotion())->setYear(2025)->setIsArchived(true);
-        $manager->persist($promo2025);
-
-        $promotionsList = [$promo2026, $promo2025];
-
         $savedRoles = [];
         foreach (['ROLE_ADMIN' => 'Administrateur', 'ROLE_TEACHER' => 'Enseignant', 'ROLE_SECRETARY' => 'Secrétariat'] as $code => $label) {
             $role = (new Role())->setCode($code)->setLabel($label);
@@ -47,25 +30,19 @@ class AppFixtures extends Fixture
             $savedRoles[$code] = $role;
         }
 
-        $savedMajors = [];
         foreach (['SLAM' => 'Solutions Logicielles et Applications Métier', 'SISR' => 'Solutions d\'Infrastructure, Systèmes et Réseaux'] as $code => $label) {
             $major = (new Major())->setCode($code)->setLabel($label);
             $manager->persist($major);
-            $savedMajors[$code] = $major;
         }
 
-        $savedMilestones = [];
-        foreach (['THANK_YOU_LETTER' => 'Remerciement', 'REPORT' => 'Bilan / Suivi', 'JURY' => 'Jury', 'CERTIFICATE' => 'Attestation'] as $code => $label) {
+        foreach (['THANK_YOU_LETTER' => 'Remerciement', 'REPORT' => 'Bilan', 'JURY' => 'Jury', 'CERTIFICATE' => 'Attestation'] as $code => $label) {
             $ms = (new Milestone())->setCode($code)->setLabel($label);
             $manager->persist($ms);
-            $savedMilestones[$code] = $ms;
         }
 
-        $savedStatuses = [];
         foreach (['OK' => 'Validé', 'NOK' => 'Non validé', 'PENDING' => 'En attente'] as $code => $label) {
             $status = (new MilestoneStatus())->setCode($code)->setLabel($label);
             $manager->persist($status);
-            $savedStatuses[$code] = $status;
         }
 
         $actionTypes = [
@@ -83,67 +60,17 @@ class AppFixtures extends Fixture
             }
         }
 
-        $admin = (new User())->setEmail('admin@campus-la-chataigneraie.org')->setFirstName('Admin')->setLastName('Lycée');
+        $admin = (new User())->setEmail('admin@test.fr')->setFirstName('Admin')->setLastName('Test');
         $admin->addUserRole($savedRoles['ROLE_ADMIN'])->setPassword($this->hasher->hashPassword($admin, 'pass_1234'));
         $manager->persist($admin);
 
-        $secretary = (new User())->setEmail('secretaire@campus-la-chataigneraie.org')->setFirstName('Secrétaire')->setLastName('Lycée');
+        $secretary = (new User())->setEmail('secretariat@test.fr')->setFirstName('Secrétariat')->setLastName('Test');
         $secretary->addUserRole($savedRoles['ROLE_SECRETARY'])->setPassword($this->hasher->hashPassword($secretary, 'pass_1234'));
         $manager->persist($secretary);
 
-        $teachersList = ['Catherine Baranger', 'Réjane Boursier', 'Sandrine Ternisien', 'Nathalie Grandin', 'Marie Serrault', 'Christophe Baudoux', 'Antoine Bloyet', 'Kévin Bayeul', 'Laurent Maurice', 'Robin Szylobryt'];
-        $savedTeachers = [];
-        $slugger = new AsciiSlugger();
-
-        foreach ($teachersList as $fullName) {
-            [$firstName, $lastName] = explode(' ', $fullName);
-            $teacher = (new User())->setEmail(strtolower($slugger->slug($firstName) . '.' . $slugger->slug($lastName)) . '@campus-la-chataigneraie.org')
-                ->setFirstName($firstName)->setLastName($lastName);
-            $teacher->addUserRole($savedRoles['ROLE_TEACHER'])->setPassword($this->hasher->hashPassword($teacher, 'pass_1234'));
-            $manager->persist($teacher);
-            $savedTeachers[] = $teacher;
-        }
-
-        $fakeCompanies = [];
-        for ($i = 0; $i < 30; $i++) {
-            $company = (new Company())->setName($faker->company())->setAddress($faker->streetAddress())->setZipCode(substr($faker->postcode(), 0, 5))->setCity($faker->city())->setContactName($faker->name())->setPhone($faker->phoneNumber())->setEmail($faker->companyEmail());
-            $manager->persist($company);
-            $fakeCompanies[] = $company;
-        }
-
-        $majorsList = array_values($savedMajors);
-        $statusesList = array_values($savedStatuses);
-
-        for ($i = 0; $i < 40; $i++) {
-            $student = (new Student())
-                ->setFirstName($faker->firstName())
-                ->setLastName($faker->lastName())
-                ->setPromotion($faker->randomElement($promotionsList))
-                ->setMajor($faker->randomElement($majorsList));
-            $manager->persist($student);
-
-            $startDate = $faker->dateTimeBetween('2026-01-01', '2026-02-01');
-            $endDate = (clone $startDate)->modify('+6 weeks');
-
-            $internship = (new Internship())
-                ->setStudent($student)
-                ->setCompany($faker->randomElement($fakeCompanies))
-                ->setTrackingTeacher($faker->randomElement($savedTeachers))
-                ->setVisitingTeacher($faker->randomElement($savedTeachers))
-                ->setStartDate($startDate)
-                ->setEndDate($endDate);
-            $manager->persist($internship);
-
-            foreach ($savedMilestones as $milestone) {
-                if ($faker->boolean(70)) {
-                    $internshipMilestone = (new InternshipMilestone())
-                        ->setInternship($internship)
-                        ->setMilestone($milestone)
-                        ->setStatus($faker->randomElement($statusesList));
-                    $manager->persist($internshipMilestone);
-                }
-            }
-        }
+        $teacher = (new User())->setEmail('teacher@test.fr')->setFirstName('Enseignant')->setLastName('Test');
+        $teacher->addUserRole($savedRoles['ROLE_TEACHER'])->setPassword($this->hasher->hashPassword($teacher, 'pass_1234'));
+        $manager->persist($teacher);
 
         $manager->flush();
     }

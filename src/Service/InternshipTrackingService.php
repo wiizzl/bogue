@@ -78,14 +78,6 @@ class InternshipTrackingService
         ];
     }
 
-    /**
-     * Validate and sanitize filter parameters.
-     *
-     * Ensures filter values are valid and prevents injection.
-     *
-     * @param array $rawFilters Raw filter data from request
-     * @return array Sanitized filters
-     */
     public function sanitizeFilters(array $rawFilters): array
     {
         $filters = [];
@@ -103,12 +95,6 @@ class InternshipTrackingService
         return $filters;
     }
 
-    /**
-     * Check if user has access to view internship data.
-     *
-     * @param User|null $user
-     * @return bool
-     */
     public function canViewInternships(?User $user): bool
     {
         if (!$user) {
@@ -122,15 +108,7 @@ class InternshipTrackingService
                in_array('ROLE_TEACHER', $userRoles);
     }
 
-    /**
-     * Calculate pagination metadata.
-     *
-     * @param Paginator|array $results
-     * @param int $page
-     * @param int|null $limit
-     * @return array
-     */
-    private function calculatePaginationData($results, int $page, ?int $limit): array
+    private function calculatePaginationData(Paginator|array $results, int $page, ?int $limit): array
     {
         if ($limit === null) {
             // No pagination

@@ -1,16 +1,21 @@
-{% set statusCode = status.code|default('') %}
-{% set statusLabel = status.label|default('') %}
-{% set commentText = comment|default('') %}
+{% set statusCode = status.code %}
+{% set statusLabel = status.label %}
 
-<span title="{{ commentText }}" aria-label="{{ statusLabel }}">
-    {% if statusCode == 'OK' %}
-        {{ ux_icon('check') }}
-    {% elseif statusCode == 'NOK' %}
-        {{ ux_icon('x') }}
-    {% else %}
-        {{ ux_icon('minus') }}
-    {% endif %}
-    {% if commentText %}
+{% set badgeClass = statusCode == 'OK'
+    ? 'success'
+    : (statusCode == 'NOK' ? 'danger' : 'secondary')
+%}
+
+<span class="badge {{ badgeClass }}" aria-label="{{ statusLabel }}">
+    {% if comment %}
         {{ ux_icon('message-square') }}
+    {% else %}
+        {% if statusCode == 'OK' %}
+            {{ ux_icon('check') }}
+        {% elseif statusCode == 'NOK' %}
+            {{ ux_icon('x') }}
+        {% else %}
+            {{ ux_icon('minus') }}
+        {% endif %}
     {% endif %}
 </span>
