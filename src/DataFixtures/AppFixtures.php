@@ -10,15 +10,18 @@ use App\Entity\Role;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
     private UserPasswordHasherInterface $hasher;
+    private KernelInterface $kernel;
 
-    public function __construct(UserPasswordHasherInterface $hasher)
+    public function __construct(UserPasswordHasherInterface $hasher, KernelInterface $kernel)
     {
         $this->hasher = $hasher;
+        $this->kernel = $kernel;
     }
 
     public function load(ObjectManager $manager): void
@@ -35,7 +38,7 @@ class AppFixtures extends Fixture
             $manager->persist($major);
         }
 
-        foreach (['THANK_YOU_LETTER' => 'Remerciement', 'REPORT' => 'Bilan', 'JURY' => 'Jury', 'CERTIFICATE' => 'Attestation'] as $code => $label) {
+        foreach (['THANK_YOU' => 'Remerciement', 'REPORT' => 'Bilan', 'JURY' => 'Jury', 'CERTIFICATE' => 'Attestation'] as $code => $label) {
             $ms = (new Milestone())->setCode($code)->setLabel($label);
             $manager->persist($ms);
         }
@@ -60,17 +63,19 @@ class AppFixtures extends Fixture
             }
         }
 
-        $admin = (new User())->setEmail('admin@test.fr')->setFirstName('Admin')->setLastName('Test');
-        $admin->addUserRole($savedRoles['ROLE_ADMIN'])->setPassword($this->hasher->hashPassword($admin, 'pass_1234'));
-        $manager->persist($admin);
+        if ('dev' === $this->kernel->getEnvironment()) {
+            $admin = (new User())->setEmail('admin@test.fr')->setFirstName('Administrateur')->setLastName('Bogue');
+            $admin->addUserRole($savedRoles['ROLE_ADMIN'])->setPassword($this->hasher->hashPassword($admin, 'pass_1234'));
+            $manager->persist($admin);
 
-        $secretary = (new User())->setEmail('secretariat@test.fr')->setFirstName('Secrétariat')->setLastName('Test');
-        $secretary->addUserRole($savedRoles['ROLE_SECRETARY'])->setPassword($this->hasher->hashPassword($secretary, 'pass_1234'));
-        $manager->persist($secretary);
+            $secretary = (new User())->setEmail('secretary@test.fr')->setFirstName('Secrétaire')->setLastName('Bogue');
+            $secretary->addUserRole($savedRoles['ROLE_SECRETARY'])->setPassword($this->hasher->hashPassword($secretary, 'pass_1234'));
+            $manager->persist($secretary);
 
-        $teacher = (new User())->setEmail('teacher@test.fr')->setFirstName('Enseignant')->setLastName('Test');
-        $teacher->addUserRole($savedRoles['ROLE_TEACHER'])->setPassword($this->hasher->hashPassword($teacher, 'pass_1234'));
-        $manager->persist($teacher);
+            $teacher = (new User())->setEmail('teacher@test.fr')->setFirstName('Enseignant')->setLastName('Bogue');
+            $teacher->addUserRole($savedRoles['ROLE_TEACHER'])->setPassword($this->hasher->hashPassword($teacher, 'pass_1234'));
+            $manager->persist($teacher);
+        }
 
         $manager->flush();
     }

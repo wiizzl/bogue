@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260313103225 extends AbstractMigration
+final class Version20260314191732 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -24,7 +24,7 @@ final class Version20260313103225 extends AbstractMigration
         $this->addSql('CREATE TABLE company (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, address VARCHAR(255) DEFAULT NULL, zip_code VARCHAR(20) DEFAULT NULL, city VARCHAR(100) DEFAULT NULL, contact_name VARCHAR(150) DEFAULT NULL, phone VARCHAR(30) DEFAULT NULL, email VARCHAR(255) DEFAULT NULL, PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE history_log (id INT AUTO_INCREMENT NOT NULL, old_value LONGTEXT DEFAULT NULL, new_value LONGTEXT DEFAULT NULL, created_at DATETIME NOT NULL, action_type_id INT NOT NULL, author_id INT NOT NULL, internship_id INT DEFAULT NULL, INDEX IDX_6190350A1FEE0472 (action_type_id), INDEX IDX_6190350AF675F31B (author_id), INDEX IDX_6190350A7A4A70BE (internship_id), INDEX idx_history_internship_date (internship_id, created_at), INDEX idx_history_author_date (author_id, created_at), PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE internship (id INT AUTO_INCREMENT NOT NULL, start_date DATE NOT NULL, end_date DATE NOT NULL, remarks LONGTEXT DEFAULT NULL, student_id INT NOT NULL, company_id INT NOT NULL, tracking_teacher_id INT DEFAULT NULL, visiting_teacher_id INT DEFAULT NULL, INDEX IDX_10D1B00C979B1AD6 (company_id), INDEX IDX_10D1B00C3C0AC0DC (tracking_teacher_id), INDEX IDX_10D1B00CBCFE061F (visiting_teacher_id), INDEX idx_internship_teachers (tracking_teacher_id, visiting_teacher_id), INDEX idx_internship_student (student_id), INDEX idx_internship_dates (start_date, end_date), PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4');
-        $this->addSql('CREATE TABLE internship_milestone (id INT AUTO_INCREMENT NOT NULL, validated_at DATE DEFAULT NULL, comment LONGTEXT DEFAULT NULL, internship_id INT NOT NULL, status_id INT NOT NULL, milestone_id INT NOT NULL, INDEX IDX_FD01E8C07A4A70BE (internship_id), INDEX IDX_FD01E8C06BF700BD (status_id), INDEX IDX_FD01E8C04B3E2EDA (milestone_id), PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4');
+        $this->addSql('CREATE TABLE internship_milestone (id INT AUTO_INCREMENT NOT NULL, validated_at DATE DEFAULT NULL, comment LONGTEXT DEFAULT NULL, internship_id INT NOT NULL, status_id INT NOT NULL, milestone_id INT NOT NULL, INDEX IDX_FD01E8C07A4A70BE (internship_id), INDEX IDX_FD01E8C06BF700BD (status_id), INDEX IDX_FD01E8C04B3E2EDA (milestone_id), UNIQUE INDEX uniq_internship_milestone_pair (internship_id, milestone_id), PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE major (id INT AUTO_INCREMENT NOT NULL, code VARCHAR(10) NOT NULL, label VARCHAR(100) NOT NULL, PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE milestone (id INT AUTO_INCREMENT NOT NULL, code VARCHAR(50) NOT NULL, label VARCHAR(100) NOT NULL, PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE milestone_status (id INT AUTO_INCREMENT NOT NULL, code VARCHAR(50) NOT NULL, label VARCHAR(100) NOT NULL, PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4');
