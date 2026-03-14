@@ -86,11 +86,11 @@ class Promotion
 
     public function removeStudent(Student $student): static
     {
-        if ($this->students->removeElement($student)) {
-            if ($student->getPromotion() === $this) {
-                $student->setPromotion(null);
-            }
+        if ($student->getPromotion() === $this) {
+            throw new \LogicException('Cannot detach student from promotion because student.promotion is required. Reassign the student or delete it.');
         }
+
+        $this->students->removeElement($student);
 
         return $this;
     }

@@ -2,7 +2,7 @@
 {% set statusLabel = status.label|default('') %}
 {% set commentText = comment|default('') %}
 
-<span title="{{ commentText }}" aria-label="{{ statusLabel }}{{ commentText ? ' : ' ~ commentText }}">
+<span title="{{ commentText }}" aria-label="{{ statusLabel }}">
     {% if statusCode == 'OK' %}
         {{ ux_icon('check') }}
     {% elseif statusCode == 'NOK' %}

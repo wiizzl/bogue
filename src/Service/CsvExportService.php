@@ -99,6 +99,8 @@ class CsvExportService
             $headers[] = $milestone->getLabel();
         }
 
+        $headers = array_map([$this, 'sanitizeCsvCell'], $headers);
+
         fputcsv($fp, $headers, ';');
     }
 
@@ -114,6 +116,7 @@ class CsvExportService
 
         foreach ($internships as $internship) {
             $row = $this->buildInternshipRow($internship, $allMilestones);
+            $row = array_map([$this, 'sanitizeCsvCell'], $row);
             fputcsv($fp, $row, ';');
         }
     }
@@ -161,5 +164,20 @@ class CsvExportService
         }
 
         return 'Non défini';
+    }
+
+    /**
+     * Prevent spreadsheet formula execution when opening CSV files.
+     */
+    private function sanitizeCsvCell(?string $value): string
+    {
+        $value = (string) ($value ?? '');
+        $trimmedValue = ltrim($value);
+
+        if ($trimmedValue !== '' && preg_match('/^[=+\-@]/', $trimmedValue) === 1) {
+            return "'" . $value;
+        }
+
+        return $value;
     }
 }

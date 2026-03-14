@@ -186,11 +186,11 @@ class Internship
 
     public function removeMilestone(InternshipMilestone $milestone): static
     {
-        if ($this->milestones->removeElement($milestone)) {
-            if ($milestone->getInternship() === $this) {
-                $milestone->setInternship(null);
-            }
+        if ($milestone->getInternship() === $this) {
+            throw new \LogicException('Cannot detach milestone from internship because internship_milestone.internship is required. Delete the milestone row instead.');
         }
+
+        $this->milestones->removeElement($milestone);
 
         return $this;
     }

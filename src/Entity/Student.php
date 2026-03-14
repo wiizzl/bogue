@@ -115,11 +115,11 @@ class Student
 
     public function removeInternship(Internship $internship): static
     {
-        if ($this->internships->removeElement($internship)) {
-            if ($internship->getStudent() === $this) {
-                $internship->setStudent(null);
-            }
+        if ($internship->getStudent() === $this) {
+            throw new \LogicException('Cannot detach internship from student because internship.student is required. Reassign the internship or delete it.');
         }
+
+        $this->internships->removeElement($internship);
 
         return $this;
     }

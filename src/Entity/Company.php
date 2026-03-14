@@ -167,11 +167,11 @@ class Company
 
     public function removeInternship(Internship $internship): static
     {
-        if ($this->internships->removeElement($internship)) {
-            if ($internship->getCompany() === $this) {
-                $internship->setCompany(null);
-            }
+        if ($internship->getCompany() === $this) {
+            throw new \LogicException('Cannot detach internship from company because internship.company is required. Reassign the internship or delete it.');
         }
+
+        $this->internships->removeElement($internship);
 
         return $this;
     }

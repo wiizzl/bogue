@@ -4,7 +4,7 @@
 
 {% block body %}
     <section>
-        <h2>Liste des stages</h2>
+        <h2>Stages</h2>
         {% if is_granted('ROLE_ADMIN') %}
             <p><a href="{{ path('app_internship_new') }}">Ajouter un stage</a></p>
         {% endif %}

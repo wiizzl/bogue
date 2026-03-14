@@ -86,11 +86,11 @@ class Major
 
     public function removeStudent(Student $student): static
     {
-        if ($this->students->removeElement($student)) {
-            if ($student->getMajor() === $this) {
-                $student->setMajor(null);
-            }
+        if ($student->getMajor() === $this) {
+            throw new \LogicException('Cannot detach student from major because student.major is required. Reassign the student or delete it.');
         }
+
+        $this->students->removeElement($student);
 
         return $this;
     }
