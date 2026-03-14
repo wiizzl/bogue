@@ -47,7 +47,10 @@
                 <section>
                     <h2>{{ block('title') }}</h2>
                 </section>
+            {% else %}
+                <img src="{{ asset('images/logo.webp') }}" alt="Bogue">
             {% endif %}
+
             {% set flashes = app.flashes %}
             {% if flashes is not empty %}
                 <div style="margin-bottom: var(--space-6);">
