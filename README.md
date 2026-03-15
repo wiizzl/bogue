@@ -52,18 +52,14 @@ Les versions des logiciels utilisées dans l'image Docker (PHP, MySQL) correspon
 
 2. Importer la base de données
 
-- Via phpMyAdmin : importer le [script SQL](./sql/bogue.sql).
-
-- Via la console :
-
-  ```sh
-  php bin/console doctrine:database:create
-  php bin/console doctrine:migrations:migrate
-  php bin/console doctrine:fixtures:load
-  ```
+   ```sh
+   php bin/console doctrine:database:create
+   php bin/console doctrine:migrations:migrate
+   php bin/console doctrine:fixtures:load
+   ```
 
 3. Lancer le serveur de développement
 
    ```sh
-   symfony server:start
+   symfony serve
    ```
