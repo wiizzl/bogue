@@ -52,8 +52,6 @@ Les versions des logiciels utilisées dans l'image Docker (PHP, MySQL) correspon
 
 2. Importer la base de données
 
-Deux options sont disponibles :
-
 - Via phpMyAdmin : importer le [script SQL](./sql/bogue.sql).
 
 - Via la console :
