@@ -60,9 +60,10 @@ final class CompanyController extends AbstractController
     #[Route('/{id}', name: 'app_company_delete', methods: ['POST'])]
     public function delete(Request $request, Company $company, EntityManagerInterface $entityManager): Response
     {
-        if (!$this->isCsrfTokenValid('delete'.$company->getId(), $request->getPayload()->getString('_token'))) {
-            $this->addFlash('error', 'Token de sécurité invalide.');
-            return $this->redirectToRoute('app_company_index', [], Response::HTTP_SEE_OTHER);
+        $csrfErrorResponse = $this->validateDeleteCsrf($request, $company, 'app_company_index');
+
+        if ($csrfErrorResponse instanceof Response) {
+            return $csrfErrorResponse;
         }
 
         return $this->handleDelete($company, $entityManager, 'app_company_index');

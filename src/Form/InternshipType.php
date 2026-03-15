@@ -54,37 +54,28 @@ class InternshipType extends AbstractType
                     return $company->getName() . ' (' . $company->getCity() . ')';
                 },
             ])
-            ->add('trackingTeacher', EntityType::class, [
-                'class' => User::class,
-                'label' => 'Suivi',
-                'placeholder' => 'Choisir l\'enseignant...',
-                'query_builder' => function (UserRepository $er) {
-                    return $er->createQueryBuilder('u')
-                        ->join('u.userRoles', 'r')
-                        ->where('r.code = :role')
-                        ->setParameter('role', 'ROLE_TEACHER')
-                        ->orderBy('u.lastName', 'ASC');
-                },
-                'choice_label' => static function (User $user): string {
-                    return $user->getFullName();
-                },
-            ])
-            ->add('visitingTeacher', EntityType::class, [
-                'class' => User::class,
-                'label' => 'Visite',
-                'placeholder' => 'Choisir l\'enseignant...',
-                'query_builder' => function (UserRepository $er) {
-                    return $er->createQueryBuilder('u')
-                        ->join('u.userRoles', 'r')
-                        ->where('r.code = :role')
-                        ->setParameter('role', 'ROLE_TEACHER')
-                        ->orderBy('u.lastName', 'ASC');
-                },
-                'choice_label' => static function (User $user): string {
-                    return $user->getFullName();
-                },
-            ])
+            ->add('trackingTeacher', EntityType::class, $this->teacherFieldOptions('Suivi'))
+            ->add('visitingTeacher', EntityType::class, $this->teacherFieldOptions('Visite'))
         ;
+    }
+
+    private function teacherFieldOptions(string $label): array
+    {
+        return [
+            'class' => User::class,
+            'label' => $label,
+            'placeholder' => 'Choisir l\'enseignant...',
+            'query_builder' => static function (UserRepository $er) {
+                return $er->createQueryBuilder('u')
+                    ->join('u.userRoles', 'r')
+                    ->where('r.code = :role')
+                    ->setParameter('role', 'ROLE_TEACHER')
+                    ->orderBy('u.lastName', 'ASC');
+            },
+            'choice_label' => static function (User $user): string {
+                return $user->getFullName();
+            },
+        ];
     }
 
     public function configureOptions(OptionsResolver $resolver): void

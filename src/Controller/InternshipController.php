@@ -16,25 +16,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-/**
- * Controller for managing Internship entities.
- *
- * Provides CRUD operations with role-based and resource-based access control.
- * Uses voters to ensure teachers can only access their assigned internships.
- */
 #[Route('/internship')]
 final class InternshipController extends AbstractController
 {
     use CrudControllerTrait;
 
-    /**
-     * List internships based on user permissions.
-     *
-     * ADMIN/SECRETARY: see all internships
-     * TEACHER: redirected to home page (filtered view)
-     */
     #[Route(name: 'app_internship_index', methods: ['GET'])]
-    #[IsGranted('ROLE_SECRETARY')] // Only admin/secretary can see full list
+    #[IsGranted('ROLE_SECRETARY')]
     public function index(InternshipRepository $internshipRepository): Response
     {
         try {
@@ -47,13 +35,8 @@ final class InternshipController extends AbstractController
         }
     }
 
-    /**
-     * Create a new internship with automatic milestone initialization.
-     *
-     * Automatically creates all milestones with PENDING status for the new internship.
-     */
     #[Route('/new', name: 'app_internship_new', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_ADMIN')] // Only admins can create internships
+    #[IsGranted('ROLE_ADMIN')]
     public function new(
         Request $request,
         EntityManagerInterface $entityManager,
@@ -66,12 +49,10 @@ final class InternshipController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                // Start transaction for consistency
                 $entityManager->beginTransaction();
 
                 $entityManager->persist($internship);
 
-                // Initialize all milestones with PENDING status
                 $this->initializeInternshipMilestones($internship, $milestoneRepo, $statusRepo, $entityManager);
 
                 $entityManager->flush();
@@ -91,15 +72,9 @@ final class InternshipController extends AbstractController
         ]);
     }
 
-    /**
-     * Display internship details with access control.
-     *
-     * Uses voter to ensure teachers can only view their assigned internships.
-     */
     #[Route('/{id}', name: 'app_internship_show', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function show(Internship $internship): Response
     {
-        // Use voter to check VIEW permission
         if (!$this->isGranted('VIEW_INTERNSHIP', $internship)) {
             return $this->handleAccessDenied('consulter', $internship);
         }
@@ -109,13 +84,9 @@ final class InternshipController extends AbstractController
         ]);
     }
 
-    /**
-     * Edit internship with proper access control.
-     */
     #[Route('/{id}/edit', name: 'app_internship_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Internship $internship, EntityManagerInterface $entityManager): Response
     {
-        // Use voter to check EDIT permission
         if (!$this->isGranted('EDIT_INTERNSHIP', $internship)) {
             return $this->handleAccessDenied('modifier', $internship);
         }
@@ -132,33 +103,22 @@ final class InternshipController extends AbstractController
         );
     }
 
-    /**
-     * Delete internship with access control and form-based CSRF.
-     */
     #[Route('/{id}', name: 'app_internship_delete', methods: ['POST'])]
     public function delete(Request $request, Internship $internship, EntityManagerInterface $entityManager): Response
     {
-        // Only admins can delete internships
         if (!$this->isGranted('ROLE_ADMIN')) {
             return $this->handleAccessDenied('supprimer', $internship);
         }
 
-        if (!$this->isCsrfTokenValid('delete'.$internship->getId(), $request->getPayload()->getString('_token'))) {
-            $this->addFlash('error', 'Token de sécurité invalide.');
-            return $this->redirectToRoute('app_internship_index', [], Response::HTTP_SEE_OTHER);
+        $csrfErrorResponse = $this->validateDeleteCsrf($request, $internship, 'app_internship_index');
+
+        if ($csrfErrorResponse instanceof Response) {
+            return $csrfErrorResponse;
         }
 
         return $this->handleDelete($internship, $entityManager, 'app_internship_index');
     }
 
-    /**
-     * Initialize all milestones for a new internship with PENDING status.
-     *
-     * @param Internship $internship
-     * @param MilestoneRepository $milestoneRepo
-     * @param MilestoneStatusRepository $statusRepo
-     * @param EntityManagerInterface $entityManager
-     */
     private function initializeInternshipMilestones(
         Internship $internship,
         MilestoneRepository $milestoneRepo,
@@ -183,9 +143,6 @@ final class InternshipController extends AbstractController
         }
     }
 
-    /**
-     * Override entity display name for flash messages.
-     */
     protected function getEntityDisplayName(object $entity): string
     {
         return 'Stage';

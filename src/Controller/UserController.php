@@ -113,9 +113,10 @@ final class UserController extends AbstractController
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        if (!$this->isCsrfTokenValid('delete'.$user->getId(), $request->getPayload()->getString('_token'))) {
-            $this->addFlash('error', 'Token de securite invalide.');
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+        $csrfErrorResponse = $this->validateDeleteCsrf($request, $user, 'app_user_index');
+
+        if ($csrfErrorResponse instanceof Response) {
+            return $csrfErrorResponse;
         }
 
         return $this->handleDelete($user, $entityManager, 'app_user_index');

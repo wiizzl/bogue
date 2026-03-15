@@ -20,33 +20,19 @@ final class HomeController extends AbstractController
     ) {
     }
 
-    /**
-     * Display internship tracking dashboard with filtering and pagination.
-     *
-     * Handles role-based access control and data filtering for tracking teachers.
-     * Provides pagination and filtering capabilities for efficient data navigation.
-     */
     #[Route(name: 'app_home_index', methods: ['GET'])]
     public function index(Request $request): Response
     {
-        // Validate user has access to internship data
         if (!$this->internshipTrackingService->canViewInternships($this->getUser())) {
             return $this->handleAccessDenied('consulter les stages');
         }
 
-        // Parse and validate request parameters
         $page = max(1, $request->query->getInt('page', 1));
         $limit = self::ITEMS_PER_PAGE;
 
-        // Sanitize filters to prevent injection
-        $rawFilters = [
-            'major' => $request->query->get('major'),
-            'teacher' => $request->query->get('teacher'),
-        ];
-        $filters = $this->internshipTrackingService->sanitizeFilters($rawFilters);
+        $filters = $this->getFilters($request);
 
         try {
-            // Get filtered data with pagination
             $result = $this->internshipTrackingService->getFilteredInternships(
                 $filters,
                 $this->getUser(),
@@ -54,7 +40,6 @@ final class HomeController extends AbstractController
                 $limit
             );
 
-            // Get filter options for dropdowns
             $filterOptions = $this->internshipTrackingService->getFilterOptions();
 
             return $this->render('home/index.html.twig', array_merge($result['pagination'], [
@@ -79,12 +64,6 @@ final class HomeController extends AbstractController
         }
     }
 
-    /**
-     * Export internship tracking data as CSV.
-     *
-     * Generates a CSV file with all filtered internship data including
-     * student information, company details, and milestone statuses.
-     */
     #[Route('/export', name: 'app_home_export', methods: ['GET'])]
     public function exportCsv(Request $request): Response
     {
@@ -93,20 +72,13 @@ final class HomeController extends AbstractController
         }
 
         try {
-            // Sanitize filters for export (same as index)
-            $rawFilters = [
-                'major' => $request->query->get('major'),
-                'teacher' => $request->query->get('teacher'),
-            ];
-            $filters = $this->internshipTrackingService->sanitizeFilters($rawFilters);
+            $filters = $this->getFilters($request);
 
-            // Get all internships for export (no pagination)
             $internships = $this->internshipTrackingService->getInternshipsForExport(
                 $filters,
                 $this->getUser()
             );
 
-            // Generate and return CSV response
             return $this->csvExportService->generateInternshipCsv($internships);
         } catch (\Exception $e) {
             $this->addFlash('error', 'Erreur lors de l\'export CSV.');
@@ -114,12 +86,6 @@ final class HomeController extends AbstractController
         }
     }
 
-    /**
-     * Handle access denied scenarios with user feedback.
-     *
-     * @param string $action Action being denied
-     * @return Response
-     */
     private function handleAccessDenied(string $action): Response
     {
         $this->addFlash('error', "Vous n'avez pas les permissions pour $action.");
@@ -130,5 +96,13 @@ final class HomeController extends AbstractController
         }
 
         return $this->redirectToRoute('app_login');
+    }
+
+    private function getFilters(Request $request): array
+    {
+        return $this->internshipTrackingService->sanitizeFilters([
+            'major' => $request->query->get('major'),
+            'teacher' => $request->query->get('teacher'),
+        ]);
     }
 }

@@ -28,7 +28,6 @@ class StudentType extends AbstractType
             ])
             ->add('promotion', EntityType::class, [
                 'class' => Promotion::class,
-                'label' => 'Promotion',
                 'choice_label' => 'year',
                 'placeholder' => 'Choisir une promotion...',
                 'label' => 'Année de promotion',
