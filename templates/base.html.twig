@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %} - Bogue</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+
+    <link rel="stylesheet" href="https://unpkg.com/@knadh/oat/oat.min.css">
+    <link rel="stylesheet" href="{{ asset('css/globals.css') }}">
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+    {% set currentRoute = app.request.attributes.get('_route') %}
+    {% set showSidebar = currentRoute != 'app_login' and app.user %}
+
+    <div{% if showSidebar %} data-sidebar-layout{% endif %}>
+        {% if showSidebar %}
+            <aside data-sidebar>
+                <img src="{{ asset('images/logo.webp') }}" alt="Bogue" style="width: full;">
+
+                <nav aria-label="Navigation principale">
+                    <ul>
+                        <li><a href="{{ path('app_home_index') }}" {% if currentRoute == 'app_home_index' %}aria-current="page"{% endif %}>Dashboard</a></li>
+                    </ul>
+                </nav>
+
+                <footer>
+                    <a href="{{ path('app_logout') }}" class="button outline" style="display: block; width: 100%; text-align: center;">Déconnexion</a>
+                </footer>
+            </aside>
+        {% endif %}
+
+        <main style="padding-inline: var(--space-8);{% if not showSidebar %} max-width: 32rem; margin: 0 auto; width: 100%; padding-top: var(--space-18);{% endif %}">
+            {% if showSidebar %}
+                <section>
+                    <h2>{{ block('title') }}</h2>
+                </section>
+            {% else %}
+                <img src="{{ asset('images/logo.webp') }}" alt="Bogue">
+            {% endif %}
+
+            {% set flashes = app.flashes %}
+            {% if flashes is not empty %}
+                <div style="margin-bottom: var(--space-6);">
+                    {% for label, messages in flashes %}
+                        {% set normalizedLabel = label|lower %}
+                        {% set variant = null %}
+                        {% set heading = 'Info' %}
+
+                        {% if normalizedLabel in ['success'] %}
+                            {% set variant = 'success' %}
+                            {% set heading = 'Succès' %}
+                        {% elseif normalizedLabel in ['warning', 'warn'] %}
+                            {% set variant = 'warning' %}
+                            {% set heading = 'Attention' %}
+                        {% elseif normalizedLabel in ['error', 'danger'] %}
+                            {% set variant = 'error' %}
+                            {% set heading = 'Erreur' %}
+                        {% endif %}
+
+                        {% for message in messages %}
+                            <div role="alert" {% if variant %}data-variant="{{ variant }}"{% endif %}>
+                                <strong>{{ heading }}</strong> {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% block body %}{% endblock %}
+        </main>
+    </div>
+
+    <script src="https://unpkg.com/@knadh/oat/oat.min.js" defer></script>
+    {% block javascripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block body %}
+    <section>
+        {{ include('security/_form.html.twig', {form: loginForm}) }}
+    </section>
+{% endblock %}
