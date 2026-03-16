@@ -13,7 +13,7 @@
                 <tr>
                     <th>Nom</th>
                     <th>Email</th>
-                    <th>Rôles</th>
+                    <th>Rôle</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -23,7 +23,7 @@
                     <td>{{ user.fullName }}</td>
                     <td>{{ user.email }}</td>
                     <td>
-                        {{ user.role and user.role.label ? user.role.label : 'Utilisateur' }}
+                        {{ user.role.label }}
                     </td>
                     <td>
                         <a href="{{ path('app_user_show', {'id': user.id}) }}" class="button outline small" aria-label="Voir l'utilisateur" title="Voir">
