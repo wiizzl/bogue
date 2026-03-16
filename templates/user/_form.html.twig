@@ -27,19 +27,12 @@
             {{ form_errors(form.lastName) }}
         </label>
 
-        {% if form.userRoles is defined %}
-            <div data-field>
-                {{ form_label(form.userRoles) }}
-                <div>
-                    {% for roleField in form.userRoles %}
-                        <label for="{{ roleField.vars.id }}">
-                            {{ form_widget(roleField) }}
-                            <span>{{ roleField.vars.label }}</span>
-                        </label>
-                    {% endfor %}
-                </div>
-                {{ form_errors(form.userRoles) }}
-            </div>
+        {% if form.role is defined %}
+            <label data-field for="{{ form.role.vars.id }}">
+                {{ form.role.vars.label }}
+                {{ form_widget(form.role) }}
+                {{ form_errors(form.role) }}
+            </label>
         {% endif %}
     </fieldset>
     <button type="submit">{{ button_label|default('Enregistrer') }}</button>

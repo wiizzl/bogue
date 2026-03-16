@@ -39,7 +39,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     public function findTeachers(): array
     {
         return $this->createQueryBuilder('u')
-            ->join('u.userRoles', 'r')
+            ->join('u.role', 'r')
             ->andWhere('r.code = :role')
             ->setParameter('role', 'ROLE_TEACHER')
             ->orderBy('u.lastName', 'ASC')

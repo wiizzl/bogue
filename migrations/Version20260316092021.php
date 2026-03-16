@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260314191732 extends AbstractMigration
+final class Version20260316092021 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -31,8 +31,7 @@ final class Version20260314191732 extends AbstractMigration
         $this->addSql('CREATE TABLE promotion (id INT AUTO_INCREMENT NOT NULL, year INT NOT NULL, is_archived TINYINT NOT NULL, PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE role (id INT AUTO_INCREMENT NOT NULL, label VARCHAR(100) NOT NULL, code VARCHAR(50) NOT NULL, PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE student (id INT AUTO_INCREMENT NOT NULL, first_name VARCHAR(100) NOT NULL, last_name VARCHAR(100) NOT NULL, major_id INT NOT NULL, promotion_id INT NOT NULL, INDEX IDX_B723AF33E93695C7 (major_id), INDEX IDX_B723AF33139DF194 (promotion_id), INDEX idx_student_promotion_major (promotion_id, major_id), INDEX idx_student_name (last_name, first_name), PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4');
-        $this->addSql('CREATE TABLE user (id INT AUTO_INCREMENT NOT NULL, email VARCHAR(180) NOT NULL, password VARCHAR(255) NOT NULL, first_name VARCHAR(100) NOT NULL, last_name VARCHAR(100) NOT NULL, UNIQUE INDEX UNIQ_IDENTIFIER_EMAIL (email), PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4');
-        $this->addSql('CREATE TABLE user_role (user_id INT NOT NULL, role_id INT NOT NULL, INDEX IDX_2DE8C6A3A76ED395 (user_id), INDEX IDX_2DE8C6A3D60322AC (role_id), PRIMARY KEY (user_id, role_id)) DEFAULT CHARACTER SET utf8mb4');
+        $this->addSql('CREATE TABLE user (id INT AUTO_INCREMENT NOT NULL, email VARCHAR(180) NOT NULL, password VARCHAR(255) NOT NULL, first_name VARCHAR(100) NOT NULL, last_name VARCHAR(100) NOT NULL, role_id INT DEFAULT NULL, INDEX IDX_8D93D649D60322AC (role_id), UNIQUE INDEX UNIQ_IDENTIFIER_EMAIL (email), PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('ALTER TABLE history_log ADD CONSTRAINT FK_6190350A1FEE0472 FOREIGN KEY (action_type_id) REFERENCES action_type (id)');
         $this->addSql('ALTER TABLE history_log ADD CONSTRAINT FK_6190350AF675F31B FOREIGN KEY (author_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE history_log ADD CONSTRAINT FK_6190350A7A4A70BE FOREIGN KEY (internship_id) REFERENCES internship (id)');
@@ -45,8 +44,7 @@ final class Version20260314191732 extends AbstractMigration
         $this->addSql('ALTER TABLE internship_milestone ADD CONSTRAINT FK_FD01E8C04B3E2EDA FOREIGN KEY (milestone_id) REFERENCES milestone (id)');
         $this->addSql('ALTER TABLE student ADD CONSTRAINT FK_B723AF33E93695C7 FOREIGN KEY (major_id) REFERENCES major (id)');
         $this->addSql('ALTER TABLE student ADD CONSTRAINT FK_B723AF33139DF194 FOREIGN KEY (promotion_id) REFERENCES promotion (id)');
-        $this->addSql('ALTER TABLE user_role ADD CONSTRAINT FK_2DE8C6A3A76ED395 FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE');
-        $this->addSql('ALTER TABLE user_role ADD CONSTRAINT FK_2DE8C6A3D60322AC FOREIGN KEY (role_id) REFERENCES role (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE user ADD CONSTRAINT FK_8D93D649D60322AC FOREIGN KEY (role_id) REFERENCES role (id) ON DELETE SET NULL');
     }
 
     public function down(Schema $schema): void
@@ -64,8 +62,7 @@ final class Version20260314191732 extends AbstractMigration
         $this->addSql('ALTER TABLE internship_milestone DROP FOREIGN KEY FK_FD01E8C04B3E2EDA');
         $this->addSql('ALTER TABLE student DROP FOREIGN KEY FK_B723AF33E93695C7');
         $this->addSql('ALTER TABLE student DROP FOREIGN KEY FK_B723AF33139DF194');
-        $this->addSql('ALTER TABLE user_role DROP FOREIGN KEY FK_2DE8C6A3A76ED395');
-        $this->addSql('ALTER TABLE user_role DROP FOREIGN KEY FK_2DE8C6A3D60322AC');
+        $this->addSql('ALTER TABLE user DROP FOREIGN KEY FK_8D93D649D60322AC');
         $this->addSql('DROP TABLE action_type');
         $this->addSql('DROP TABLE company');
         $this->addSql('DROP TABLE history_log');
@@ -78,6 +75,5 @@ final class Version20260314191732 extends AbstractMigration
         $this->addSql('DROP TABLE role');
         $this->addSql('DROP TABLE student');
         $this->addSql('DROP TABLE user');
-        $this->addSql('DROP TABLE user_role');
     }
 }

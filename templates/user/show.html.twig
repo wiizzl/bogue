@@ -21,8 +21,7 @@
                 <tr>
                     <th>Rôles</th>
                     <td>
-                        {% set roleLabels = user.userRoles|map(role => role.label)|filter(label => label is not empty) %}
-                        {{ roleLabels is not empty ? roleLabels|join(', ') : 'Utilisateur' }}
+                        {{ user.role and user.role.label ? user.role.label : 'Utilisateur' }}
                     </td>
                 </tr>
             </tbody>

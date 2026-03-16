@@ -35,12 +35,12 @@ class UserType extends AbstractType
             ]);
 
         if ($options['can_edit_roles']) {
-            $builder->add('userRoles', EntityType::class, [
+            $builder->add('role', EntityType::class, [
                 'class' => Role::class,
-                'label' => 'Rôles',
+                'label' => 'Rôle',
                 'choice_label' => 'label',
-                'multiple' => true,
-                'expanded' => true,
+                'placeholder' => 'Utilisateur (ROLE_USER uniquement)',
+                'required' => false,
                 'query_builder' => static function (RoleRepository $er) {
                     return $er->createQueryBuilder('r')
                         ->orderBy('r.label', 'ASC');

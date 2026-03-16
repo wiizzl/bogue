@@ -27,11 +27,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Length(max: 180)]
     private ?string $email = null;
 
-    /**
-     * @var Collection<int, Role> The user roles
-     */
-    #[ORM\ManyToMany(targetEntity: Role::class)]
-    private Collection $userRoles;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    private ?Role $role = null;
 
     /**
      * @var string The hashed password
@@ -63,7 +61,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
-        $this->userRoles = new ArrayCollection();
         $this->trackingInternships = new ArrayCollection();
         $this->visitingInternships = new ArrayCollection();
     }
@@ -101,8 +98,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = [];
-        foreach ($this->userRoles as $roleEntity) {
-            $roles[] = $roleEntity->getCode();
+
+        if ($this->role?->getCode()) {
+            $roles[] = $this->role->getCode();
         }
 
         $roles[] = 'ROLE_USER';
@@ -110,29 +108,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
-    public function getUserRoles(): Collection
+    public function getRole(): ?Role
     {
-        return $this->userRoles;
+        return $this->role;
     }
 
-    /**
-     * @param Role $role The role to add
-     */
-    public function addUserRole(Role $role): static
+    public function setRole(?Role $role): static
     {
-        if (!$this->userRoles->contains($role)) {
-            $this->userRoles->add($role);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param Role $role The role to remove
-     */
-    public function removeUserRole(Role $role): static
-    {
-        $this->userRoles->removeElement($role);
+        $this->role = $role;
 
         return $this;
     }

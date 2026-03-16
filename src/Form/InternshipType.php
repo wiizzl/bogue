@@ -67,7 +67,7 @@ class InternshipType extends AbstractType
             'placeholder' => 'Choisir l\'enseignant...',
             'query_builder' => static function (UserRepository $er) {
                 return $er->createQueryBuilder('u')
-                    ->join('u.userRoles', 'r')
+                    ->join('u.role', 'r')
                     ->where('r.code = :role')
                     ->setParameter('role', 'ROLE_TEACHER')
                     ->orderBy('u.lastName', 'ASC');

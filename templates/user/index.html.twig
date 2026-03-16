@@ -23,8 +23,7 @@
                     <td>{{ user.fullName }}</td>
                     <td>{{ user.email }}</td>
                     <td>
-                        {% set roleLabels = user.userRoles|map(role => role.label)|filter(label => label is not empty) %}
-                        {{ roleLabels is not empty ? roleLabels|join(', ') : 'Utilisateur' }}
+                        {{ user.role and user.role.label ? user.role.label : 'Utilisateur' }}
                     </td>
                     <td>
                         <a href="{{ path('app_user_show', {'id': user.id}) }}" class="button outline small" aria-label="Voir l'utilisateur" title="Voir">
