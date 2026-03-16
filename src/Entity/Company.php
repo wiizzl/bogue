@@ -36,7 +36,7 @@ class Company
 
     #[ORM\Column(length: 150, nullable: true)]
     #[Assert\Length(max: 150)]
-    private ?string $contactName = null;
+    private ?string $tutorName = null;
 
     #[ORM\Column(length: 30, nullable: true)]
     #[Assert\Length(max: 30)]
@@ -111,14 +111,14 @@ class Company
         return $this;
     }
 
-    public function getContactName(): ?string
+    public function getTutorName(): ?string
     {
-        return $this->contactName;
+        return $this->tutorName;
     }
 
-    public function setContactName(?string $contactName): static
+    public function setTutorName(?string $tutorName): static
     {
-        $this->contactName = $contactName;
+        $this->tutorName = $tutorName;
 
         return $this;
     }

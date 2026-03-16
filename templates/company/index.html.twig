@@ -13,8 +13,8 @@
                 <tr>
                     <th>Nom</th>
                     <th>Ville</th>
-                    <th>Contact</th>
-                    <th>Telephone</th>
+                    <th>Tuteur</th>
+                    <th>Téléphone</th>
                     <th>Email</th>
                     <th>Actions</th>
                 </tr>
@@ -24,7 +24,7 @@
                 <tr>
                     <td>{{ company.name }}</td>
                     <td>{{ company.city|default('-') }}</td>
-                    <td>{{ company.contactName|default('-') }}</td>
+                    <td>{{ company.tutorName|default('-') }}</td>
                     <td>{{ company.phone|default('-') }}</td>
                     <td>{{ company.email|default('-') }}</td>
                     <td>

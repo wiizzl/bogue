@@ -30,8 +30,8 @@ class CompanyType extends AbstractType
                 'label' => 'Ville',
                 'required' => false
             ])
-            ->add('contactName', TextType::class, [
-                'label' => 'Nom du contact',
+            ->add('tutorName', TextType::class, [
+                'label' => 'Nom du tuteur',
                 'required' => false,
             ])
             ->add('phone', TelType::class, [
@@ -39,7 +39,7 @@ class CompanyType extends AbstractType
                 'required' => false
             ])
             ->add('email', EmailType::class, [
-                'label' => 'Email de contact',
+                'label' => 'Email',
                 'required' => false
             ])
         ;
