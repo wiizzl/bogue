@@ -10,8 +10,7 @@
 
         <label data-field for="{{ form.password.vars.id }}">
             {{ form.password.vars.label }}
-            {{ form_widget(form.password, {'attr': {'aria-describedby': form.password.vars.id ~ '_hint'}}) }}
-            <small id="{{ form.password.vars.id }}_hint" data-hint>Renseignez un mot de passe fort.</small>
+            {{ form_widget(form.password) }}
             {{ form_errors(form.password) }}
         </label>
 

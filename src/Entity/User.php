@@ -29,6 +29,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[Assert\NotNull(message: 'Le rôle est obligatoire.')]
     private ?Role $role = null;
 
     /**

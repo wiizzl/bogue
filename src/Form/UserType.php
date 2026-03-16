@@ -39,10 +39,11 @@ class UserType extends AbstractType
                 'class' => Role::class,
                 'label' => 'Rôle',
                 'choice_label' => 'label',
-                'placeholder' => 'Utilisateur (ROLE_USER uniquement)',
-                'required' => false,
+                'required' => true,
                 'query_builder' => static function (RoleRepository $er) {
                     return $er->createQueryBuilder('r')
+                        ->where('r.code IN (:allowedRoles)')
+                        ->setParameter('allowedRoles', ['ROLE_ADMIN', 'ROLE_SECRETARY', 'ROLE_TEACHER'])
                         ->orderBy('r.label', 'ASC');
                 },
             ]);

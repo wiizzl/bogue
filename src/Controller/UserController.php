@@ -8,6 +8,7 @@ use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -42,24 +43,18 @@ final class UserController extends AbstractController
             'action' => 'new',
             'can_edit_roles' => true,
         ]);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            try {
-                $this->hashUserPasswordIfProvided($user, $form->get('password')->getData(), $userPasswordHasher);
-                $entityManager->persist($user);
-                $entityManager->flush();
-                $this->addFlash('success', 'Utilisateur cree avec succes.');
-                return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
-            } catch (\Exception $e) {
-                $this->addFlash('error', 'Erreur lors de la creation.');
-            }
-        }
-
-        return $this->render('user/new.html.twig', [
-            'user' => $user,
-            'form' => $form,
-        ]);
+        return $this->handleUserForm(
+            $request,
+            $user,
+            $form,
+            $entityManager,
+            $userPasswordHasher,
+            true,
+            'Utilisateur cree avec succes.',
+            'Erreur lors de la creation.',
+            'user/new.html.twig'
+        );
     }
 
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'], requirements: ['id' => '\\d+'])]
@@ -85,23 +80,18 @@ final class UserController extends AbstractController
             'action' => 'edit',
             'can_edit_roles' => $this->isGranted('ROLE_ADMIN'),
         ]);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            try {
-                $this->hashUserPasswordIfProvided($user, $form->get('password')->getData(), $userPasswordHasher);
-                $entityManager->flush();
-                $this->addFlash('success', 'Utilisateur mis a jour avec succes.');
-                return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
-            } catch (\Exception $e) {
-                $this->addFlash('error', 'Erreur lors de la mise a jour.');
-            }
-        }
-
-        return $this->render('user/edit.html.twig', [
-            'user' => $user,
-            'form' => $form,
-        ]);
+        return $this->handleUserForm(
+            $request,
+            $user,
+            $form,
+            $entityManager,
+            $userPasswordHasher,
+            false,
+            'Utilisateur mis a jour avec succes.',
+            'Erreur lors de la mise a jour.',
+            'user/edit.html.twig'
+        );
     }
 
     #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
@@ -127,6 +117,42 @@ final class UserController extends AbstractController
         if ($plainPassword) {
             $user->setPassword($hasher->hashPassword($user, $plainPassword));
         }
+    }
+
+    private function handleUserForm(
+        Request $request,
+        User $user,
+        FormInterface $form,
+        EntityManagerInterface $entityManager,
+        UserPasswordHasherInterface $userPasswordHasher,
+        bool $persistOnSave,
+        string $successMessage,
+        string $errorMessage,
+        string $template
+    ): Response {
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $this->hashUserPasswordIfProvided($user, $form->get('password')->getData(), $userPasswordHasher);
+
+                if ($persistOnSave) {
+                    $entityManager->persist($user);
+                }
+
+                $entityManager->flush();
+                $this->addFlash('success', $successMessage);
+
+                return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+            } catch (\Exception $e) {
+                $this->addFlash('error', $errorMessage);
+            }
+        }
+
+        return $this->render($template, [
+            'user' => $user,
+            'form' => $form,
+        ]);
     }
 
     private function canManageUser(User $target): bool
