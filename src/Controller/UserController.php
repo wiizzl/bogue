@@ -139,9 +139,4 @@ final class UserController extends AbstractController
 
         return $this->isGranted('ROLE_ADMIN') || $current->getId() === $target->getId();
     }
-
-    protected function getEntityDisplayName(object $entity): string
-    {
-        return 'Utilisateur';
-    }
 }

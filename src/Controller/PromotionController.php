@@ -63,9 +63,4 @@ final class PromotionController extends AbstractController
             'app_promotion_index'
         );
     }
-
-    protected function getEntityDisplayName(object $entity): string
-    {
-        return 'Promotion';
-    }
 }

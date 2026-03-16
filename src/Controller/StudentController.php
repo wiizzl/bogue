@@ -82,9 +82,4 @@ final class StudentController extends AbstractController
 
         return $this->handleDelete($student, $entityManager, 'app_student_index');
     }
-
-    protected function getEntityDisplayName(object $entity): string
-    {
-        return 'Étudiant';
-    }
 }

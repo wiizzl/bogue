@@ -68,9 +68,4 @@ final class CompanyController extends AbstractController
 
         return $this->handleDelete($company, $entityManager, 'app_company_index');
     }
-
-    protected function getEntityDisplayName(object $entity): string
-    {
-        return 'Entreprise';
-    }
 }

@@ -142,9 +142,4 @@ final class InternshipController extends AbstractController
             $entityManager->persist($internshipMilestone);
         }
     }
-
-    protected function getEntityDisplayName(object $entity): string
-    {
-        return 'Stage';
-    }
 }

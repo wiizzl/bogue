@@ -24,15 +24,11 @@ trait CrudControllerTrait
                 $entityManager->persist($entity);
                 $entityManager->flush();
 
-                $this->addFlash('success',
-                    sprintf('%s créé(e) avec succès.', $this->getEntityDisplayName($entity))
-                );
+                $this->addFlash('success', 'Entitée créée avec succès.');
 
                 return $this->redirectToRoute($redirectRoute, [], Response::HTTP_SEE_OTHER);
             } catch (\Exception $e) {
-                $this->addFlash('error',
-                    'Erreur lors de la création.'
-                );
+                $this->addFlash('error', 'Erreur lors de la création.');
             }
         }
 
@@ -59,15 +55,11 @@ trait CrudControllerTrait
             try {
                 $entityManager->flush();
 
-                $this->addFlash('success',
-                    sprintf('%s mis(e) à jour avec succès.', $this->getEntityDisplayName($entity))
-                );
+                $this->addFlash('success', 'Entitée mise à jour avec succès.');
 
                 return $this->redirectToRoute($redirectRoute, [], Response::HTTP_SEE_OTHER);
             } catch (\Exception $e) {
-                $this->addFlash('error',
-                    'Erreur lors de la mise à jour.'
-                );
+                $this->addFlash('error', 'Erreur lors de la mise à jour.');
             }
         }
 
@@ -88,13 +80,9 @@ trait CrudControllerTrait
             $entityManager->remove($entity);
             $entityManager->flush();
 
-            $this->addFlash('success',
-                sprintf('%s supprimé(e) avec succès.', $this->getEntityDisplayName($entity))
-            );
+            $this->addFlash('success', 'Entitée supprimée avec succès.');
         } catch (\Exception $e) {
-            $this->addFlash('error',
-                'Erreur lors de la suppression.'
-            );
+            $this->addFlash('error', 'Erreur lors de la suppression.');
         }
 
         return $this->redirectToRoute($redirectRoute, [], Response::HTTP_SEE_OTHER);
@@ -124,12 +112,6 @@ trait CrudControllerTrait
         return $this->redirectToRoute($redirectRoute, [], Response::HTTP_SEE_OTHER);
     }
 
-    protected function getEntityDisplayName(object $entity): string
-    {
-        $class = get_class($entity);
-        return substr($class, strrpos($class, '\\') + 1);
-    }
-
     protected function getEntityTemplateName(object $entity): string
     {
         $class = get_class($entity);
@@ -139,11 +121,7 @@ trait CrudControllerTrait
 
     protected function handleAccessDenied(string $operation, ?object $entity = null): Response
     {
-        $entityName = $entity ? $this->getEntityDisplayName($entity) : 'cette ressource';
-
-        $this->addFlash('error',
-            sprintf('Vous n\'avez pas les permissions pour %s %s.', $operation, $entityName)
-        );
+        $this->addFlash('error', 'Vous n\'avez pas les permissions pour faire cela.');
 
         return $this->redirectToRoute('app_home_index');
     }
