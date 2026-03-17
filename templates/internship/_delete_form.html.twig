@@ -1,4 +1,4 @@
-<form method="post" action="{{ path('app_internship_delete', {'id': internship.id}) }}" onsubmit="return confirm('Confirmer la suppression de ce stage ?');">
+<form method="post" action="{{ path('app_internship_delete', {'id': internship.id}) }}" onsubmit="return confirm('Confirmer la suppression de ce stage ?');" style="display: inline; margin: 0;">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ internship.id) }}">
     <button class="button outline small" type="submit" aria-label="Supprimer le stage" title="Supprimer">
         {{ ux_icon('trash-2') }}
