@@ -6,12 +6,6 @@ trait LogsExceptionDetailsTrait
 {
     protected function logExceptionDetails(\Throwable $exception, string $context): void
     {
-        $details = sprintf('[%s] %s', $context, (string) $exception);
-
-        error_log($details);
-
-        if (method_exists($this, 'addFlash')) {
-            $this->addFlash('__console_error', $details);
-        }
+        error_log(sprintf('[%s] %s: %s', $context, get_class($exception), $exception->getMessage()));
     }
 }

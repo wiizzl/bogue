@@ -55,8 +55,8 @@ final class UserController extends AbstractController
             $entityManager,
             $userPasswordHasher,
             true,
-            'Utilisateur cree avec succes.',
-            'Erreur lors de la creation.',
+            'Utilisateur créé avec succès.',
+            'Erreur lors de la création.',
             'user/new.html.twig'
         );
     }
@@ -92,8 +92,8 @@ final class UserController extends AbstractController
             $entityManager,
             $userPasswordHasher,
             false,
-            'Utilisateur mis a jour avec succes.',
-            'Erreur lors de la mise a jour.',
+            'Utilisateur mis à jour avec succès.',
+            'Erreur lors de la mise à jour.',
             'user/edit.html.twig'
         );
     }

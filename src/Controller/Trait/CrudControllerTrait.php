@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
 trait CrudControllerTrait
 {
     use LogsExceptionDetailsTrait;
@@ -26,7 +27,7 @@ trait CrudControllerTrait
                 $entityManager->persist($entity);
                 $entityManager->flush();
 
-                $this->addFlash('success', 'Entitée créée avec succès.');
+                $this->addFlash('success', 'Entité créée avec succès.');
 
                 return $this->redirectToRoute($redirectRoute, [], Response::HTTP_SEE_OTHER);
             } catch (\Exception $e) {
@@ -58,7 +59,7 @@ trait CrudControllerTrait
             try {
                 $entityManager->flush();
 
-                $this->addFlash('success', 'Entitée mise à jour avec succès.');
+                $this->addFlash('success', 'Entité mise à jour avec succès.');
 
                 return $this->redirectToRoute($redirectRoute, [], Response::HTTP_SEE_OTHER);
             } catch (\Exception $e) {
@@ -84,21 +85,13 @@ trait CrudControllerTrait
             $entityManager->remove($entity);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Entitée supprimée avec succès.');
+            $this->addFlash('success', 'Entité supprimée avec succès.');
         } catch (\Exception $e) {
             $this->logExceptionDetails($e, 'CRUD delete failed');
             $this->addFlash('error', 'Erreur lors de la suppression.');
         }
 
         return $this->redirectToRoute($redirectRoute, [], Response::HTTP_SEE_OTHER);
-    }
-
-    protected function createDeleteForm(object $entity): FormInterface
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('app_' . $this->getEntityTemplateName($entity) . '_delete', ['id' => $entity->getId()]))
-            ->setMethod('POST')
-            ->getForm();
     }
 
     protected function validateDeleteCsrf(Request $request, object $entity, string $redirectRoute): ?Response

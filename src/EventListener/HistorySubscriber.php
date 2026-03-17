@@ -10,6 +10,8 @@ use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Events;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\UnitOfWork;
 use Symfony\Bundle\SecurityBundle\Security;
 
 #[AsDoctrineListener(event: Events::onFlush)]
@@ -125,8 +127,8 @@ class HistorySubscriber
     }
 
     private function createHistoryLog(
-        $em,
-        $uow,
+        EntityManagerInterface $em,
+        UnitOfWork $uow,
         Internship $internship,
         User $author,
         ActionType $actionType,

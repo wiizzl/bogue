@@ -11,6 +11,8 @@ use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 
 class InternshipVoter extends Voter
 {
+    use ChecksAssignedTeacher;
+
     public const VIEW = 'VIEW_INTERNSHIP';
     public const EDIT = 'EDIT_INTERNSHIP';
 
@@ -53,14 +55,5 @@ class InternshipVoter extends Voter
         }
 
         return false;
-    }
-
-    private function isAssignedTeacher(User $user, Internship $internship): bool
-    {
-        $userId = $user->getId();
-        $trackingTeacherId = $internship->getTrackingTeacher()?->getId();
-        $visitingTeacherId = $internship->getVisitingTeacher()?->getId();
-
-        return $userId !== null && ($userId === $trackingTeacherId || $userId === $visitingTeacherId);
     }
 }

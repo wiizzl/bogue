@@ -112,8 +112,7 @@ class InternshipTrackingService
     private function calculatePaginationData(Paginator|array $results, int $page, ?int $limit): array
     {
         if ($limit === null) {
-            // No pagination
-            $totalItems = is_array($results) ? count($results) : count($results);
+            $totalItems = count($results);
             return [
                 'current_page' => 1,
                 'pages_count' => 1,

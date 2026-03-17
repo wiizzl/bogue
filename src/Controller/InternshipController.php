@@ -127,6 +127,7 @@ final class InternshipController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_internship_delete', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(
         Request $request,
         Internship $internship,
@@ -134,10 +135,6 @@ final class InternshipController extends AbstractController
         DeletionCleanupService $deletionCleanupService
     ): Response
     {
-        if (!$this->isGranted('ROLE_ADMIN')) {
-            return $this->handleAccessDenied('supprimer', $internship);
-        }
-
         $csrfErrorResponse = $this->validateDeleteCsrf($request, $internship, 'app_internship_index');
 
         if ($csrfErrorResponse instanceof Response) {

@@ -8,12 +8,6 @@ use App\Repository\MilestoneRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
-/**
- * Service responsible for generating CSV exports of internship data.
- *
- * This service handles the complex logic of building CSV content with proper
- * column mapping and data formatting for internship tracking exports.
- */
 class CsvExportService
 {
     public function __construct(
@@ -21,13 +15,6 @@ class CsvExportService
     ) {
     }
 
-    /**
-     * Generate a CSV response containing internship tracking data.
-     *
-     * @param Internship[] $internships Array of internships to export
-     * @param string|null $filename Custom filename (optional)
-     * @return Response HTTP response with CSV content
-     */
     public function generateInternshipCsv(array $internships, ?string $filename = null): Response
     {
         $csvContent = $this->buildCsvContent($internships);
@@ -45,12 +32,6 @@ class CsvExportService
         return $response;
     }
 
-    /**
-     * Build the actual CSV content from internship data.
-     *
-     * Creates a CSV with student data, company info, assigned teachers,
-     * and milestone status for each internship.
-     */
     private function buildCsvContent(array $internships): string
     {
         $fp = fopen('php://temp', 'w');
@@ -60,11 +41,10 @@ class CsvExportService
         }
 
         try {
-            // Build headers including dynamic milestone columns
-            $this->writeCsvHeaders($fp);
+            $milestones = $this->milestoneRepository->findAll();
 
-            // Write data rows
-            $this->writeCsvData($fp, $internships);
+            $this->writeCsvHeaders($fp, $milestones);
+            $this->writeCsvData($fp, $internships, $milestones);
 
             rewind($fp);
             $content = stream_get_contents($fp);
@@ -79,10 +59,7 @@ class CsvExportService
         }
     }
 
-    /**
-     * Write CSV headers including static columns and dynamic milestone columns.
-     */
-    private function writeCsvHeaders($fp): void
+    private function writeCsvHeaders($fp, array $milestones): void
     {
         $headers = [
             'Étudiant',
@@ -93,8 +70,6 @@ class CsvExportService
             'Prof. Visite'
         ];
 
-        // Add milestone columns dynamically
-        $milestones = $this->milestoneRepository->findAll();
         foreach ($milestones as $milestone) {
             $headers[] = $milestone->getLabel();
         }
@@ -104,30 +79,15 @@ class CsvExportService
         fputcsv($fp, $headers, ';');
     }
 
-    /**
-     * Write internship data rows to CSV.
-     *
-     * @param resource $fp File pointer for writing
-     * @param Internship[] $internships
-     */
-    private function writeCsvData($fp, array $internships): void
+    private function writeCsvData($fp, array $internships, array $milestones): void
     {
-        $allMilestones = $this->milestoneRepository->findAll();
-
         foreach ($internships as $internship) {
-            $row = $this->buildInternshipRow($internship, $allMilestones);
+            $row = $this->buildInternshipRow($internship, $milestones);
             $row = array_map([$this, 'sanitizeCsvCell'], $row);
             fputcsv($fp, $row, ';');
         }
     }
 
-    /**
-     * Build a single CSV row for an internship.
-     *
-     * @param Internship $internship
-     * @param Milestone[] $allMilestones
-     * @return array
-     */
     private function buildInternshipRow(Internship $internship, array $allMilestones): array
     {
         $student = $internship->getStudent();
@@ -150,11 +110,6 @@ class CsvExportService
         return $row;
     }
 
-    /**
-     * Get the status label for a specific milestone in an internship.
-     *
-     * Returns the status label if the milestone is found, otherwise 'Non défini'.
-     */
     private function getMilestoneStatus(Internship $internship, Milestone $milestone): string
     {
         foreach ($internship->getMilestones() as $internshipMilestone) {
@@ -166,9 +121,6 @@ class CsvExportService
         return 'Non défini';
     }
 
-    /**
-     * Prevent spreadsheet formula execution when opening CSV files.
-     */
     private function sanitizeCsvCell(?string $value): string
     {
         $value = (string) ($value ?? '');
