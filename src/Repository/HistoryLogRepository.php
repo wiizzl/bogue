@@ -19,12 +19,16 @@ class HistoryLogRepository extends ServiceEntityRepository
 
     public function findGlobalHistory(int $page = 1, int $limit = 20): Paginator
     {
+        $allowedActionCodes = ['STATUS_UPDATE', 'TEACHER_UPDATE', 'DATE_UPDATE'];
+
         $qb = $this->createQueryBuilder('h')
             ->addSelect('at', 'au', 'i', 's')
             ->join('h.actionType', 'at')
             ->join('h.author', 'au')
             ->leftJoin('h.internship', 'i')
             ->leftJoin('i.student', 's')
+            ->andWhere('at.code IN (:allowedActionCodes)')
+            ->setParameter('allowedActionCodes', $allowedActionCodes)
             ->orderBy('h.createdAt', 'DESC');
 
         $qb->setFirstResult(($page - 1) * $limit)

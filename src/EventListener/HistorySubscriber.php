@@ -32,6 +32,7 @@ class HistorySubscriber
 
         $statusUpdateActionType = $em->getRepository(ActionType::class)->findOneBy(['code' => 'STATUS_UPDATE']);
         $teacherUpdateActionType = $em->getRepository(ActionType::class)->findOneBy(['code' => 'TEACHER_UPDATE']);
+        $dateUpdateActionType = $em->getRepository(ActionType::class)->findOneBy(['code' => 'DATE_UPDATE']);
 
         foreach ($uow->getScheduledEntityUpdates() as $entity) {
             $changeSet = $uow->getEntityChangeSet($entity);
@@ -85,6 +86,40 @@ class HistorySubscriber
                         'Visite: ' . $this->formatTeacher($newTeacher)
                     );
                 }
+
+                if (isset($changeSet['startDate']) && $dateUpdateActionType) {
+                    /** @var \DateTimeInterface|null $oldStartDate */
+                    $oldStartDate = $changeSet['startDate'][0];
+                    /** @var \DateTimeInterface|null $newStartDate */
+                    $newStartDate = $changeSet['startDate'][1];
+
+                    $this->createHistoryLog(
+                        $em,
+                        $uow,
+                        $entity,
+                        $user,
+                        $dateUpdateActionType,
+                        'Début: ' . $this->formatDate($oldStartDate),
+                        'Début: ' . $this->formatDate($newStartDate)
+                    );
+                }
+
+                if (isset($changeSet['endDate']) && $dateUpdateActionType) {
+                    /** @var \DateTimeInterface|null $oldEndDate */
+                    $oldEndDate = $changeSet['endDate'][0];
+                    /** @var \DateTimeInterface|null $newEndDate */
+                    $newEndDate = $changeSet['endDate'][1];
+
+                    $this->createHistoryLog(
+                        $em,
+                        $uow,
+                        $entity,
+                        $user,
+                        $dateUpdateActionType,
+                        'Fin: ' . $this->formatDate($oldEndDate),
+                        'Fin: ' . $this->formatDate($newEndDate)
+                    );
+                }
             }
         }
     }
@@ -119,5 +154,10 @@ class HistorySubscriber
         }
 
         return $teacher->getFullName();
+    }
+
+    private function formatDate(?\DateTimeInterface $date): string
+    {
+        return $date ? $date->format('d/m/Y') : 'Non défini';
     }
 }

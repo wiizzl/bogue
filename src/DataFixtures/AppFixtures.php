@@ -51,6 +51,7 @@ class AppFixtures extends Fixture
         $actionTypes = [
             'STATUS_UPDATE' => 'Mise à jour d\'un statut',
             'TEACHER_UPDATE' => 'Mise à jour d\'un enseignant',
+            'DATE_UPDATE' => 'Mise à jour des dates',
         ];
         $existingActionTypes = $manager->getRepository(ActionType::class)->findAll();
         $existingActionTypeCodes = [];
