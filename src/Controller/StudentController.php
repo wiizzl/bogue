@@ -6,6 +6,7 @@ use App\Controller\Trait\CrudControllerTrait;
 use App\Entity\Student;
 use App\Form\StudentType;
 use App\Repository\StudentRepository;
+use App\Service\PaginationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,26 +20,28 @@ final class StudentController extends AbstractController
 {
     use CrudControllerTrait;
 
-    private const ITEMS_PER_PAGE = 16;
+    public function __construct(private PaginationService $paginationService)
+    {
+    }
 
     #[Route(name: 'app_student_index', methods: ['GET'])]
     public function index(Request $request, StudentRepository $studentRepository): Response
     {
         $includeArchived = $request->query->getBoolean('showArchived', false);
         $page = max(1, $request->query->getInt('page', 1));
-        $limit = self::ITEMS_PER_PAGE;
+        $limit = PaginationService::DEFAULT_ITEMS_PER_PAGE;
 
         try {
             $totalItems = $studentRepository->countForIndex($includeArchived);
-            $pagesCount = max(1, (int) ceil($totalItems / $limit));
-            $currentPage = min(max(1, $page), $pagesCount);
+            $pagination = $this->paginationService->build($totalItems, $page, $limit);
+            $currentPage = $pagination['current_page'];
             $students = $studentRepository->findForIndex($includeArchived, $currentPage, $limit);
 
             return $this->render('student/index.html.twig', [
                 'students' => $students,
                 'showArchived' => $includeArchived,
-                'current_page' => $currentPage,
-                'pages_count' => $pagesCount,
+                'current_page' => $pagination['current_page'],
+                'pages_count' => $pagination['pages_count'],
             ]);
         } catch (\Exception $e) {
             $this->addFlash('error', 'Erreur lors du chargement des étudiants.');

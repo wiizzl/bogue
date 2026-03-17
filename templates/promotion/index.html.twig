@@ -12,8 +12,8 @@
             <thead>
                 <tr>
                     <th>Année</th>
-                    <th>Statut</th>
-                    <th>Étudiants</th>
+                    <th>Archivée</th>
+                    <th style="text-align: center;">Étudiants</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -21,9 +21,9 @@
             {% for promotion in promotions %}
                 <tr>
                     <td>{{ promotion.year }}</td>
-                    <td>{{ promotion.isArchived ? 'Archivée' : 'Active' }}</td>
-                    <td>{{ promotion.students|length }}</td>
-                    <td style="display: flex; align-items: center; gap: var(--space-2);">
+                    <td>{{ promotion.isArchived ? 'Oui' : 'Non' }}</td>
+                    <td style="text-align: center;">{{ promotion.students|length }}</td>
+                    <td class="actions-cell">
                         <a href="{{ path('app_promotion_edit', {'id': promotion.id}) }}" class="button outline small" aria-label="Modifier la promotion" title="Modifier">
                             {{ ux_icon('pen-line') }}
                         </a>

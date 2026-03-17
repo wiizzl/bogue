@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Company;
+use App\Service\PaginationService;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,7 +20,7 @@ class CompanyRepository extends ServiceEntityRepository
     /**
      * @return Company[]
      */
-    public function findForIndex(int $page = 1, int $limit = 25): array
+    public function findForIndex(int $page = 1, int $limit = PaginationService::DEFAULT_ITEMS_PER_PAGE): array
     {
         $offset = max(0, ($page - 1) * $limit);
 

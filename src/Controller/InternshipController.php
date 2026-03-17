@@ -9,6 +9,7 @@ use App\Form\InternshipType;
 use App\Repository\InternshipRepository;
 use App\Repository\MilestoneRepository;
 use App\Repository\MilestoneStatusRepository;
+use App\Service\PaginationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,24 +22,26 @@ final class InternshipController extends AbstractController
 {
     use CrudControllerTrait;
 
-    private const ITEMS_PER_PAGE = 16;
+    public function __construct(private PaginationService $paginationService)
+    {
+    }
 
     #[Route(name: 'app_internship_index', methods: ['GET'])]
     #[IsGranted('ROLE_SECRETARY')]
     public function index(Request $request, InternshipRepository $internshipRepository): Response
     {
         $page = max(1, $request->query->getInt('page', 1));
-        $limit = self::ITEMS_PER_PAGE;
+        $limit = PaginationService::DEFAULT_ITEMS_PER_PAGE;
 
         try {
             $totalItems = $internshipRepository->countForIndex();
-            $pagesCount = max(1, (int) ceil($totalItems / $limit));
-            $currentPage = min(max(1, $page), $pagesCount);
+            $pagination = $this->paginationService->build($totalItems, $page, $limit);
+            $currentPage = $pagination['current_page'];
 
             return $this->render('internship/index.html.twig', [
                 'internships' => $internshipRepository->findForIndex($currentPage, $limit),
-                'current_page' => $currentPage,
-                'pages_count' => $pagesCount,
+                'current_page' => $pagination['current_page'],
+                'pages_count' => $pagination['pages_count'],
             ]);
         } catch (\Exception $e) {
             $this->addFlash('error', 'Erreur lors du chargement des stages.');

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Student;
+use App\Service\PaginationService;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -36,7 +37,7 @@ class StudentRepository extends ServiceEntityRepository
     /**
      * @return Student[]
      */
-    public function findForIndex(bool $includeArchived = false, int $page = 1, int $limit = 25): array
+    public function findForIndex(bool $includeArchived = false, int $page = 1, int $limit = PaginationService::DEFAULT_ITEMS_PER_PAGE): array
     {
         $offset = max(0, ($page - 1) * $limit);
 

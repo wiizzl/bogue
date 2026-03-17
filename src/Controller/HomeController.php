@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Service\CsvExportService;
 use App\Service\InternshipTrackingService;
+use App\Service\PaginationService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,8 +13,6 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class HomeController extends AbstractController
 {
-    private const ITEMS_PER_PAGE = 16;
-
     public function __construct(
         private InternshipTrackingService $internshipTrackingService,
         private CsvExportService $csvExportService
@@ -28,7 +27,7 @@ final class HomeController extends AbstractController
         }
 
         $page = max(1, $request->query->getInt('page', 1));
-        $limit = self::ITEMS_PER_PAGE;
+        $limit = PaginationService::DEFAULT_ITEMS_PER_PAGE;
 
         $filters = $this->getFilters($request);
 

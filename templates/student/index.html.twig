@@ -18,21 +18,21 @@
         <table>
             <thead>
                 <tr>
-                    <th>Prénom</th>
-                    <th>Nom</th>
-                    <th>Promotion</th>
-                    <th>Option</th>
+                    <th>Prénom Nom</th>
+                    <th style="text-align: center;">Option</th>
+                    <th style="text-align: center;">Promotion</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
             {% for student in students %}
                 <tr>
-                    <td>{{ student.firstName }}</td>
-                    <td>{{ student.lastName }}</td>
-                    <td>{{ student.promotion.year }}</td>
-                    <td title="{{ student.major.label }}">{{ student.major.code }}</td>
-                    <td style="display: flex; align-items: center; gap: var(--space-2);">
+                    <td>{{ student.firstName }} {{ student.lastName }}</td>
+                    <td style="text-align: center;">
+                        <span title="{{ student.major.label }}">{{ student.major.code }}</span>
+                    </td>
+                    <td style="text-align: center;">{{ student.promotion.year }}</td>
+                    <td class="actions-cell">
                         <a href="{{ path('app_student_edit', {'id': student.id}) }}" class="button outline small" aria-label="Modifier l'étudiant" title="Modifier">
                             {{ ux_icon('pen-line') }}
                         </a>
@@ -48,37 +48,10 @@
         </table>
     </section>
 
-    <section style="padding-top: var(--space-4);">
-        <nav aria-label="Pagination">
-            <menu class="buttons">
-                {% set pagination_params = showArchived ? {'showArchived': 1} : {} %}
-
-                <li>
-                    {% if current_page > 1 %}
-                        <a href="{{ path('app_student_index', pagination_params|merge({'page': current_page - 1})) }}" class="button outline small">&larr;</a>
-                    {% else %}
-                        <a class="button outline small" aria-disabled="true">&larr;</a>
-                    {% endif %}
-                </li>
-
-                {% for i in 1..pages_count %}
-                    <li>
-                        {% if i == current_page %}
-                            <a href="{{ path('app_student_index', pagination_params|merge({'page': i})) }}" class="button small" aria-current="page">{{ i }}</a>
-                        {% else %}
-                            <a href="{{ path('app_student_index', pagination_params|merge({'page': i})) }}" class="button outline small">{{ i }}</a>
-                        {% endif %}
-                    </li>
-                {% endfor %}
-
-                <li>
-                    {% if current_page < pages_count %}
-                        <a href="{{ path('app_student_index', pagination_params|merge({'page': current_page + 1})) }}" class="button outline small">&rarr;</a>
-                    {% else %}
-                        <a class="button outline small" aria-disabled="true">&rarr;</a>
-                    {% endif %}
-                </li>
-            </menu>
-        </nav>
-    </section>
+    {{ include('_pagination.html.twig', {
+        route: 'app_student_index',
+        current_page: current_page,
+        pages_count: pages_count,
+        query: showArchived ? {'showArchived': 1} : {}
+    }) }}
 {% endblock %}

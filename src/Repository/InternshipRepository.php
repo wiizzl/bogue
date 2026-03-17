@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Internship;
 use App\Entity\User;
+use App\Service\PaginationService;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -23,7 +24,7 @@ class InternshipRepository extends ServiceEntityRepository
     /**
      * @return Internship[]
      */
-    public function findForIndex(int $page = 1, int $limit = 25): array
+    public function findForIndex(int $page = 1, int $limit = PaginationService::DEFAULT_ITEMS_PER_PAGE): array
     {
         $offset = max(0, ($page - 1) * $limit);
 

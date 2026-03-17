@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\HistoryLogRepository;
+use App\Service\PaginationService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,24 +14,24 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 final class HistoryController extends AbstractController
 {
-    private const ITEMS_PER_PAGE = 16;
+    public function __construct(private PaginationService $paginationService)
+    {
+    }
 
     #[Route(name: 'app_history_index', methods: ['GET'])]
     public function index(Request $request, HistoryLogRepository $historyRepo): Response
     {
         $page = max(1, $request->query->getInt('page', 1));
-        $limit = self::ITEMS_PER_PAGE;
+        $limit = PaginationService::DEFAULT_ITEMS_PER_PAGE;
 
         try {
             $logs = $historyRepo->findGlobalHistory($page, $limit);
-            $totalItems = count($logs);
-            $pagesCount = max(1, (int) ceil($totalItems / $limit));
-            $currentPage = min(max(1, $page), $pagesCount);
+            $pagination = $this->paginationService->build(count($logs), $page, $limit);
 
             return $this->render('history/index.html.twig', [
                 'logs' => $logs,
-                'current_page' => $currentPage,
-                'pages_count' => $pagesCount,
+                'current_page' => $pagination['current_page'],
+                'pages_count' => $pagination['pages_count'],
             ]);
         } catch (\Exception $e) {
             $this->addFlash('error', 'Erreur lors du chargement de l\'historique.');

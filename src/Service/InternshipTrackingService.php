@@ -19,7 +19,8 @@ class InternshipTrackingService
     public function __construct(
         private InternshipRepository $internshipRepository,
         private MajorRepository $majorRepository,
-        private UserRepository $userRepository
+        private UserRepository $userRepository,
+        private PaginationService $paginationService
     ) {
     }
 
@@ -121,15 +122,13 @@ class InternshipTrackingService
             ];
         }
 
-        $totalItems = count($results);
-        $pagesCount = max(1, (int) ceil($totalItems / $limit));
-        $currentPage = min(max(1, $page), $pagesCount);
+        $pagination = $this->paginationService->build(count($results), $page, $limit);
 
         return [
-            'current_page' => $currentPage,
-            'pages_count' => $pagesCount,
-            'total_items' => $totalItems,
-            'current_limit' => $limit
+            'current_page' => $pagination['current_page'],
+            'pages_count' => $pagination['pages_count'],
+            'total_items' => $pagination['total_items'],
+            'current_limit' => $pagination['current_limit']
         ];
     }
 }
