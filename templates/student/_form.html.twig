@@ -14,17 +14,19 @@
             </label>
         </div>
 
-        <label data-field for="{{ form.promotion.vars.id }}">
-            {{ form.promotion.vars.label }}
-            {{ form_widget(form.promotion) }}
-            {{ form_errors(form.promotion) }}
-        </label>
+        <div class="row">
+            <label data-field for="{{ form.promotion.vars.id }}" class="col-6">
+                {{ form.promotion.vars.label }}
+                {{ form_widget(form.promotion) }}
+                {{ form_errors(form.promotion) }}
+            </label>
 
-        <label data-field for="{{ form.major.vars.id }}">
-            {{ form.major.vars.label }}
-            {{ form_widget(form.major) }}
-            {{ form_errors(form.major) }}
-        </label>
+            <label data-field for="{{ form.major.vars.id }}" class="col-6">
+                {{ form.major.vars.label }}
+                {{ form_widget(form.major) }}
+                {{ form_errors(form.major) }}
+            </label>
+        </div>
     </fieldset>
     <button type="submit">Enregistrer</button>
 {{ form_end(form) }}
