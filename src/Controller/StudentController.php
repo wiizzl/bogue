@@ -19,23 +19,34 @@ final class StudentController extends AbstractController
 {
     use CrudControllerTrait;
 
+    private const ITEMS_PER_PAGE = 16;
+
     #[Route(name: 'app_student_index', methods: ['GET'])]
     public function index(Request $request, StudentRepository $studentRepository): Response
     {
         $includeArchived = $request->query->getBoolean('showArchived', false);
+        $page = max(1, $request->query->getInt('page', 1));
+        $limit = self::ITEMS_PER_PAGE;
 
         try {
-            $students = $studentRepository->findForIndex($includeArchived);
+            $totalItems = $studentRepository->countForIndex($includeArchived);
+            $pagesCount = max(1, (int) ceil($totalItems / $limit));
+            $currentPage = min(max(1, $page), $pagesCount);
+            $students = $studentRepository->findForIndex($includeArchived, $currentPage, $limit);
 
             return $this->render('student/index.html.twig', [
                 'students' => $students,
                 'showArchived' => $includeArchived,
+                'current_page' => $currentPage,
+                'pages_count' => $pagesCount,
             ]);
         } catch (\Exception $e) {
             $this->addFlash('error', 'Erreur lors du chargement des étudiants.');
             return $this->render('student/index.html.twig', [
                 'students' => [],
                 'showArchived' => $includeArchived,
+                'current_page' => 1,
+                'pages_count' => 1,
             ]);
         }
     }

@@ -21,17 +21,32 @@ final class InternshipController extends AbstractController
 {
     use CrudControllerTrait;
 
+    private const ITEMS_PER_PAGE = 16;
+
     #[Route(name: 'app_internship_index', methods: ['GET'])]
     #[IsGranted('ROLE_SECRETARY')]
-    public function index(InternshipRepository $internshipRepository): Response
+    public function index(Request $request, InternshipRepository $internshipRepository): Response
     {
+        $page = max(1, $request->query->getInt('page', 1));
+        $limit = self::ITEMS_PER_PAGE;
+
         try {
+            $totalItems = $internshipRepository->countForIndex();
+            $pagesCount = max(1, (int) ceil($totalItems / $limit));
+            $currentPage = min(max(1, $page), $pagesCount);
+
             return $this->render('internship/index.html.twig', [
-                'internships' => $internshipRepository->findAll(),
+                'internships' => $internshipRepository->findForIndex($currentPage, $limit),
+                'current_page' => $currentPage,
+                'pages_count' => $pagesCount,
             ]);
         } catch (\Exception $e) {
             $this->addFlash('error', 'Erreur lors du chargement des stages.');
-            return $this->render('internship/index.html.twig', ['internships' => []]);
+            return $this->render('internship/index.html.twig', [
+                'internships' => [],
+                'current_page' => 1,
+                'pages_count' => 1,
+            ]);
         }
     }
 

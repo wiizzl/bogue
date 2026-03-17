@@ -16,10 +16,7 @@ class StudentRepository extends ServiceEntityRepository
         parent::__construct($registry, Student::class);
     }
 
-    /**
-     * @return Student[]
-     */
-    public function findForIndex(bool $includeArchived = false): array
+    private function createIndexQueryBuilder(bool $includeArchived = false)
     {
         $qb = $this->createQueryBuilder('s')
             ->innerJoin('s.promotion', 'p')
@@ -33,6 +30,28 @@ class StudentRepository extends ServiceEntityRepository
                 ->setParameter('archived', false);
         }
 
-        return $qb->getQuery()->getResult();
+        return $qb;
+    }
+
+    /**
+     * @return Student[]
+     */
+    public function findForIndex(bool $includeArchived = false, int $page = 1, int $limit = 25): array
+    {
+        $offset = max(0, ($page - 1) * $limit);
+
+        return $this->createIndexQueryBuilder($includeArchived)
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function countForIndex(bool $includeArchived = false): int
+    {
+        return (int) $this->createIndexQueryBuilder($includeArchived)
+            ->select('COUNT(s.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 }

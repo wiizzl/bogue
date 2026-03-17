@@ -53,4 +53,36 @@
             </tbody>
         </table>
     </section>
+
+    <section style="padding-top: var(--space-4);">
+        <nav aria-label="Pagination">
+            <menu class="buttons">
+                <li>
+                    {% if current_page > 1 %}
+                        <a href="{{ path('app_internship_index', {'page': current_page - 1}) }}" class="button outline small">&larr;</a>
+                    {% else %}
+                        <a class="button outline small" aria-disabled="true">&larr;</a>
+                    {% endif %}
+                </li>
+
+                {% for i in 1..pages_count %}
+                    <li>
+                        {% if i == current_page %}
+                            <a href="{{ path('app_internship_index', {'page': i}) }}" class="button small" aria-current="page">{{ i }}</a>
+                        {% else %}
+                            <a href="{{ path('app_internship_index', {'page': i}) }}" class="button outline small">{{ i }}</a>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+
+                <li>
+                    {% if current_page < pages_count %}
+                        <a href="{{ path('app_internship_index', {'page': current_page + 1}) }}" class="button outline small">&rarr;</a>
+                    {% else %}
+                        <a class="button outline small" aria-disabled="true">&rarr;</a>
+                    {% endif %}
+                </li>
+            </menu>
+        </nav>
+    </section>
 {% endblock %}

@@ -17,18 +17,33 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 final class CompanyController extends AbstractController
 {
-        use CrudControllerTrait;
+    use CrudControllerTrait;
+
+    private const ITEMS_PER_PAGE = 16;
 
     #[Route(name: 'app_company_index', methods: ['GET'])]
-    public function index(CompanyRepository $companyRepository): Response
+    public function index(Request $request, CompanyRepository $companyRepository): Response
     {
+        $page = max(1, $request->query->getInt('page', 1));
+        $limit = self::ITEMS_PER_PAGE;
+
         try {
+            $totalItems = $companyRepository->countForIndex();
+            $pagesCount = max(1, (int) ceil($totalItems / $limit));
+            $currentPage = min(max(1, $page), $pagesCount);
+
             return $this->render('company/index.html.twig', [
-                'companies' => $companyRepository->findAll(),
+                'companies' => $companyRepository->findForIndex($currentPage, $limit),
+                'current_page' => $currentPage,
+                'pages_count' => $pagesCount,
             ]);
         } catch (\Exception $e) {
             $this->addFlash('error', 'Erreur lors du chargement des entreprises.');
-            return $this->render('company/index.html.twig', ['companies' => []]);
+            return $this->render('company/index.html.twig', [
+                'companies' => [],
+                'current_page' => 1,
+                'pages_count' => 1,
+            ]);
         }
     }
 

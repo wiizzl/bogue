@@ -21,6 +21,33 @@ class InternshipRepository extends ServiceEntityRepository
     }
 
     /**
+     * @return Internship[]
+     */
+    public function findForIndex(int $page = 1, int $limit = 25): array
+    {
+        $offset = max(0, ($page - 1) * $limit);
+
+        return $this->createQueryBuilder('i')
+            ->addSelect('s', 'c')
+            ->innerJoin('i.student', 's')
+            ->innerJoin('i.company', 'c')
+            ->orderBy('s.lastName', 'ASC')
+            ->addOrderBy('s.firstName', 'ASC')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function countForIndex(): int
+    {
+        return (int) $this->createQueryBuilder('i')
+            ->select('COUNT(i.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
      * Find filtered internships for tracking with optimized query and role-based access.
      *
      * This method builds an optimized query with proper eager loading to avoid N+1 problems.
