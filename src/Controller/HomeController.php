@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class HomeController extends AbstractController
 {
-    private const ITEMS_PER_PAGE = 15;
+    private const ITEMS_PER_PAGE = 16;
 
     public function __construct(
         private InternshipTrackingService $internshipTrackingService,
@@ -54,7 +54,7 @@ final class HomeController extends AbstractController
             return $this->render('home/index.html.twig', [
                 'internships' => [],
                 'current_page' => 1,
-                'pages_count' => 0,
+                'pages_count' => 1,
                 'total_items' => 0,
                 'current_limit' => $limit,
                 'majors' => [],

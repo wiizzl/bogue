@@ -11,7 +11,8 @@
                     <th>Auteur</th>
                     <th>Action</th>
                     <th>Dossier concerné</th>
-                    <th>Détails</th>
+                    <th>Ancien</th>
+                    <th>Nouveau</th>
                 </tr>
             </thead>
             <tbody>
@@ -27,53 +28,47 @@
                                 N/A
                             {% endif %}
                         </td>
-                        <td>
-                            Ancien: {{ log.oldValue|default('-') }}<br>
-                            Nouveau: {{ log.newValue|default('-') }}
-                        </td>
+                        <td>{{ log.oldValue|default('-') }}</td>
+                        <td>{{ log.newValue|default('-') }}</td>
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="5">Aucun évènement.</td>
+                        <td colspan="6">Aucun évènement.</td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
     </section>
 
-    <section>
-        {% if pages_count > 1 %}
-            <nav aria-label="Pagination">
-                <menu class="buttons">
+    <section style="padding-top: var(--space-4);">
+        <nav aria-label="Pagination">
+            <menu class="buttons">
+                <li>
+                    {% if current_page > 1 %}
+                        <a href="{{ path('app_history_index', {'page': current_page - 1}) }}" class="button outline small">&larr;</a>
+                    {% else %}
+                        <a class="button outline small" aria-disabled="true">&larr;</a>
+                    {% endif %}
+                </li>
+
+                {% for i in 1..pages_count %}
                     <li>
-                        {% if current_page > 1 %}
-                            <a href="{{ path('app_history_index', {'page': current_page - 1}) }}" class="button outline small">&larr; Précédent</a>
+                        {% if i == current_page %}
+                            <a href="{{ path('app_history_index', {'page': i}) }}" class="button small" aria-current="page">{{ i }}</a>
                         {% else %}
-                            <span class="button outline small" aria-disabled="true">&larr; Précédent</span>
+                            <a href="{{ path('app_history_index', {'page': i}) }}" class="button outline small">{{ i }}</a>
                         {% endif %}
                     </li>
+                {% endfor %}
 
-                    {% for i in 1..pages_count %}
-                        <li>
-                            {% if i == current_page %}
-                                <a href="{{ path('app_history_index', {'page': i}) }}" class="button small" aria-current="page">{{ i }}</a>
-                            {% else %}
-                                <a href="{{ path('app_history_index', {'page': i}) }}" class="button outline small">{{ i }}</a>
-                            {% endif %}
-                        </li>
-                    {% endfor %}
-
-                    <li>
-                        {% if current_page < pages_count %}
-                            <a href="{{ path('app_history_index', {'page': current_page + 1}) }}" class="button outline small">Suivant &rarr;</a>
-                        {% else %}
-                            <span class="button outline small" aria-disabled="true">Suivant &rarr;</span>
-                        {% endif %}
-                    </li>
-                </menu>
-            </nav>
-        {% else %}
-            <p>Une seule page.</p>
-        {% endif %}
+                <li>
+                    {% if current_page < pages_count %}
+                        <a href="{{ path('app_history_index', {'page': current_page + 1}) }}" class="button outline small">&rarr;</a>
+                    {% else %}
+                        <a class="button outline small" aria-disabled="true">&rarr;</a>
+                    {% endif %}
+                </li>
+            </menu>
+        </nav>
     </section>
 {% endblock %}

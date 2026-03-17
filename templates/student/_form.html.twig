@@ -1,18 +1,18 @@
 {{ form_start(form) }}
     <fieldset>
-        <legend>Informations étudiant</legend>
+        <div class="row">
+            <label data-field for="{{ form.firstName.vars.id }}" class="col-6">
+                {{ form.firstName.vars.label }}
+                {{ form_widget(form.firstName) }}
+                {{ form_errors(form.firstName) }}
+            </label>
 
-        <label data-field for="{{ form.firstName.vars.id }}">
-            {{ form.firstName.vars.label }}
-            {{ form_widget(form.firstName) }}
-            {{ form_errors(form.firstName) }}
-        </label>
-
-        <label data-field for="{{ form.lastName.vars.id }}">
-            {{ form.lastName.vars.label }}
-            {{ form_widget(form.lastName) }}
-            {{ form_errors(form.lastName) }}
-        </label>
+            <label data-field for="{{ form.lastName.vars.id }}" class="col-6">
+                {{ form.lastName.vars.label }}
+                {{ form_widget(form.lastName) }}
+                {{ form_errors(form.lastName) }}
+            </label>
+        </div>
 
         <label data-field for="{{ form.promotion.vars.id }}">
             {{ form.promotion.vars.label }}

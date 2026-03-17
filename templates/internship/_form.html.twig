@@ -1,42 +1,46 @@
 {{ form_start(form) }}
     <fieldset>
-        <legend>Informations stage</legend>
-
-        <label data-field for="{{ form.student.vars.id }}">
+        <div class="row">
+            <label data-field for="{{ form.student.vars.id }}" class="col-6">
             {{ form.student.vars.label }}
-            {{ form_widget(form.student) }}
+            {{ form_widget(form.student, {'attr': {'style': 'width: 100%;'}}) }}
             {{ form_errors(form.student) }}
-        </label>
+            </label>
 
-        <label data-field for="{{ form.company.vars.id }}">
+            <label data-field for="{{ form.company.vars.id }}" class="col-6">
             {{ form.company.vars.label }}
-            {{ form_widget(form.company) }}
+            {{ form_widget(form.company, {'attr': {'style': 'width: 100%;'}}) }}
             {{ form_errors(form.company) }}
-        </label>
+            </label>
+        </div>
 
-        <label data-field for="{{ form.startDate.vars.id }}">
+        <div class="row">
+            <label data-field for="{{ form.startDate.vars.id }}" class="col-6">
             {{ form.startDate.vars.label }}
-            {{ form_widget(form.startDate) }}
+            {{ form_widget(form.startDate, {'attr': {'style': 'width: 100%;'}}) }}
             {{ form_errors(form.startDate) }}
-        </label>
+            </label>
 
-        <label data-field for="{{ form.endDate.vars.id }}">
+            <label data-field for="{{ form.endDate.vars.id }}" class="col-6">
             {{ form.endDate.vars.label }}
-            {{ form_widget(form.endDate) }}
+            {{ form_widget(form.endDate, {'attr': {'style': 'width: 100%;'}}) }}
             {{ form_errors(form.endDate) }}
-        </label>
+            </label>
+        </div>
 
-        <label data-field for="{{ form.trackingTeacher.vars.id }}">
+        <div class="row">
+            <label data-field for="{{ form.trackingTeacher.vars.id }}" class="col-6">
             {{ form.trackingTeacher.vars.label }}
-            {{ form_widget(form.trackingTeacher) }}
+            {{ form_widget(form.trackingTeacher, {'attr': {'style': 'width: 100%;'}}) }}
             {{ form_errors(form.trackingTeacher) }}
-        </label>
+            </label>
 
-        <label data-field for="{{ form.visitingTeacher.vars.id }}">
+            <label data-field for="{{ form.visitingTeacher.vars.id }}" class="col-6">
             {{ form.visitingTeacher.vars.label }}
-            {{ form_widget(form.visitingTeacher) }}
+            {{ form_widget(form.visitingTeacher, {'attr': {'style': 'width: 100%;'}}) }}
             {{ form_errors(form.visitingTeacher) }}
-        </label>
+            </label>
+        </div>
 
         <label data-field for="{{ form.remarks.vars.id }}">
             {{ form.remarks.vars.label }}

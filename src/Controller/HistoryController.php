@@ -13,20 +13,33 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 final class HistoryController extends AbstractController
 {
+    private const ITEMS_PER_PAGE = 16;
+
     #[Route(name: 'app_history_index', methods: ['GET'])]
     public function index(Request $request, HistoryLogRepository $historyRepo): Response
     {
         $page = max(1, $request->query->getInt('page', 1));
-        $limit = 25;
+        $limit = self::ITEMS_PER_PAGE;
 
-        $logs = $historyRepo->findGlobalHistory($page, $limit);
-        $totalItems = count($logs);
-        $pagesCount = ceil($totalItems / $limit);
+        try {
+            $logs = $historyRepo->findGlobalHistory($page, $limit);
+            $totalItems = count($logs);
+            $pagesCount = max(1, (int) ceil($totalItems / $limit));
+            $currentPage = min(max(1, $page), $pagesCount);
 
-        return $this->render('history/index.html.twig', [
-            'logs' => $logs,
-            'current_page' => $page,
-            'pages_count' => $pagesCount,
-        ]);
+            return $this->render('history/index.html.twig', [
+                'logs' => $logs,
+                'current_page' => $currentPage,
+                'pages_count' => $pagesCount,
+            ]);
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Erreur lors du chargement de l\'historique.');
+
+            return $this->render('history/index.html.twig', [
+                'logs' => [],
+                'current_page' => 1,
+                'pages_count' => 1,
+            ]);
+        }
     }
 }

@@ -21,11 +21,11 @@ class InternshipMilestoneType extends AbstractType
             ->add('status', EntityType::class, [
                 'class' => MilestoneStatus::class,
                 'choice_label' => 'label',
-                'label' => 'Statut du document',
+                'label' => 'Statut',
             ])
             ->add('validatedAt', DateType::class, [
                 'widget' => 'single_text',
-                'label' => 'Date de validation/réception',
+                'label' => 'Date de validation',
                 'required' => false,
             ])
             ->add('comment', TextareaType::class, [

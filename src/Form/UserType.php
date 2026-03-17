@@ -18,6 +18,12 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('firstName', TextType::class, [
+                'label' => 'Prénom',
+            ])
+            ->add('lastName', TextType::class, [
+                'label' => 'Nom',
+            ])
             ->add('email', EmailType::class, [
                 'label' => 'Adresse email professionnelle',
             ])
@@ -26,12 +32,6 @@ class UserType extends AbstractType
                 'always_empty' => true,
                 'mapped' => false,
                 'required' => $options['action'] === 'new',
-            ])
-            ->add('firstName', TextType::class, [
-                'label' => 'Prénom',
-            ])
-            ->add('lastName', TextType::class, [
-                'label' => 'Nom',
             ]);
 
         if ($options['can_edit_roles']) {

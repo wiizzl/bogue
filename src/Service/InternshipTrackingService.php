@@ -122,10 +122,11 @@ class InternshipTrackingService
         }
 
         $totalItems = count($results);
-        $pagesCount = ceil($totalItems / $limit);
+        $pagesCount = max(1, (int) ceil($totalItems / $limit));
+        $currentPage = min(max(1, $page), $pagesCount);
 
         return [
-            'current_page' => $page,
+            'current_page' => $currentPage,
             'pages_count' => $pagesCount,
             'total_items' => $totalItems,
             'current_limit' => $limit

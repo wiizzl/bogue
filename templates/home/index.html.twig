@@ -2,39 +2,65 @@
 
 {% block title %}Dashboard{% endblock %}
 
+{% block stylesheets %}
+    <style>
+        .home-milestone-col {
+            text-align: center;
+            white-space: nowrap;
+            width: 7%;
+            padding-block: 0 !important;
+            line-height: 1;
+        }
+
+        .home-right-group-start {
+            padding-inline-start: var(--space-8);
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
     <section>
-        <form method="get" action="{{ path('app_home_index') }}">
-            <div data-field>
-                <label for="major">Option</label>
-                <select id="major" name="major" aria-label="Filtrer par option">
-                    <option value="">Toutes les options</option>
-                    {% for major in majors %}
-                        <option value="{{ major.id }}" {{ (current_filters.major|default('')) == major.id ? 'selected' }}>{{ major.code }}</option>
-                    {% endfor %}
-                </select>
+        <form method="get" action="{{ path('app_home_index') }}" style="display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; gap: 1rem;">
+                <div data-field style="flex: 1; min-width: 220px;">
+                    <select id="major" name="major" aria-label="Filtrer par option" style="width: 100%;">
+                        <option value="">Toutes les options</option>
+                        {% for major in majors %}
+                            <option value="{{ major.id }}" {{ (current_filters.major|default('')) == major.id ? 'selected' : '' }}>
+                                {{ major.code }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div data-field style="flex: 1; min-width: 220px;">
+                    <select id="teacher" name="teacher" aria-label="Filtrer par enseignant" style="width: 100%;">
+                        <option value="">Tous les enseignants</option>
+                        {% for teacher in teachers %}
+                            <option value="{{ teacher.id }}" {{ (current_filters.teacher|default('')) == teacher.id ? 'selected' : '' }}>
+                                {{ teacher.firstName }} {{ teacher.lastName }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
 
-            <div data-field>
-                <label for="teacher">Enseignant</label>
-                <select id="teacher" name="teacher" aria-label="Filtrer par enseignant">
-                    <option value="">Tous les enseignants</option>
-                    {% for teacher in teachers %}
-                        <option value="{{ teacher.id }}" {{ (current_filters.teacher|default('')) == teacher.id ? 'selected' }}>{{ teacher.firstName }} {{ teacher.lastName }}</option>
-                    {% endfor %}
-                </select>
-            </div>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <button class="outline" type="submit">Filtrer</button>
 
-            <button type="submit">Filtrer</button>
-            <a href="{{ path('app_home_index') }}">Réinitialiser</a>
-            {% if is_granted('ROLE_SECRETARY') %}
-                <a href="{{ path('app_home_export', {'major': current_filters.major|default(''), 'teacher': current_filters.teacher|default('')}) }}">Exporter CSV</a>
-            {% endif %}
+                <a class="button outline" href="{{ path('app_home_index') }}">Réinitialiser</a>
+
+                {% if is_granted('ROLE_SECRETARY') %}
+                    <a class="button outline" href="{{ path('app_home_export', {'major': current_filters.major|default(''), 'teacher': current_filters.teacher|default('')}) }}">
+                        Exporter CSV
+                    </a>
+                {% endif %}
+            </div>
         </form>
     </section>
 
     <section class="table">
-        <table>
+        <table class="home-table">
             <thead>
                 <tr>
                     <th>Étudiant</th>
@@ -42,10 +68,10 @@
                     <th>Entreprise</th>
                     <th>Suivi</th>
                     <th>Visite</th>
-                    <th style="text-align: right;">Bilan</th>
-                    <th style="text-align: right;">Jury</th>
-                    <th style="text-align: right;">Attestation</th>
-                    <th style="text-align: right;">Remerciement</th>
+                    <th class="home-milestone-col home-right-group-start">Bilan</th>
+                    <th class="home-milestone-col">Jury</th>
+                    <th class="home-milestone-col">Attestation</th>
+                    <th class="home-milestone-col">Remerciement</th>
                 </tr>
             </thead>
             <tbody>
@@ -57,7 +83,7 @@
                     <td title="{{ internship.trackingTeacher ? internship.trackingTeacher.fullName : '' }}">{{ internship.trackingTeacher ? internship.trackingTeacher.trigram : 'Aucun' }}</td>
                     <td title="{{ internship.visitingTeacher ? internship.visitingTeacher.fullName : '' }}">{{ internship.visitingTeacher ? internship.visitingTeacher.trigram : 'Aucun' }}</td>
                     {% for item in internship.milestones %}
-                        <td style="text-align: right;">
+                        <td class="home-milestone-col {{ loop.first ? 'home-right-group-start' : '' }}">
                             {% if is_granted('EDIT_MILESTONE', item) %}
                                 <a href="{{ path('app_milestone_edit', {'id': item.id}) }}" title="{{ item.status.label }}">
                                     {{ include('milestone/_status_icon.html.twig', {'status': item.status, 'comment': item.comment}) }}
@@ -77,7 +103,7 @@
         </table>
     </section>
 
-    <section>
+    <section style="padding-top: var(--space-4);">
         <nav aria-label="Pagination">
                 <menu class="buttons">
                     <li>
