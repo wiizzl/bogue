@@ -23,7 +23,7 @@
                     <td>{{ promotion.year }}</td>
                     <td>{{ promotion.isArchived ? 'Archivée' : 'Active' }}</td>
                     <td>{{ promotion.students|length }}</td>
-                    <td>
+                    <td style="display: flex; align-items: center; gap: var(--space-2);">
                         <a href="{{ path('app_promotion_edit', {'id': promotion.id}) }}" class="button outline small" aria-label="Modifier la promotion" title="Modifier">
                             {{ ux_icon('pen-line') }}
                         </a>

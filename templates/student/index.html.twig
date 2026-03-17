@@ -32,7 +32,7 @@
                     <td>{{ student.lastName }}</td>
                     <td>{{ student.promotion.year }}</td>
                     <td title="{{ student.major.label }}">{{ student.major.code }}</td>
-                    <td>
+                    <td style="display: flex; align-items: center; gap: var(--space-2);">
                         <a href="{{ path('app_student_edit', {'id': student.id}) }}" class="button outline small" aria-label="Modifier l'étudiant" title="Modifier">
                             {{ ux_icon('pen-line') }}
                         </a>

@@ -27,7 +27,7 @@
                     <td>{{ company.tutorName|default('-') }}</td>
                     <td>{{ company.phone|default('-') }}</td>
                     <td>{{ company.email|default('-') }}</td>
-                    <td>
+                    <td style="display: flex; align-items: center; gap: var(--space-2);">
                         <a href="{{ path('app_company_show', {'id': company.id}) }}" class="button outline small" aria-label="Voir l'entreprise" title="Voir">
                             {{ ux_icon('eye') }}
                         </a>

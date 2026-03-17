@@ -25,7 +25,7 @@
                     <td>
                         {{ user.role.label }}
                     </td>
-                    <td>
+                    <td style="display: flex; align-items: center; gap: var(--space-2);">
                         <a href="{{ path('app_user_show', {'id': user.id}) }}" class="button outline small" aria-label="Voir l'utilisateur" title="Voir">
                             {{ ux_icon('eye') }}
                         </a>
