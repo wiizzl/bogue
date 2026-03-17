@@ -25,8 +25,9 @@ final class HistoryController extends AbstractController
         $limit = PaginationService::DEFAULT_ITEMS_PER_PAGE;
 
         try {
-            $logs = $historyRepo->findGlobalHistory($page, $limit);
-            $pagination = $this->paginationService->build(count($logs), $page, $limit);
+            $totalItems = $historyRepo->countGlobalHistory();
+            $pagination = $this->paginationService->build($totalItems, $page, $limit);
+            $logs = $historyRepo->findGlobalHistory($pagination['current_page'], $limit);
 
             return $this->render('history/index.html.twig', [
                 'logs' => $logs,

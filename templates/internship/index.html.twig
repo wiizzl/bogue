@@ -41,7 +41,12 @@
                             </a>
                         {% endif %}
                         {% if is_granted('ROLE_ADMIN') %}
-                            {{ include('internship/_delete_form.html.twig', {'internship': internship}) }}
+                            {{ include('_delete_form.html.twig', {
+                                entity: internship,
+                                route: 'app_internship_delete',
+                                confirm_message: 'Confirmer la suppression de ce stage ?',
+                                aria_label: 'Supprimer le stage'
+                            }) }}
                         {% endif %}
                     </td>
                 </tr>

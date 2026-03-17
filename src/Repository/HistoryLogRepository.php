@@ -12,23 +12,37 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class HistoryLogRepository extends ServiceEntityRepository
 {
+    private const ALLOWED_ACTION_CODES = ['STATUS_UPDATE', 'TEACHER_UPDATE', 'DATE_UPDATE'];
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, HistoryLog::class);
     }
 
-    public function findGlobalHistory(int $page = 1, int $limit = 20): Paginator
+    private function createGlobalHistoryQueryBuilder()
     {
-        $allowedActionCodes = ['STATUS_UPDATE', 'TEACHER_UPDATE', 'DATE_UPDATE'];
-
-        $qb = $this->createQueryBuilder('h')
-            ->addSelect('at', 'au', 'i', 's')
+        return $this->createQueryBuilder('h')
             ->join('h.actionType', 'at')
             ->join('h.author', 'au')
             ->leftJoin('h.internship', 'i')
             ->leftJoin('i.student', 's')
+            ->leftJoin('i.company', 'c')
             ->andWhere('at.code IN (:allowedActionCodes)')
-            ->setParameter('allowedActionCodes', $allowedActionCodes)
+            ->setParameter('allowedActionCodes', self::ALLOWED_ACTION_CODES);
+    }
+
+    public function countGlobalHistory(): int
+    {
+        return (int) $this->createGlobalHistoryQueryBuilder()
+            ->select('COUNT(h.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function findGlobalHistory(int $page = 1, int $limit = 20): Paginator
+    {
+        $qb = $this->createGlobalHistoryQueryBuilder()
+            ->addSelect('at', 'au', 'i', 's', 'c')
             ->orderBy('h.createdAt', 'DESC');
 
         $qb->setFirstResult(($page - 1) * $limit)

@@ -34,7 +34,12 @@
                         <a href="{{ path('app_company_edit', {'id': company.id}) }}" class="button outline small" aria-label="Modifier l'entreprise" title="Modifier">
                             {{ ux_icon('pen-line') }}
                         </a>
-                        {{ include('company/_delete_form.html.twig', {'company': company}) }}
+                        {{ include('_delete_form.html.twig', {
+                            entity: company,
+                            route: 'app_company_delete',
+                            confirm_message: 'Confirmer la suppression de cette entreprise ?',
+                            aria_label: 'Supprimer l\'entreprise'
+                        }) }}
                     </td>
                 </tr>
             {% else %}

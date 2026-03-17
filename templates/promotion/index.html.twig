@@ -13,7 +13,7 @@
                 <tr>
                     <th>Année</th>
                     <th>Archivée</th>
-                    <th style="text-align: center;">Étudiants</th>
+                    <th class="text-center">Étudiants</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -22,7 +22,7 @@
                 <tr>
                     <td>{{ promotion.year }}</td>
                     <td>{{ promotion.isArchived ? 'Oui' : 'Non' }}</td>
-                    <td style="text-align: center;">{{ promotion.students|length }}</td>
+                    <td class="text-center">{{ promotion.students|length }}</td>
                     <td class="actions-cell">
                         <a href="{{ path('app_promotion_edit', {'id': promotion.id}) }}" class="button outline small" aria-label="Modifier la promotion" title="Modifier">
                             {{ ux_icon('pen-line') }}

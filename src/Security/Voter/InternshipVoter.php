@@ -43,15 +43,24 @@ class InternshipVoter extends Voter
                     return true;
                 }
 
-                return $user === $internship->getTrackingTeacher() || $user === $internship->getVisitingTeacher();
+                return $this->isAssignedTeacher($user, $internship);
 
             case self::EDIT:
                 if ($this->security->isGranted('ROLE_SECRETARY')) {
                     return false;
                 }
-                return $user === $internship->getTrackingTeacher() || $user === $internship->getVisitingTeacher();
+                return $this->isAssignedTeacher($user, $internship);
         }
 
         return false;
+    }
+
+    private function isAssignedTeacher(User $user, Internship $internship): bool
+    {
+        $userId = $user->getId();
+        $trackingTeacherId = $internship->getTrackingTeacher()?->getId();
+        $visitingTeacherId = $internship->getVisitingTeacher()?->getId();
+
+        return $userId !== null && ($userId === $trackingTeacherId || $userId === $visitingTeacherId);
     }
 }

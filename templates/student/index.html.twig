@@ -19,8 +19,8 @@
             <thead>
                 <tr>
                     <th>Prénom Nom</th>
-                    <th style="text-align: center;">Option</th>
-                    <th style="text-align: center;">Promotion</th>
+                    <th class="text-center">Option</th>
+                    <th class="text-center">Promotion</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -28,20 +28,25 @@
             {% for student in students %}
                 <tr>
                     <td>{{ student.firstName }} {{ student.lastName }}</td>
-                    <td style="text-align: center;">
+                    <td class="text-center">
                         <span title="{{ student.major.label }}">{{ student.major.code }}</span>
                     </td>
-                    <td style="text-align: center;">{{ student.promotion.year }}</td>
+                    <td class="text-center">{{ student.promotion.year }}</td>
                     <td class="actions-cell">
                         <a href="{{ path('app_student_edit', {'id': student.id}) }}" class="button outline small" aria-label="Modifier l'étudiant" title="Modifier">
                             {{ ux_icon('pen-line') }}
                         </a>
-                        {{ include('student/_delete_form.html.twig', {'student': student}) }}
+                        {{ include('_delete_form.html.twig', {
+                            entity: student,
+                            route: 'app_student_delete',
+                            confirm_message: 'Confirmer la suppression de cet étudiant ?',
+                            aria_label: 'Supprimer l\'étudiant'
+                        }) }}
                     </td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="5">Aucun étudiant enregistré.</td>
+                    <td colspan="4">Aucun étudiant enregistré.</td>
                 </tr>
             {% endfor %}
             </tbody>
