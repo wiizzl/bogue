@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 trait CrudControllerTrait
 {
+    use LogsExceptionDetailsTrait;
+
     protected function handleCreate(
         Request $request,
         object $entity,
@@ -28,6 +30,7 @@ trait CrudControllerTrait
 
                 return $this->redirectToRoute($redirectRoute, [], Response::HTTP_SEE_OTHER);
             } catch (\Exception $e) {
+                $this->logExceptionDetails($e, 'CRUD create failed');
                 $this->addFlash('error', 'Erreur lors de la création.');
             }
         }
@@ -59,6 +62,7 @@ trait CrudControllerTrait
 
                 return $this->redirectToRoute($redirectRoute, [], Response::HTTP_SEE_OTHER);
             } catch (\Exception $e) {
+                $this->logExceptionDetails($e, 'CRUD update failed');
                 $this->addFlash('error', 'Erreur lors de la mise à jour.');
             }
         }
@@ -82,6 +86,7 @@ trait CrudControllerTrait
 
             $this->addFlash('success', 'Entitée supprimée avec succès.');
         } catch (\Exception $e) {
+            $this->logExceptionDetails($e, 'CRUD delete failed');
             $this->addFlash('error', 'Erreur lors de la suppression.');
         }
 

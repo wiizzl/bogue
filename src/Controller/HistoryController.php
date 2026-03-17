@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Controller\Trait\LogsExceptionDetailsTrait;
 use App\Repository\HistoryLogRepository;
 use App\Service\PaginationService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,6 +15,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 final class HistoryController extends AbstractController
 {
+    use LogsExceptionDetailsTrait;
+
     public function __construct(private PaginationService $paginationService)
     {
     }
@@ -35,6 +38,7 @@ final class HistoryController extends AbstractController
                 'pages_count' => $pagination['pages_count'],
             ]);
         } catch (\Exception $e) {
+            $this->logExceptionDetails($e, 'History index load failed');
             $this->addFlash('error', 'Erreur lors du chargement de l\'historique.');
 
             return $this->render('history/index.html.twig', [

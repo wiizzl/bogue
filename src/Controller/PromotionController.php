@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Controller\Trait\CrudControllerTrait;
+use App\Controller\Trait\LogsExceptionDetailsTrait;
 use App\Entity\Promotion;
 use App\Form\PromotionType;
 use App\Repository\PromotionRepository;
@@ -18,6 +19,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class PromotionController extends AbstractController
 {
     use CrudControllerTrait;
+    use LogsExceptionDetailsTrait;
 
     #[Route(name: 'app_promotion_index', methods: ['GET'])]
     public function index(PromotionRepository $promotionRepository): Response
@@ -27,6 +29,7 @@ final class PromotionController extends AbstractController
                 'promotions' => $promotionRepository->findAllOrdered(),
             ]);
         } catch (\Exception $e) {
+            $this->logExceptionDetails($e, 'Promotion index load failed');
             $this->addFlash('error', 'Erreur lors du chargement des promotions.');
 
             return $this->render('promotion/index.html.twig', ['promotions' => []]);

@@ -51,6 +51,15 @@
                 <img src="{{ asset('images/logo.webp') }}" alt="Bogue">
             {% endif %}
 
+            {% set console_errors = app.flashes('__console_error') %}
+            {% if console_errors is not empty %}
+                <script>
+                    {% for message in console_errors %}
+                        console.error({{ message|json_encode|raw }});
+                    {% endfor %}
+                </script>
+            {% endif %}
+
             {% set flashes = app.flashes %}
             {% if flashes is not empty %}
                 <div style="margin-bottom: var(--space-6);">

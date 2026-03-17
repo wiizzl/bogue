@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\HistoryLog;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -49,5 +50,23 @@ class HistoryLogRepository extends ServiceEntityRepository
             ->setMaxResults($limit);
 
         return new Paginator($qb);
+    }
+
+    public function countByAuthor(User $user): int
+    {
+        return (int) $this->createQueryBuilder('h')
+            ->select('COUNT(h.id)')
+            ->andWhere('h.author = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function deleteByAuthor(User $user): int
+    {
+        return $this->getEntityManager()
+            ->createQuery('DELETE FROM App\\Entity\\HistoryLog h WHERE h.author = :user')
+            ->setParameter('user', $user)
+            ->execute();
     }
 }

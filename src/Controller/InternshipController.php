@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Controller\Trait\CrudControllerTrait;
+use App\Controller\Trait\LogsExceptionDetailsTrait;
 use App\Entity\Internship;
 use App\Entity\InternshipMilestone;
 use App\Form\InternshipType;
 use App\Repository\InternshipRepository;
 use App\Repository\MilestoneRepository;
 use App\Repository\MilestoneStatusRepository;
+use App\Service\DeletionCleanupService;
 use App\Service\PaginationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,6 +23,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class InternshipController extends AbstractController
 {
     use CrudControllerTrait;
+    use LogsExceptionDetailsTrait;
 
     public function __construct(private PaginationService $paginationService)
     {
@@ -44,6 +47,7 @@ final class InternshipController extends AbstractController
                 'pages_count' => $pagination['pages_count'],
             ]);
         } catch (\Exception $e) {
+            $this->logExceptionDetails($e, 'Internship index load failed');
             $this->addFlash('error', 'Erreur lors du chargement des stages.');
             return $this->render('internship/index.html.twig', [
                 'internships' => [],
@@ -80,6 +84,7 @@ final class InternshipController extends AbstractController
                 return $this->redirectToRoute('app_internship_index', [], Response::HTTP_SEE_OTHER);
             } catch (\Exception $e) {
                 $entityManager->rollback();
+                $this->logExceptionDetails($e, 'Internship create failed');
                 $this->addFlash('error', 'Erreur lors de la création du stage.');
             }
         }
@@ -122,7 +127,12 @@ final class InternshipController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_internship_delete', methods: ['POST'])]
-    public function delete(Request $request, Internship $internship, EntityManagerInterface $entityManager): Response
+    public function delete(
+        Request $request,
+        Internship $internship,
+        EntityManagerInterface $entityManager,
+        DeletionCleanupService $deletionCleanupService
+    ): Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
             return $this->handleAccessDenied('supprimer', $internship);
@@ -133,6 +143,8 @@ final class InternshipController extends AbstractController
         if ($csrfErrorResponse instanceof Response) {
             return $csrfErrorResponse;
         }
+
+        $deletionCleanupService->cleanupInternshipDeletion($internship, $entityManager);
 
         return $this->handleDelete($internship, $entityManager, 'app_internship_index');
     }

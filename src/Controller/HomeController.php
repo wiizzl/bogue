@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Controller\Trait\LogsExceptionDetailsTrait;
 use App\Service\CsvExportService;
 use App\Service\InternshipTrackingService;
 use App\Service\PaginationService;
@@ -13,6 +14,8 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class HomeController extends AbstractController
 {
+    use LogsExceptionDetailsTrait;
+
     public function __construct(
         private InternshipTrackingService $internshipTrackingService,
         private CsvExportService $csvExportService
@@ -48,6 +51,7 @@ final class HomeController extends AbstractController
                 'current_filters' => $filters
             ]));
         } catch (\Exception $e) {
+            $this->logExceptionDetails($e, 'Home index load failed');
             $this->addFlash('error', 'Erreur lors du chargement des données.');
 
             return $this->render('home/index.html.twig', [
@@ -80,6 +84,7 @@ final class HomeController extends AbstractController
 
             return $this->csvExportService->generateInternshipCsv($internships);
         } catch (\Exception $e) {
+            $this->logExceptionDetails($e, 'Home CSV export failed');
             $this->addFlash('error', 'Erreur lors de l\'export CSV.');
             return $this->redirectToRoute('app_home_index');
         }

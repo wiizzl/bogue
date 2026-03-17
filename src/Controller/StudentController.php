@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Controller\Trait\CrudControllerTrait;
+use App\Controller\Trait\LogsExceptionDetailsTrait;
 use App\Entity\Student;
 use App\Form\StudentType;
 use App\Repository\StudentRepository;
+use App\Service\DeletionCleanupService;
 use App\Service\PaginationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,6 +21,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class StudentController extends AbstractController
 {
     use CrudControllerTrait;
+    use LogsExceptionDetailsTrait;
 
     public function __construct(private PaginationService $paginationService)
     {
@@ -44,6 +47,7 @@ final class StudentController extends AbstractController
                 'pages_count' => $pagination['pages_count'],
             ]);
         } catch (\Exception $e) {
+            $this->logExceptionDetails($e, 'Student index load failed');
             $this->addFlash('error', 'Erreur lors du chargement des étudiants.');
             return $this->render('student/index.html.twig', [
                 'students' => [],
@@ -86,13 +90,20 @@ final class StudentController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_student_delete', methods: ['POST'])]
-    public function delete(Request $request, Student $student, EntityManagerInterface $entityManager): Response
+    public function delete(
+        Request $request,
+        Student $student,
+        EntityManagerInterface $entityManager,
+        DeletionCleanupService $deletionCleanupService
+    ): Response
     {
         $csrfErrorResponse = $this->validateDeleteCsrf($request, $student, 'app_student_index');
 
         if ($csrfErrorResponse instanceof Response) {
             return $csrfErrorResponse;
         }
+
+        $deletionCleanupService->cleanupStudentDeletion($student, $entityManager);
 
         return $this->handleDelete($student, $entityManager, 'app_student_index');
     }

@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Controller\Trait\CrudControllerTrait;
+use App\Controller\Trait\LogsExceptionDetailsTrait;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use App\Service\DeletionCleanupService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -19,6 +21,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class UserController extends AbstractController
 {
     use CrudControllerTrait;
+    use LogsExceptionDetailsTrait;
 
     #[Route(name: 'app_user_index', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN')]
@@ -29,6 +32,7 @@ final class UserController extends AbstractController
                 'users' => $userRepository->findAll(),
             ]);
         } catch (\Exception $e) {
+            $this->logExceptionDetails($e, 'User index load failed');
             $this->addFlash('error', 'Erreur lors du chargement des utilisateurs.');
             return $this->render('user/index.html.twig', ['users' => []]);
         }
@@ -96,7 +100,12 @@ final class UserController extends AbstractController
 
     #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    public function delete(
+        Request $request,
+        User $user,
+        EntityManagerInterface $entityManager,
+        DeletionCleanupService $deletionCleanupService
+    ): Response
     {
         if ($this->getUser() === $user) {
             $this->addFlash('error', 'Vous ne pouvez pas supprimer votre propre compte.');
@@ -108,6 +117,8 @@ final class UserController extends AbstractController
         if ($csrfErrorResponse instanceof Response) {
             return $csrfErrorResponse;
         }
+
+        $deletionCleanupService->cleanupUserDeletion($user);
 
         return $this->handleDelete($user, $entityManager, 'app_user_index');
     }
@@ -145,6 +156,7 @@ final class UserController extends AbstractController
 
                 return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
             } catch (\Exception $e) {
+                $this->logExceptionDetails($e, 'User form save failed');
                 $this->addFlash('error', $errorMessage);
             }
         }

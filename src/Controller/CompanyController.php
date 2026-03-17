@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Controller\Trait\CrudControllerTrait;
+use App\Controller\Trait\LogsExceptionDetailsTrait;
 use App\Entity\Company;
 use App\Form\CompanyType;
 use App\Repository\CompanyRepository;
+use App\Service\DeletionCleanupService;
 use App\Service\PaginationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,6 +21,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class CompanyController extends AbstractController
 {
     use CrudControllerTrait;
+    use LogsExceptionDetailsTrait;
 
     public function __construct(private PaginationService $paginationService)
     {
@@ -41,6 +44,7 @@ final class CompanyController extends AbstractController
                 'pages_count' => $pagination['pages_count'],
             ]);
         } catch (\Exception $e) {
+            $this->logExceptionDetails($e, 'Company index load failed');
             $this->addFlash('error', 'Erreur lors du chargement des entreprises.');
             return $this->render('company/index.html.twig', [
                 'companies' => [],
@@ -76,13 +80,20 @@ final class CompanyController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_company_delete', methods: ['POST'])]
-    public function delete(Request $request, Company $company, EntityManagerInterface $entityManager): Response
+    public function delete(
+        Request $request,
+        Company $company,
+        EntityManagerInterface $entityManager,
+        DeletionCleanupService $deletionCleanupService
+    ): Response
     {
         $csrfErrorResponse = $this->validateDeleteCsrf($request, $company, 'app_company_index');
 
         if ($csrfErrorResponse instanceof Response) {
             return $csrfErrorResponse;
         }
+
+        $deletionCleanupService->cleanupCompanyDeletion($company, $entityManager);
 
         return $this->handleDelete($company, $entityManager, 'app_company_index');
     }
