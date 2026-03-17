@@ -4,9 +4,13 @@
 
 {% block stylesheets %}
     <style>
+        .home-center-col,
         .home-milestone-col {
             text-align: center;
             white-space: nowrap;
+        }
+
+        .home-milestone-col {
             width: 7%;
             padding-block: 0 !important;
             line-height: 1;
@@ -64,10 +68,10 @@
             <thead>
                 <tr>
                     <th>Étudiant</th>
-                    <th>Option</th>
+                    <th class="home-center-col">Option</th>
                     <th>Entreprise</th>
-                    <th>Suivi</th>
-                    <th>Visite</th>
+                    <th class="home-center-col">Suivi</th>
+                    <th class="home-center-col">Visite</th>
                     <th class="home-milestone-col home-right-group-start">Bilan</th>
                     <th class="home-milestone-col">Jury</th>
                     <th class="home-milestone-col">Attestation</th>
@@ -78,10 +82,16 @@
             {% for internship in internships %}
                 <tr>
                     <td>{{ internship.student.fullName }}</td>
-                    <td title="{{ internship.student.major.label }}">{{ internship.student.major.code }}</td>
+                    <td class="home-center-col">
+                        <span title="{{ internship.student.major.label }}">{{ internship.student.major.code }}</span>
+                    </td>
                     <td>{{ internship.company.name }} ({{ internship.company.city }})</td>
-                    <td title="{{ internship.trackingTeacher ? internship.trackingTeacher.fullName : '' }}">{{ internship.trackingTeacher ? internship.trackingTeacher.trigram : 'Aucun' }}</td>
-                    <td title="{{ internship.visitingTeacher ? internship.visitingTeacher.fullName : '' }}">{{ internship.visitingTeacher ? internship.visitingTeacher.trigram : 'Aucun' }}</td>
+                    <td class="home-center-col">
+                        <span title="{{ internship.trackingTeacher ? internship.trackingTeacher.fullName : '' }}">{{ internship.trackingTeacher ? internship.trackingTeacher.trigram : 'Aucun' }}</span>
+                    </td>
+                    <td class="home-center-col">
+                        <span title="{{ internship.visitingTeacher ? internship.visitingTeacher.fullName : '' }}">{{ internship.visitingTeacher ? internship.visitingTeacher.trigram : 'Aucun' }}</span>
+                    </td>
                     {% for item in internship.milestones %}
                         <td class="home-milestone-col {{ loop.first ? 'home-right-group-start' : '' }}">
                             {% if is_granted('EDIT_MILESTONE', item) %}
