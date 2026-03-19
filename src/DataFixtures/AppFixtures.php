@@ -6,6 +6,7 @@ use App\Entity\ActionType;
 use App\Entity\Major;
 use App\Entity\Milestone;
 use App\Entity\MilestoneStatus;
+use App\Entity\Promotion;
 use App\Entity\Role;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -46,6 +47,12 @@ class AppFixtures extends Fixture
         foreach (['OK' => 'Validé', 'NOK' => 'Non validé', 'PENDING' => 'En attente'] as $code => $label) {
             $status = (new MilestoneStatus())->setCode($code)->setLabel($label);
             $manager->persist($status);
+        }
+
+        $currentYear = (int) (new \DateTimeImmutable())->format('Y');
+        $existingPromotion = $manager->getRepository(Promotion::class)->findOneBy(['year' => $currentYear]);
+        if (!$existingPromotion) {
+            $manager->persist((new Promotion())->setYear($currentYear)->setIsArchived(false));
         }
 
         $actionTypes = [
