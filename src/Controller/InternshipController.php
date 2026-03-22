@@ -5,12 +5,8 @@ namespace App\Controller;
 use App\Controller\Trait\CrudControllerTrait;
 use App\Controller\Trait\LogsExceptionDetailsTrait;
 use App\Entity\Internship;
-use App\Entity\InternshipMilestone;
 use App\Form\InternshipType;
 use App\Repository\InternshipRepository;
-use App\Repository\MilestoneRepository;
-use App\Repository\MilestoneStatusRepository;
-use App\Service\DeletionCleanupService;
 use App\Service\PaginationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -61,9 +57,7 @@ final class InternshipController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function new(
         Request $request,
-        EntityManagerInterface $entityManager,
-        MilestoneRepository $milestoneRepo,
-        MilestoneStatusRepository $statusRepo
+        EntityManagerInterface $entityManager
     ): Response {
         $internship = new Internship();
         $form = $this->createForm(InternshipType::class, $internship);
@@ -71,19 +65,12 @@ final class InternshipController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $entityManager->beginTransaction();
-
                 $entityManager->persist($internship);
-
-                $this->initializeInternshipMilestones($internship, $milestoneRepo, $statusRepo, $entityManager);
-
                 $entityManager->flush();
-                $entityManager->commit();
 
-                $this->addFlash('success', 'Stage créé avec succès et jalons initialisés.');
+                $this->addFlash('success', 'Stage créé avec succès.');
                 return $this->redirectToRoute('app_internship_index', [], Response::HTTP_SEE_OTHER);
             } catch (\Exception $e) {
-                $entityManager->rollback();
                 $this->logExceptionDetails($e, 'Internship create failed');
                 $this->addFlash('error', 'Erreur lors de la création du stage.');
             }
@@ -131,8 +118,7 @@ final class InternshipController extends AbstractController
     public function delete(
         Request $request,
         Internship $internship,
-        EntityManagerInterface $entityManager,
-        DeletionCleanupService $deletionCleanupService
+        EntityManagerInterface $entityManager
     ): Response
     {
         $csrfErrorResponse = $this->validateDeleteCsrf($request, $internship, 'app_internship_index');
@@ -141,32 +127,6 @@ final class InternshipController extends AbstractController
             return $csrfErrorResponse;
         }
 
-        $deletionCleanupService->cleanupInternshipDeletion($internship, $entityManager);
-
         return $this->handleDelete($internship, $entityManager, 'app_internship_index');
-    }
-
-    private function initializeInternshipMilestones(
-        Internship $internship,
-        MilestoneRepository $milestoneRepo,
-        MilestoneStatusRepository $statusRepo,
-        EntityManagerInterface $entityManager
-    ): void {
-        $pendingStatus = $statusRepo->findOneBy(['code' => 'PENDING']);
-
-        if (!$pendingStatus) {
-            throw new \RuntimeException('PENDING status not found in database. Please run fixtures.');
-        }
-
-        $allMilestones = $milestoneRepo->findAll();
-
-        foreach ($allMilestones as $milestone) {
-            $internshipMilestone = new InternshipMilestone();
-            $internshipMilestone->setInternship($internship);
-            $internshipMilestone->setMilestone($milestone);
-            $internshipMilestone->setStatus($pendingStatus);
-
-            $entityManager->persist($internshipMilestone);
-        }
     }
 }

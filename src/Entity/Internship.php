@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\InternshipRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -46,24 +44,6 @@ class Internship
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Assert\Type('string')]
     private ?string $remarks = null;
-
-    /**
-     * @var Collection<int, InternshipMilestone>
-     */
-    #[ORM\OneToMany(targetEntity: InternshipMilestone::class, mappedBy: 'internship')]
-    private Collection $milestones;
-
-    /**
-     * @var Collection<int, HistoryLog>
-     */
-    #[ORM\OneToMany(targetEntity: HistoryLog::class, mappedBy: 'internship')]
-    private Collection $historyLogs;
-
-    public function __construct()
-    {
-        $this->milestones = new ArrayCollection();
-        $this->historyLogs = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -162,64 +142,6 @@ class Internship
     public function setRemarks(?string $remarks): static
     {
         $this->remarks = $remarks;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, InternshipMilestone>
-     */
-    public function getMilestones(): Collection
-    {
-        return $this->milestones;
-    }
-
-    public function addMilestone(InternshipMilestone $milestone): static
-    {
-        if (!$this->milestones->contains($milestone)) {
-            $this->milestones->add($milestone);
-            $milestone->setInternship($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMilestone(InternshipMilestone $milestone): static
-    {
-        if ($milestone->getInternship() === $this) {
-            throw new \LogicException('Cannot detach milestone from internship because internship_milestone.internship is required. Delete the milestone row instead.');
-        }
-
-        $this->milestones->removeElement($milestone);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, HistoryLog>
-     */
-    public function getHistoryLogs(): Collection
-    {
-        return $this->historyLogs;
-    }
-
-    public function addHistoryLog(HistoryLog $historyLog): static
-    {
-        if (!$this->historyLogs->contains($historyLog)) {
-            $this->historyLogs->add($historyLog);
-            $historyLog->setInternship($this);
-        }
-
-        return $this;
-    }
-
-    public function removeHistoryLog(HistoryLog $historyLog): static
-    {
-        if ($this->historyLogs->removeElement($historyLog)) {
-            if ($historyLog->getInternship() === $this) {
-                $historyLog->setInternship(null);
-            }
-        }
 
         return $this;
     }
