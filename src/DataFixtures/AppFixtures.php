@@ -2,6 +2,8 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Major;
+use App\Entity\Promotion;
 use App\Entity\Role;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -29,17 +31,30 @@ class AppFixtures extends Fixture
             $savedRoles[$code] = $role;
         }
 
+        foreach (['SLAM' => 'Solutions Logicielles et Applications Métier', 'SISR' => 'Solutions d\'Infrastructure, Systèmes et Réseaux'] as $code => $label) {
+            $major = (new Major())->setCode($code)->setLabel($label);
+            $manager->persist($major);
+        }
+
+        $currentYear = (int) (new \DateTimeImmutable())->format('Y');
+        $existingPromotion = $manager->getRepository(Promotion::class)->findOneBy(['year' => $currentYear]);
+        if (!$existingPromotion) {
+            $manager->persist((new Promotion())->setYear($currentYear)->setIsArchived(false));
+        }
+
         if ('dev' === $this->kernel->getEnvironment()) {
+            $devPassword = 'Bogue-Stage76!';
+
             $admin = (new User())->setEmail('admin@test.fr')->setFirstName('Administrateur')->setLastName('Bogue');
-            $admin->addUserRole($savedRoles['ROLE_ADMIN'])->setPassword($this->hasher->hashPassword($admin, 'pass_1234'));
+            $admin->setRole($savedRoles['ROLE_ADMIN'])->setPassword($this->hasher->hashPassword($admin, $devPassword));
             $manager->persist($admin);
 
             $secretary = (new User())->setEmail('secretary@test.fr')->setFirstName('Secrétaire')->setLastName('Bogue');
-            $secretary->addUserRole($savedRoles['ROLE_SECRETARY'])->setPassword($this->hasher->hashPassword($secretary, 'pass_1234'));
+            $secretary->setRole($savedRoles['ROLE_SECRETARY'])->setPassword($this->hasher->hashPassword($secretary, $devPassword));
             $manager->persist($secretary);
 
             $teacher = (new User())->setEmail('teacher@test.fr')->setFirstName('Enseignant')->setLastName('Bogue');
-            $teacher->addUserRole($savedRoles['ROLE_TEACHER'])->setPassword($this->hasher->hashPassword($teacher, 'pass_1234'));
+            $teacher->setRole($savedRoles['ROLE_TEACHER'])->setPassword($this->hasher->hashPassword($teacher, $devPassword));
             $manager->persist($teacher);
         }
 

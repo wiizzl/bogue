@@ -22,6 +22,15 @@
                 <nav aria-label="Navigation principale">
                     <ul>
                         <li><a href="{{ path('app_home_index') }}" {% if currentRoute == 'app_home_index' %}aria-current="page"{% endif %}>Dashboard</a></li>
+                        {% if is_granted('ROLE_SECRETARY') %}
+                            <li><a href="{{ path('app_internship_index') }}" {% if currentRoute == 'app_internship_index' %}aria-current="page"{% endif %}>Stages</a></li>
+                        {% endif %}
+
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li><a href="{{ path('app_student_index') }}" {% if currentRoute == 'app_student_index' %}aria-current="page"{% endif %}>Étudiants</a></li>
+                            <li><a href="{{ path('app_promotion_index') }}" {% if currentRoute == 'app_promotion_index' %}aria-current="page"{% endif %}>Promotions</a></li>
+                            <li><a href="{{ path('app_company_index') }}" {% if currentRoute == 'app_company_index' %}aria-current="page"{% endif %}>Entreprises</a></li>
+                        {% endif %}
                     </ul>
                 </nav>
 
@@ -31,13 +40,22 @@
             </aside>
         {% endif %}
 
-        <main style="padding-inline: var(--space-8);{% if not showSidebar %} max-width: 32rem; margin: 0 auto; width: 100%; padding-top: var(--space-18);{% endif %}">
+        <main style="padding-bottom: var(--space-8); padding-inline: var(--space-8);{% if not showSidebar %} max-width: 32rem; margin: 0 auto; width: 100%; padding-top: var(--space-18);{% endif %}">
             {% if showSidebar %}
                 <section>
                     <h2>{{ block('title') }}</h2>
                 </section>
             {% else %}
                 <img src="{{ asset('images/logo.webp') }}" alt="Bogue">
+            {% endif %}
+
+            {% set console_errors = app.flashes('__console_error') %}
+            {% if console_errors is not empty %}
+                <script>
+                    {% for message in console_errors %}
+                        console.error({{ message|json_encode|raw }});
+                    {% endfor %}
+                </script>
             {% endif %}
 
             {% set flashes = app.flashes %}

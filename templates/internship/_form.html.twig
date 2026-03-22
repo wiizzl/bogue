@@ -1,0 +1,52 @@
+{{ form_start(form) }}
+    <fieldset>
+        <div class="row">
+            <label data-field for="{{ form.student.vars.id }}" class="col-6">
+            {{ form.student.vars.label }}
+            {{ form_widget(form.student, {'attr': {'style': 'width: 100%;'}}) }}
+            {{ form_errors(form.student) }}
+            </label>
+
+            <label data-field for="{{ form.company.vars.id }}" class="col-6">
+            {{ form.company.vars.label }}
+            {{ form_widget(form.company, {'attr': {'style': 'width: 100%;'}}) }}
+            {{ form_errors(form.company) }}
+            </label>
+        </div>
+
+        <div class="row">
+            <label data-field for="{{ form.startDate.vars.id }}" class="col-6">
+            {{ form.startDate.vars.label }}
+            {{ form_widget(form.startDate, {'attr': {'style': 'width: 100%;'}}) }}
+            {{ form_errors(form.startDate) }}
+            </label>
+
+            <label data-field for="{{ form.endDate.vars.id }}" class="col-6">
+            {{ form.endDate.vars.label }}
+            {{ form_widget(form.endDate, {'attr': {'style': 'width: 100%;'}}) }}
+            {{ form_errors(form.endDate) }}
+            </label>
+        </div>
+
+        <div class="row">
+            <label data-field for="{{ form.trackingTeacher.vars.id }}" class="col-6">
+            {{ form.trackingTeacher.vars.label }}
+            {{ form_widget(form.trackingTeacher, {'attr': {'style': 'width: 100%;'}}) }}
+            {{ form_errors(form.trackingTeacher) }}
+            </label>
+
+            <label data-field for="{{ form.visitingTeacher.vars.id }}" class="col-6">
+            {{ form.visitingTeacher.vars.label }}
+            {{ form_widget(form.visitingTeacher, {'attr': {'style': 'width: 100%;'}}) }}
+            {{ form_errors(form.visitingTeacher) }}
+            </label>
+        </div>
+
+        <label data-field for="{{ form.remarks.vars.id }}">
+            {{ form.remarks.vars.label }}
+            {{ form_widget(form.remarks) }}
+            {{ form_errors(form.remarks) }}
+        </label>
+    </fieldset>
+    <button type="submit">Enregistrer</button>
+{{ form_end(form) }}

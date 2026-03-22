@@ -32,4 +32,43 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->persist($user);
         $this->getEntityManager()->flush();
     }
+
+    /**
+     * @return User[]
+     */
+    public function findTeachers(): array
+    {
+        return $this->createQueryBuilder('u')
+            ->join('u.role', 'r')
+            ->andWhere('r.code = :role')
+            ->setParameter('role', 'ROLE_TEACHER')
+            ->orderBy('u.lastName', 'ASC')
+            ->addOrderBy('u.firstName', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function countAssignedTrackingInternships(User $user): int
+    {
+        return (int) $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('COUNT(i.id)')
+            ->from('App\\Entity\\Internship', 'i')
+            ->andWhere('i.trackingTeacher = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function countAssignedVisitingInternships(User $user): int
+    {
+        return (int) $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('COUNT(i.id)')
+            ->from('App\\Entity\\Internship', 'i')
+            ->andWhere('i.visitingTeacher = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

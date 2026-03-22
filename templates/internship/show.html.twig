@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Stage{% endblock %}
+
+{% block body %}
+    <section class="table">
+        <table>
+            <tbody>
+                <tr>
+                    <th>Étudiant</th>
+                    <td title="{{ internship.student.major.label }}">{{ internship.student.fullName }} ({{ internship.student.major.code }})</td>
+                </tr>
+                <tr>
+                    <th>Entreprise</th>
+                    <td>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('app_company_show', {'id': internship.company.id}) }}">{{ internship.company.name }}</a>
+                        {% else %}
+                            {{ internship.company.name }}
+                        {% endif %}
+                        - {{ internship.company.city }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Periode</th>
+                    <td>Du {{ internship.startDate ? internship.startDate|date('d/m/Y') : 'N/C' }} au {{ internship.endDate ? internship.endDate|date('d/m/Y') : 'N/C' }}</td>
+                </tr>
+                <tr>
+                    <th>Suivi</th>
+                    <td>{{ internship.trackingTeacher ? internship.trackingTeacher.fullName : 'Aucun' }}</td>
+                </tr>
+                <tr>
+                    <th>Visite</th>
+                    <td>{{ internship.visitingTeacher ? internship.visitingTeacher.fullName : 'Aucun' }}</td>
+                </tr>
+                <tr>
+                    <th>Remarques</th>
+                    <td>{{ internship.remarks|default('-') }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+{% endblock %}

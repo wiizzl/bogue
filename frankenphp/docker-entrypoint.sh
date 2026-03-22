@@ -9,43 +9,42 @@ if [ "$1" = 'frankenphp' ] || [ "$1" = 'php' ] || [ "$1" = 'bin/console' ]; then
 
 	php bin/console -V
 
-	if grep -q ^DATABASE_URL= .env; then
-		echo 'Waiting for database to be ready...'
-		ATTEMPTS_LEFT_TO_REACH_DATABASE=60
+	echo 'Waiting for database to be ready...'
 
-		until [ $ATTEMPTS_LEFT_TO_REACH_DATABASE -eq 0 ] || DATABASE_ERROR=$(php bin/console dbal:run-sql -q "SELECT 1" 2>&1); do
-			if [ $? -eq 255 ]; then
-				ATTEMPTS_LEFT_TO_REACH_DATABASE=0
-				break
-			fi
+	ATTEMPTS_LEFT_TO_REACH_DATABASE=60
 
-			sleep 1
-			ATTEMPTS_LEFT_TO_REACH_DATABASE=$((ATTEMPTS_LEFT_TO_REACH_DATABASE - 1))
-
-			echo "Still waiting for database to be ready... Or maybe the database is not reachable. $ATTEMPTS_LEFT_TO_REACH_DATABASE attempts left."
-		done
-
-		if [ $ATTEMPTS_LEFT_TO_REACH_DATABASE -eq 0 ]; then
-			echo 'The database is not up or not reachable:'
-			echo "$DATABASE_ERROR"
-			exit 1
-		else
-			echo 'The database is now ready and reachable'
+	until [ $ATTEMPTS_LEFT_TO_REACH_DATABASE -eq 0 ] || DATABASE_ERROR=$(php bin/console dbal:run-sql -q "SELECT 1" 2>&1); do
+		if [ $? -eq 255 ]; then
+			ATTEMPTS_LEFT_TO_REACH_DATABASE=0
+			break
 		fi
 
-		if [ "$(find ./migrations -iname '*.php' -print -quit)" ]; then
-			php bin/console doctrine:migrations:migrate --no-interaction --all-or-nothing
+		sleep 1
+		ATTEMPTS_LEFT_TO_REACH_DATABASE=$((ATTEMPTS_LEFT_TO_REACH_DATABASE - 1))
 
-			echo "Checking if fixtures need to be loaded..."
+		echo "Still waiting for database to be ready... Or maybe the database is not reachable. $ATTEMPTS_LEFT_TO_REACH_DATABASE attempts left."
+	done
 
-			USER_COUNT=$(php bin/console dbal:run-sql "SELECT COUNT(*) FROM user" | grep -oE '[0-9]+' | head -n 1 || echo 0)
+	if [ $ATTEMPTS_LEFT_TO_REACH_DATABASE -eq 0 ]; then
+		echo 'The database is not up or not reachable:'
+		echo "$DATABASE_ERROR"
+		exit 1
+	else
+		echo 'The database is now ready and reachable'
+	fi
 
-			if [ "$USER_COUNT" -eq 0 ]; then
-				echo "Loading fixtures..."
-				php bin/console doctrine:fixtures:load --no-interaction
-			else
-				echo "Fixtures already loaded or table not empty, skipping."
-			fi
+	if [ "$(find ./migrations -iname '*.php' -print -quit)" ]; then
+		php bin/console doctrine:migrations:migrate --no-interaction --all-or-nothing
+
+		echo "Checking if fixtures need to be loaded..."
+
+		USER_COUNT=$(php bin/console dbal:run-sql "SELECT COUNT(*) FROM user" | grep -oE '[0-9]+' | head -n 1 || echo 0)
+
+		if [ "$USER_COUNT" -eq 0 ]; then
+			echo "Loading fixtures..."
+			php bin/console doctrine:fixtures:load --no-interaction
+		else
+			echo "Fixtures already loaded or table not empty, skipping."
 		fi
 	fi
 

@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Étudiants{% endblock %}
+
+{% block body %}
+    <section>
+        <a href="{{ path('app_student_new') }}">Ajouter un étudiant</a>
+        <form method="get" action="{{ path('app_student_index') }}">
+            <label data-field for="showArchived">
+                <input id="showArchived" name="showArchived" type="checkbox" value="1" {% if showArchived %}checked{% endif %}>
+                Afficher les archivés
+            </label>
+            <button type="submit">Filtrer</button>
+        </form>
+    </section>
+
+    <section class="table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Prénom Nom</th>
+                    <th class="text-center">Option</th>
+                    <th class="text-center">Promotion</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for student in students %}
+                <tr>
+                    <td>{{ student.firstName }} {{ student.lastName }}</td>
+                    <td class="text-center">
+                        <span title="{{ student.major.label }}">{{ student.major.code }}</span>
+                    </td>
+                    <td class="text-center">{{ student.promotion.year }}</td>
+                    <td class="actions-cell">
+                        <a href="{{ path('app_student_edit', {'id': student.id}) }}" class="button outline small" aria-label="Modifier l'étudiant" title="Modifier">
+                            {{ ux_icon('pen-line') }}
+                        </a>
+                        {{ include('_delete_form.html.twig', {
+                            entity: student,
+                            route: 'app_student_delete',
+                            confirm_message: 'Confirmer la suppression de cet étudiant ?',
+                            aria_label: 'Supprimer l\'étudiant'
+                        }) }}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">Aucun étudiant enregistré.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    {{ include('_pagination.html.twig', {
+        route: 'app_student_index',
+        current_page: current_page,
+        pages_count: pages_count,
+        query: showArchived ? {'showArchived': 1} : {}
+    }) }}
+{% endblock %}

@@ -4,11 +4,11 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -27,11 +27,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Length(max: 180)]
     private ?string $email = null;
 
-    /**
-     * @var Collection<int, Role> The user roles
-     */
-    #[ORM\ManyToMany(targetEntity: Role::class)]
-    private Collection $userRoles;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[Assert\NotNull(message: 'Le rôle est obligatoire.')]
+    private ?Role $role = null;
 
     /**
      * @var string The hashed password
@@ -49,9 +48,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Length(max: 100, maxMessage: "Le nom ne peut pas dépasser {{ limit }} caractères.")]
     private ?string $lastName = null;
 
+    /**
+     * @var Collection<int, Internship>
+     */
+    #[ORM\OneToMany(targetEntity: Internship::class, mappedBy: 'trackingTeacher')]
+    private Collection $trackingInternships;
+
+    /**
+     * @var Collection<int, Internship>
+     */
+    #[ORM\OneToMany(targetEntity: Internship::class, mappedBy: 'visitingTeacher')]
+    private Collection $visitingInternships;
+
     public function __construct()
     {
-        $this->userRoles = new ArrayCollection();
+        $this->trackingInternships = new ArrayCollection();
+        $this->visitingInternships = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -87,8 +99,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = [];
-        foreach ($this->userRoles as $roleEntity) {
-            $roles[] = $roleEntity->getCode();
+
+        if ($this->role?->getCode()) {
+            $roles[] = $this->role->getCode();
         }
 
         $roles[] = 'ROLE_USER';
@@ -96,29 +109,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
-    public function getUserRoles(): Collection
+    public function getRole(): ?Role
     {
-        return $this->userRoles;
+        return $this->role;
     }
 
-    /**
-     * @param Role $role The role to add
-     */
-    public function addUserRole(Role $role): static
+    public function setRole(?Role $role): static
     {
-        if (!$this->userRoles->contains($role)) {
-            $this->userRoles->add($role);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param Role $role The role to remove
-     */
-    public function removeUserRole(Role $role): static
-    {
-        $this->userRoles->removeElement($role);
+        $this->role = $role;
 
         return $this;
     }
@@ -197,5 +195,63 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $lastPrefix = mb_substr($lastName, 0, 2);
 
         return mb_strtoupper($firstInitial.$lastPrefix);
+    }
+
+    /**
+     * @return Collection<int, Internship>
+     */
+    public function getTrackingInternships(): Collection
+    {
+        return $this->trackingInternships;
+    }
+
+    public function addTrackingInternship(Internship $trackingInternship): static
+    {
+        if (!$this->trackingInternships->contains($trackingInternship)) {
+            $this->trackingInternships->add($trackingInternship);
+            $trackingInternship->setTrackingTeacher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrackingInternship(Internship $trackingInternship): static
+    {
+        if ($this->trackingInternships->removeElement($trackingInternship)) {
+            if ($trackingInternship->getTrackingTeacher() === $this) {
+                $trackingInternship->setTrackingTeacher(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Internship>
+     */
+    public function getVisitingInternships(): Collection
+    {
+        return $this->visitingInternships;
+    }
+
+    public function addVisitingInternship(Internship $visitingInternship): static
+    {
+        if (!$this->visitingInternships->contains($visitingInternship)) {
+            $this->visitingInternships->add($visitingInternship);
+            $visitingInternship->setVisitingTeacher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVisitingInternship(Internship $visitingInternship): static
+    {
+        if ($this->visitingInternships->removeElement($visitingInternship)) {
+            if ($visitingInternship->getVisitingTeacher() === $this) {
+                $visitingInternship->setVisitingTeacher(null);
+            }
+        }
+
+        return $this;
     }
 }

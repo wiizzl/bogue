@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Stages{% endblock %}
+
+{% block body %}
+    <section>
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('app_internship_new') }}">Ajouter un stage</a>
+        {% endif %}
+    </section>
+
+    <section class="table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Étudiant</th>
+                    <th>Entreprise</th>
+                    <th>Durée</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for internship in internships %}
+                <tr>
+                    <td>{{ internship.student.fullName }}</td>
+                    <td>{{ internship.company.name }}</td>
+                    {% if internship.startDate and internship.endDate %}
+                        <td title="Du {{ internship.startDate|date('d/m/Y') }} au {{ internship.endDate|date('d/m/Y') }}">
+                            {{ internship.durationInWeeks }} semaine{{ internship.durationInWeeks > 1 ? 's' : '' }}
+                        </td>
+                    {% else %}
+                        <td>-</td>
+                    {% endif %}
+                    <td class="actions-cell">
+                        <a href="{{ path('app_internship_show', {'id': internship.id}) }}" class="button outline small" aria-label="Voir le stage" title="Voir">
+                            {{ ux_icon('eye') }}
+                        </a>
+                        {% if is_granted('EDIT_INTERNSHIP', internship) %}
+                            <a href="{{ path('app_internship_edit', {'id': internship.id}) }}" class="button outline small" aria-label="Modifier le stage" title="Modifier">
+                                {{ ux_icon('pen-line') }}
+                            </a>
+                        {% endif %}
+                        {% if is_granted('ROLE_ADMIN') %}
+                            {{ include('_delete_form.html.twig', {
+                                entity: internship,
+                                route: 'app_internship_delete',
+                                confirm_message: 'Confirmer la suppression de ce stage ?',
+                                aria_label: 'Supprimer le stage'
+                            }) }}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">Aucun stage enregistré.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    {{ include('_pagination.html.twig', {
+        route: 'app_internship_index',
+        current_page: current_page,
+        pages_count: pages_count
+    }) }}
+{% endblock %}

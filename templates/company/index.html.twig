@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Entreprises{% endblock %}
+
+{% block body %}
+    <section>
+        <a href="{{ path('app_company_new') }}">Ajouter une entreprise</a>
+    </section>
+
+    <section class="table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Ville</th>
+                    <th>Tuteur</th>
+                    <th>Téléphone</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for company in companies %}
+                <tr>
+                    <td>{{ company.name }}</td>
+                    <td>{{ company.city|default('-') }}</td>
+                    <td>{{ company.tutorName|default('-') }}</td>
+                    <td>{{ company.phone|default('-') }}</td>
+                    <td>{{ company.email|default('-') }}</td>
+                    <td class="actions-cell">
+                        <a href="{{ path('app_company_show', {'id': company.id}) }}" class="button outline small" aria-label="Voir l'entreprise" title="Voir">
+                            {{ ux_icon('eye') }}
+                        </a>
+                        <a href="{{ path('app_company_edit', {'id': company.id}) }}" class="button outline small" aria-label="Modifier l'entreprise" title="Modifier">
+                            {{ ux_icon('pen-line') }}
+                        </a>
+                        {{ include('_delete_form.html.twig', {
+                            entity: company,
+                            route: 'app_company_delete',
+                            confirm_message: 'Confirmer la suppression de cette entreprise ?',
+                            aria_label: 'Supprimer l\'entreprise'
+                        }) }}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">Aucune entreprise enregistrée.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    {{ include('_pagination.html.twig', {
+        route: 'app_company_index',
+        current_page: current_page,
+        pages_count: pages_count
+    }) }}
+{% endblock %}
