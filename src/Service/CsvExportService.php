@@ -17,7 +17,7 @@ class CsvExportService
 
     public function generateInternshipCsv(array $internships, ?string $filename = null): Response
     {
-        $csvContent = $this->buildCsvContent($internships);
+        $csvContent = "\xEF\xBB\xBF" . $this->buildCsvContent($internships);
 
         if (!$filename) {
             $filename = 'suivi_stages_' . date('Y-m-d') . '.csv';
