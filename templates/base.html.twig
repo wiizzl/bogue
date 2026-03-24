@@ -6,7 +6,7 @@
     <title>{% block title %}{% endblock %} - Bogue</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
 
-    <link rel="stylesheet" href="https://unpkg.com/@knadh/oat/oat.min.css">
+    <link rel="stylesheet" href="{{ asset('vendor/oat.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/globals.css') }}">
     {% block stylesheets %}{% endblock %}
 </head>
@@ -92,7 +92,7 @@
         </main>
     </div>
 
-    <script src="https://unpkg.com/@knadh/oat/oat.min.js" defer></script>
+    <script src="{{ asset('vendor/oat.min.js') }}" defer></script>
     {% block javascripts %}{% endblock %}
 </body>
 </html>

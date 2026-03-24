@@ -18,7 +18,8 @@
         <table>
             <thead>
                 <tr>
-                    <th>Prénom Nom</th>
+                    <th>Prénom</th>
+                    <th>Nom</th>
                     <th class="text-center">Option</th>
                     <th class="text-center">Promotion</th>
                     <th>Actions</th>
@@ -27,7 +28,8 @@
             <tbody>
             {% for student in students %}
                 <tr>
-                    <td>{{ student.firstName }} {{ student.lastName }}</td>
+                    <td>{{ student.firstName }}</td>
+                    <td>{{ student.lastName }}</td>
                     <td class="text-center">
                         <span title="{{ student.major.label }}">{{ student.major.code }}</span>
                     </td>

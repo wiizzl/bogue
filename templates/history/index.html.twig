@@ -24,8 +24,8 @@
                         <td>{{ log.actionType.label }}</td>
                         <td>{{ log.internship ? log.internship.student.fullName : 'N/A' }}</td>
                         <td>{{ log.internship ? log.internship.company.name : 'N/A' }}</td>
-                        <td>{{ log.oldValue|default('-') }}</td>
-                        <td>{{ log.newValue|default('-') }}</td>
+                        <td>{{ log.oldValue }}</td>
+                        <td>{{ log.newValue }}</td>
                     </tr>
                 {% else %}
                     <tr>

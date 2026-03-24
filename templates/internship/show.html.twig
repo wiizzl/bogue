@@ -18,12 +18,12 @@
                         {% else %}
                             {{ internship.company.name }}
                         {% endif %}
-                        - {{ internship.company.city }}
+                        ({{ internship.company.city }})
                     </td>
                 </tr>
                 <tr>
-                    <th>Periode</th>
-                    <td>Du {{ internship.startDate ? internship.startDate|date('d/m/Y') : 'N/C' }} au {{ internship.endDate ? internship.endDate|date('d/m/Y') : 'N/C' }}</td>
+                    <th>Période</th>
+                    <td>Du {{ internship.startDate|date('d/m/Y') }} au {{ internship.endDate|date('d/m/Y') }}</td>
                 </tr>
                 <tr>
                     <th>Suivi</th>
@@ -35,7 +35,7 @@
                 </tr>
                 <tr>
                     <th>Remarques</th>
-                    <td>{{ internship.remarks|default('-') }}</td>
+                    <td>{{ internship.remarks }}</td>
                 </tr>
             </tbody>
         </table>
@@ -58,8 +58,8 @@
                         <td>{{ log.createdAt|date('d/m/Y H:i') }}</td>
                         <td>{{ log.author.fullName }}</td>
                         <td>{{ log.actionType.label }}</td>
-                        <td>{{ log.oldValue|default('-') }}</td>
-                        <td>{{ log.newValue|default('-') }}</td>
+                        <td>{{ log.oldValue }}</td>
+                        <td>{{ log.newValue }}</td>
                     </tr>
                 {% else %}
                     <tr>
