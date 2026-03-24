@@ -64,6 +64,7 @@ class InternshipType extends AbstractType
         return [
             'class' => User::class,
             'label' => $label,
+            'required' => false,
             'placeholder' => 'Choisir l\'enseignant...',
             'query_builder' => static function (UserRepository $er) {
                 return $er->createQueryBuilder('u')
