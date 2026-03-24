@@ -50,9 +50,9 @@ class AppFixtures extends Fixture
         }
 
         $currentYear = (int) (new \DateTimeImmutable())->format('Y');
-        $existingPromotion = $manager->getRepository(Promotion::class)->findOneBy(['year' => $currentYear]);
-        if (!$existingPromotion) {
-            $manager->persist((new Promotion())->setYear($currentYear)->setIsArchived(false));
+        $nextYear = $currentYear + 1;
+        foreach ([$currentYear, $nextYear] as $year) {
+            $manager->persist((new Promotion())->setYear($year)->setIsArchived(false));
         }
 
         $actionTypes = [
@@ -60,15 +60,8 @@ class AppFixtures extends Fixture
             'TEACHER_UPDATE' => 'Mise à jour d\'un enseignant',
             'DATE_UPDATE' => 'Mise à jour des dates',
         ];
-        $existingActionTypes = $manager->getRepository(ActionType::class)->findAll();
-        $existingActionTypeCodes = [];
-        foreach ($existingActionTypes as $existingActionType) {
-            $existingActionTypeCodes[] = $existingActionType->getCode();
-        }
         foreach ($actionTypes as $code => $label) {
-            if (!in_array($code, $existingActionTypeCodes, true)) {
-                $manager->persist((new ActionType())->setCode($code)->setLabel($label));
-            }
+            $manager->persist((new ActionType())->setCode($code)->setLabel($label));
         }
 
         if ('dev' === $this->kernel->getEnvironment()) {
