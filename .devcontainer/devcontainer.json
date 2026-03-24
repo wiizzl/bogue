@@ -1,0 +1,22 @@
+{
+    "name": "Symfony FrankenPHP",
+    "dockerComposeFile": [
+        "../compose.yaml",
+        "../compose.override.yaml",
+        "../compose.prod.yaml"
+    ],
+    "service": "php",
+    "workspaceFolder": "/app",
+
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "bmewburn.vscode-intelephense-client",
+                "xdebug.php-debug",
+                "mblode.twig-language-2"
+            ]
+        }
+    },
+
+    "forwardPorts": [8000, 8001]
+}
