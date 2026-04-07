@@ -95,7 +95,8 @@ EOF
 
 RUN <<-'EOF'
 	apt-get update
-	apt-get install -y --no-install-recommends libtree
+	apt-get install -y --no-install-recommends libtree libcap2-bin
+	setcap -r /usr/local/bin/frankenphp
 	mkdir -p /tmp/libs
 	BINARIES=(frankenphp php file)
 	for target in $(printf '%s\n' "${BINARIES[@]}" | xargs -I{} which {}) \
