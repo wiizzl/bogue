@@ -40,10 +40,7 @@ class InternshipTrackingService
      */
     public function getFilteredInternships(array $filters, ?User $user, int $page = 1, ?int $limit = null): array
     {
-        // Get filtered data with pagination
         $results = $this->internshipRepository->findForTracking($filters, $user, $page, $limit);
-
-        // Calculate pagination data
         $paginationData = $this->calculatePaginationData($results, $page, $limit);
 
         return [
@@ -83,12 +80,10 @@ class InternshipTrackingService
     {
         $filters = [];
 
-        // Validate major filter
         if (!empty($rawFilters['major']) && is_numeric($rawFilters['major'])) {
             $filters['major'] = (int) $rawFilters['major'];
         }
 
-        // Validate teacher filter
         if (!empty($rawFilters['teacher']) && is_numeric($rawFilters['teacher'])) {
             $filters['teacher'] = (int) $rawFilters['teacher'];
         }

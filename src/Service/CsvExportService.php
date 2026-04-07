@@ -102,7 +102,6 @@ class CsvExportService
             $internship->getVisitingTeacher()?->getFullName() ?? 'Aucun',
         ];
 
-        // Add milestone status for each milestone
         foreach ($allMilestones as $milestone) {
             $row[] = $this->getMilestoneStatus($internship, $milestone);
         }

@@ -1,123 +1,104 @@
-<<<<<<< ours
-<!doctype html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{% endblock %} - Bogue</title>
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
-
-    <link rel="stylesheet" href="{{ asset('vendor/oat.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/globals.css') }}">
-    {% block stylesheets %}{% endblock %}
-</head>
-<body>
-    {% set currentRoute = app.request.attributes.get('_route') %}
-    {% set showSidebar = currentRoute != 'app_login' and app.user %}
-
-    <div{% if showSidebar %} data-sidebar-layout{% endif %}>
-        {% if showSidebar %}
-            <aside data-sidebar>
-                <img src="{{ asset('images/logo.webp') }}" alt="Bogue" style="width: full;">
-
-                <nav aria-label="Navigation principale">
-                    <ul>
-                        <li><a href="{{ path('app_home_index') }}" {% if currentRoute == 'app_home_index' %}aria-current="page"{% endif %}>Dashboard</a></li>
-                        {% if is_granted('ROLE_SECRETARY') %}
-                            <li><a href="{{ path('app_internship_index') }}" {% if currentRoute == 'app_internship_index' %}aria-current="page"{% endif %}>Stages</a></li>
-                        {% endif %}
-
-                        {% if is_granted('ROLE_ADMIN') %}
-                            <li><a href="{{ path('app_student_index') }}" {% if currentRoute == 'app_student_index' %}aria-current="page"{% endif %}>Étudiants</a></li>
-                            <li><a href="{{ path('app_promotion_index') }}" {% if currentRoute == 'app_promotion_index' %}aria-current="page"{% endif %}>Promotions</a></li>
-                            <li><a href="{{ path('app_company_index') }}" {% if currentRoute == 'app_company_index' %}aria-current="page"{% endif %}>Entreprises</a></li>
-                            <li><a href="{{ path('app_user_index') }}" {% if currentRoute == 'app_user_index' %}aria-current="page"{% endif %}>Utilisateurs</a></li>
-                            <li><a href="{{ path('app_history_index') }}" {% if currentRoute == 'app_history_index' %}aria-current="page"{% endif %}>Historique</a></li>
-                        {% endif %}
-                    </ul>
-                </nav>
-
-                <footer>
-                    <a href="{{ path('app_logout') }}" class="button outline" style="display: block; width: 100%; text-align: center;">Déconnexion</a>
-                </footer>
-            </aside>
-        {% endif %}
-
-        <main style="padding-bottom: var(--space-8); padding-inline: var(--space-8);{% if not showSidebar %} max-width: 32rem; margin: 0 auto; width: 100%; padding-top: var(--space-18);{% endif %}">
-            {% if showSidebar %}
-                <section>
-                    <h2>{{ block('title') }}</h2>
-                </section>
-            {% else %}
-                <img src="{{ asset('images/logo.webp') }}" alt="Bogue">
-            {% endif %}
-
-            {% set console_errors = app.flashes('__console_error') %}
-            {% if console_errors is not empty %}
-                <script>
-                    {% for message in console_errors %}
-                        console.error({{ message|json_encode|raw }});
-                    {% endfor %}
-                </script>
-            {% endif %}
-
-            {% set flashes = app.flashes %}
-            {% if flashes is not empty %}
-                <div style="margin-bottom: var(--space-6);">
-                    {% for label, messages in flashes %}
-                        {% set normalizedLabel = label|lower %}
-                        {% set variant = null %}
-                        {% set heading = 'Info' %}
-
-                        {% if normalizedLabel in ['success'] %}
-                            {% set variant = 'success' %}
-                            {% set heading = 'Succès' %}
-                        {% elseif normalizedLabel in ['warning', 'warn'] %}
-                            {% set variant = 'warning' %}
-                            {% set heading = 'Attention' %}
-                        {% elseif normalizedLabel in ['error', 'danger'] %}
-                            {% set variant = 'error' %}
-                            {% set heading = 'Erreur' %}
-                        {% endif %}
-
-                        {% for message in messages %}
-                            <div role="alert" {% if variant %}data-variant="{{ variant }}"{% endif %}>
-                                <strong>{{ heading }}</strong> {{ message }}
-                            </div>
-                        {% endfor %}
-                    {% endfor %}
-                </div>
-            {% endif %}
-
-            {% block body %}{% endblock %}
-        </main>
-    </div>
-
-    <script src="{{ asset('vendor/oat.min.js') }}" defer></script>
-    {% block javascripts %}{% endblock %}
-</body>
-=======
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+        <title>{% block title %}{% endblock %} - Bogue</title>
 
-        {% block javascripts %}
-        {% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+        <link rel="stylesheet" href="{{ asset('vendor/oat.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/globals.css') }}">
+        {% block stylesheets %}{% endblock %}
 
         {% set frankenphpHotReload = app.request.server.get('FRANKENPHP_HOT_RELOAD') %}
         {% if frankenphpHotReload %}
-        <meta name="frankenphp-hot-reload:url" content="{{ frankenphpHotReload }}">
-        <script src="https://cdn.jsdelivr.net/npm/idiomorph"></script>
-        <script src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm" type="module"></script>
+            <meta name="frankenphp-hot-reload:url" content="{{ frankenphpHotReload }}">
+            <script src="https://cdn.jsdelivr.net/npm/idiomorph"></script>
+            <script src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm" type="module"></script>
         {% endif %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {% set currentRoute = app.request.attributes.get('_route') %}
+        {% set showSidebar = currentRoute != 'app_login' and app.user %}
+
+        <div{% if showSidebar %} data-sidebar-layout{% endif %}>
+            {% if showSidebar %}
+                <aside data-sidebar>
+                    <img src="{{ asset('images/logo.webp') }}" alt="Bogue" style="width: full;">
+
+                    <nav aria-label="Navigation principale">
+                        <ul>
+                            <li><a href="{{ path('app_home_index') }}" {% if currentRoute == 'app_home_index' %}aria-current="page"{% endif %}>Dashboard</a></li>
+                            {% if is_granted('ROLE_SECRETARY') %}
+                                <li><a href="{{ path('app_internship_index') }}" {% if currentRoute == 'app_internship_index' %}aria-current="page"{% endif %}>Stages</a></li>
+                            {% endif %}
+
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <li><a href="{{ path('app_student_index') }}" {% if currentRoute == 'app_student_index' %}aria-current="page"{% endif %}>Étudiants</a></li>
+                                <li><a href="{{ path('app_promotion_index') }}" {% if currentRoute == 'app_promotion_index' %}aria-current="page"{% endif %}>Promotions</a></li>
+                                <li><a href="{{ path('app_company_index') }}" {% if currentRoute == 'app_company_index' %}aria-current="page"{% endif %}>Entreprises</a></li>
+                                <li><a href="{{ path('app_user_index') }}" {% if currentRoute == 'app_user_index' %}aria-current="page"{% endif %}>Utilisateurs</a></li>
+                                <li><a href="{{ path('app_history_index') }}" {% if currentRoute == 'app_history_index' %}aria-current="page"{% endif %}>Historique</a></li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+
+                    <footer>
+                        <a href="{{ path('app_logout') }}" class="button outline" style="display: block; width: 100%; text-align: center;">Déconnexion</a>
+                    </footer>
+                </aside>
+            {% endif %}
+
+            <main style="padding-bottom: var(--space-8); padding-inline: var(--space-8);{% if not showSidebar %} max-width: 32rem; margin: 0 auto; width: 100%; padding-top: var(--space-18);{% endif %}">
+                {% if showSidebar %}
+                    <section>
+                        <h2>{{ block('title') }}</h2>
+                    </section>
+                {% else %}
+                    <img src="{{ asset('images/logo.webp') }}" alt="Bogue">
+                {% endif %}
+
+                {% set console_errors = app.flashes('__console_error') %}
+                {% if console_errors is not empty %}
+                    <script>
+                        {% for message in console_errors %}
+                            console.error({{ message|json_encode|raw }});
+                        {% endfor %}
+                    </script>
+                {% endif %}
+
+                {% set flashes = app.flashes %}
+                {% if flashes is not empty %}
+                    <div style="margin-bottom: var(--space-6);">
+                        {% for label, messages in flashes %}
+                            {% set normalizedLabel = label|lower %}
+                            {% set variant = null %}
+                            {% set heading = 'Info' %}
+
+                            {% if normalizedLabel in ['success'] %}
+                                {% set variant = 'success' %}
+                                {% set heading = 'Succès' %}
+                            {% elseif normalizedLabel in ['warning', 'warn'] %}
+                                {% set variant = 'warning' %}
+                                {% set heading = 'Attention' %}
+                            {% elseif normalizedLabel in ['error', 'danger'] %}
+                                {% set variant = 'error' %}
+                                {% set heading = 'Erreur' %}
+                            {% endif %}
+
+                            {% for message in messages %}
+                                <div role="alert" {% if variant %}data-variant="{{ variant }}"{% endif %}>
+                                    <strong>{{ heading }}</strong> {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% block body %}{% endblock %}
+            </main>
+        </div>
+
+        <script src="{{ asset('vendor/oat.min.js') }}" defer></script>
+        {% block javascripts %}{% endblock %}
     </body>
->>>>>>> theirs
 </html>
