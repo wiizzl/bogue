@@ -1,6 +1,7 @@
 ---
 services:
   php:
+    image: ${IMAGES_PREFIX:-}app-php-dev
     build:
       context: .
       target: frankenphp_dev
@@ -11,6 +12,7 @@ services:
       #- /app/vendor
     environment:
       FRANKENPHP_WORKER_CONFIG: watch
+      FRANKENPHP_SITE_CONFIG: hot_reload
       XDEBUG_MODE: "${XDEBUG_MODE:-off}"
       APP_ENV: "${APP_ENV:-dev}"
     extra_hosts:

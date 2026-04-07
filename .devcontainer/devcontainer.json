@@ -1,22 +1,24 @@
 {
-    "name": "Symfony FrankenPHP",
+    "name": "Symfony Docker",
     "dockerComposeFile": [
         "../compose.yaml",
         "../compose.override.yaml",
-        "../compose.prod.yaml"
+        "compose.devcontainer.yaml"
     ],
     "service": "php",
     "workspaceFolder": "/app",
-
+    "features": {
+        "ghcr.io/devcontainers/features/node:1": {}
+    },
+    "remoteUser": "nonroot",
+    "postCreateCommand": "npm install -g intelephense",
     "customizations": {
         "vscode": {
             "extensions": [
                 "bmewburn.vscode-intelephense-client",
                 "xdebug.php-debug",
-                "mblode.twig-language-2"
+                "whatwedo.twig"
             ]
         }
-    },
-
-    "forwardPorts": [8000, 8001]
+    }
 }

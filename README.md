@@ -33,14 +33,15 @@ Les versions des logiciels utilisées dans l'image Docker (PHP, MySQL) correspon
    docker compose up --wait
    ```
 
-> [!WARNING]
-> Laissez bien le conteneur tourner le temps qu'il installe les dépendances, regardez les logs.
-
 2. Stopper l'environnement
 
    ```sh
    docker compose down --remove-orphans
    ```
+
+3. Bonus : Container de développement
+
+Il est possible d'utiliser les [Development Container](https://containers.dev) pour simplifier l'environnement de développement, ce qui permet d'intégrer votre IDE directement dans le container.
 
 ### Via WAMP
 
