@@ -68,41 +68,31 @@ class InternshipRepository extends ServiceEntityRepository
     public function findForTracking(array $filters, ?User $user = null, int $page = 1, ?int $limit = null): Paginator|array
     {
         $qb = $this->createQueryBuilder('i')
-            // Eager loading to prevent N+1 queries - only essential relations
-            ->addSelect('s', 'm', 'c', 'p') // Student, Major, Company, Promotion
-            ->addSelect('tt', 'vt')         // Teachers (may be null)
-            // Use DISTINCT to handle potential duplicates from LEFT JOINs
+            ->addSelect('s', 'm', 'c', 'p')
+            ->addSelect('tt', 'vt')
             ->distinct()
 
-            // Required joins for basic internship data
             ->innerJoin('i.student', 's')
             ->innerJoin('s.promotion', 'p')
             ->innerJoin('s.major', 'm')
             ->innerJoin('i.company', 'c')
 
-            // Optional teacher assignments
             ->leftJoin('i.trackingTeacher', 'tt')
             ->leftJoin('i.visitingTeacher', 'vt')
 
-            // Filter out archived promotions (business rule)
             ->where('p.isArchived = false')
 
-            // Default ordering by student name for consistent results
             ->orderBy('s.lastName', 'ASC')
             ->addOrderBy('s.firstName', 'ASC');
 
-        // Apply role-based access control
         $this->applyUserAccessFilter($qb, $user);
-
-        // Apply optional filters
         $this->applySearchFilters($qb, $filters);
 
-        // Handle pagination if limit specified
         if ($limit !== null) {
             $qb->setFirstResult(($page - 1) * $limit)
                ->setMaxResults($limit);
 
-            return new Paginator($qb->getQuery(), true); // fetchJoinCollection = true for collections
+            return new Paginator($qb->getQuery(), true);
         }
 
         return $qb->getQuery()->getResult();
@@ -123,14 +113,12 @@ class InternshipRepository extends ServiceEntityRepository
     private function applyUserAccessFilter($qb, ?User $user): void
     {
         if (!$user) {
-            // No user = no access (should be handled by security but defensive coding)
-            $qb->andWhere('1 = 0'); // Force empty result
+            $qb->andWhere('1 = 0');
             return;
         }
 
         $userRoles = $user->getRoles();
 
-        // Admins and secretaries see everything
         $isAdmin = in_array('ROLE_ADMIN', $userRoles);
         $isSecretary = in_array('ROLE_SECRETARY', $userRoles);
         $isTeacher = in_array('ROLE_TEACHER', $userRoles);
@@ -141,7 +129,6 @@ class InternshipRepository extends ServiceEntityRepository
                 return;
             }
 
-            // Teachers only see their assigned internships
             $qb->andWhere(
                 $qb->expr()->orX(
                     'i.trackingTeacher = :user',
@@ -150,7 +137,6 @@ class InternshipRepository extends ServiceEntityRepository
             )
                ->setParameter('user', $user);
         }
-        // No additional filter for admin/secretary - they see all
     }
 
     /**
@@ -163,13 +149,11 @@ class InternshipRepository extends ServiceEntityRepository
      */
     private function applySearchFilters($qb, array $filters): void
     {
-        // Filter by major (student's specialization)
         if (!empty($filters['major'])) {
             $qb->andWhere('m.id = :majorId')
                ->setParameter('majorId', $filters['major']);
         }
 
-        // Filter by teacher (either tracking or visiting)
         if (!empty($filters['teacher'])) {
             $qb->andWhere(
                 $qb->expr()->orX(

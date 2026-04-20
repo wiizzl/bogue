@@ -23,10 +23,10 @@
             {% for company in companies %}
                 <tr>
                     <td>{{ company.name }}</td>
-                    <td>{{ company.city|default('-') }}</td>
-                    <td>{{ company.tutorName|default('-') }}</td>
-                    <td>{{ company.phone|default('-') }}</td>
-                    <td>{{ company.email|default('-') }}</td>
+                    <td>{{ company.city }}</td>
+                    <td>{{ company.tutorName }}</td>
+                    <td>{{ company.phone }}</td>
+                    <td>{{ company.email }}</td>
                     <td class="actions-cell">
                         <a href="{{ path('app_company_show', {'id': company.id}) }}" class="button outline small" aria-label="Voir l'entreprise" title="Voir">
                             {{ ux_icon('eye') }}

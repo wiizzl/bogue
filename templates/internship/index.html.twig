@@ -24,13 +24,11 @@
                 <tr>
                     <td>{{ internship.student.fullName }}</td>
                     <td>{{ internship.company.name }}</td>
-                    {% if internship.startDate and internship.endDate %}
-                        <td title="Du {{ internship.startDate|date('d/m/Y') }} au {{ internship.endDate|date('d/m/Y') }}">
+                    <td>
+                        <span title="Du {{ internship.startDate|date('d/m/Y') }} au {{ internship.endDate|date('d/m/Y') }}">
                             {{ internship.durationInWeeks }} semaine{{ internship.durationInWeeks > 1 ? 's' : '' }}
-                        </td>
-                    {% else %}
-                        <td>-</td>
-                    {% endif %}
+                        </span>
+                    </td>
                     <td class="actions-cell">
                         <a href="{{ path('app_internship_show', {'id': internship.id}) }}" class="button outline small" aria-label="Voir le stage" title="Voir">
                             {{ ux_icon('eye') }}

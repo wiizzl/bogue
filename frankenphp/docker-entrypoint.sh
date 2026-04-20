@@ -2,6 +2,8 @@
 
 set -e
 
+export SERVER_NAME="${SERVER_NAME:-:${PORT:-8080}}"
+
 if [ "$1" = 'frankenphp' ] || [ "$1" = 'php' ] || [ "$1" = 'bin/console' ]; then
 	if [ -z "$(ls -A 'vendor/' 2>/dev/null)" ]; then
 		composer install --prefer-dist --no-progress --no-interaction
@@ -36,15 +38,11 @@ if [ "$1" = 'frankenphp' ] || [ "$1" = 'php' ] || [ "$1" = 'bin/console' ]; then
 	if [ "$(find ./migrations -iname '*.php' -print -quit)" ]; then
 		php bin/console doctrine:migrations:migrate --no-interaction --all-or-nothing
 
-		echo "Checking if fixtures need to be loaded..."
-
 		USER_COUNT=$(php bin/console dbal:run-sql "SELECT COUNT(*) FROM user" | grep -oE '[0-9]+' | head -n 1 || echo 0)
 
 		if [ "$USER_COUNT" -eq 0 ]; then
 			echo "Loading fixtures..."
 			php bin/console doctrine:fixtures:load --no-interaction
-		else
-			echo "Fixtures already loaded or table not empty, skipping."
 		fi
 	fi
 

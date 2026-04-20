@@ -2,7 +2,10 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\ActionType;
 use App\Entity\Major;
+use App\Entity\Milestone;
+use App\Entity\MilestoneStatus;
 use App\Entity\Promotion;
 use App\Entity\Role;
 use App\Entity\User;
@@ -36,10 +39,29 @@ class AppFixtures extends Fixture
             $manager->persist($major);
         }
 
+        foreach (['THANK_YOU' => 'Remerciement', 'REPORT' => 'Bilan', 'JURY' => 'Jury', 'CERTIFICATE' => 'Attestation'] as $code => $label) {
+            $ms = (new Milestone())->setCode($code)->setLabel($label);
+            $manager->persist($ms);
+        }
+
+        foreach (['OK' => 'Validé', 'NOK' => 'Non validé', 'PENDING' => 'En attente'] as $code => $label) {
+            $status = (new MilestoneStatus())->setCode($code)->setLabel($label);
+            $manager->persist($status);
+        }
+
         $currentYear = (int) (new \DateTimeImmutable())->format('Y');
-        $existingPromotion = $manager->getRepository(Promotion::class)->findOneBy(['year' => $currentYear]);
-        if (!$existingPromotion) {
-            $manager->persist((new Promotion())->setYear($currentYear)->setIsArchived(false));
+        $nextYear = $currentYear + 1;
+        foreach ([$currentYear, $nextYear] as $year) {
+            $manager->persist((new Promotion())->setYear($year)->setIsArchived(false));
+        }
+
+        $actionTypes = [
+            'STATUS_UPDATE' => 'Mise à jour d\'un statut',
+            'TEACHER_UPDATE' => 'Mise à jour d\'un enseignant',
+            'DATE_UPDATE' => 'Mise à jour des dates',
+        ];
+        foreach ($actionTypes as $code => $label) {
+            $manager->persist((new ActionType())->setCode($code)->setLabel($label));
         }
 
         if ('dev' === $this->kernel->getEnvironment()) {

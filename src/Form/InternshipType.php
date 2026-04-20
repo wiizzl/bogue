@@ -38,6 +38,7 @@ class InternshipType extends AbstractType
                 'choice_label' => static function (Student $student): string {
                     return $student->getFullName();
                 },
+                'placeholder' => 'Choisir l\'étudiant...',
                 'label' => 'Étudiant',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('s')
@@ -49,7 +50,7 @@ class InternshipType extends AbstractType
             ->add('company', EntityType::class, [
                 'class' => Company::class,
                 'label' => 'Entreprise d\'accueil',
-                'placeholder' => 'Sélectionnez une entreprise...',
+                'placeholder' => 'Choisir l\'entreprise...',
                 'choice_label' => function (Company $company) {
                     return $company->getName() . ' (' . $company->getCity() . ')';
                 },
@@ -64,8 +65,8 @@ class InternshipType extends AbstractType
         return [
             'class' => User::class,
             'label' => $label,
-            'required' => false,
             'placeholder' => 'Choisir l\'enseignant...',
+            'required' => false,
             'query_builder' => static function (UserRepository $er) {
                 return $er->createQueryBuilder('u')
                     ->join('u.role', 'r')

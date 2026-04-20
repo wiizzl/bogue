@@ -1,0 +1,24 @@
+{{ form_start(form) }}
+    <fieldset>
+        <div class="row">
+            <label data-field for="{{ form.status.vars.id }}" class="col-6">
+                {{ form.status.vars.label }}
+                {{ form_widget(form.status) }}
+                {{ form_errors(form.status) }}
+            </label>
+
+            <label data-field for="{{ form.validatedAt.vars.id }}" class="col-6">
+                {{ form.validatedAt.vars.label }}
+                {{ form_widget(form.validatedAt) }}
+                {{ form_errors(form.validatedAt) }}
+            </label>
+        </div>
+
+        <label data-field for="{{ form.comment.vars.id }}">
+            {{ form.comment.vars.label }}
+            {{ form_widget(form.comment) }}
+            {{ form_errors(form.comment) }}
+        </label>
+    </fieldset>
+    <button type="submit">Enregistrer</button>
+{{ form_end(form) }}

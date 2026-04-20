@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Historique{% endblock %}
+
+{% block body %}
+    <section class="table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Auteur</th>
+                    <th>Action</th>
+                    <th>Étudiant</th>
+                    <th>Entreprise</th>
+                    <th>Ancien</th>
+                    <th>Nouveau</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                    <tr>
+                        <td>{{ log.createdAt|date('d/m/Y H:i') }}</td>
+                        <td>{{ log.author.fullName }}</td>
+                        <td>{{ log.actionType.label }}</td>
+                        <td>{{ log.internship ? log.internship.student.fullName : 'N/A' }}</td>
+                        <td>{{ log.internship ? log.internship.company.name : 'N/A' }}</td>
+                        <td>{{ log.oldValue }}</td>
+                        <td>{{ log.newValue }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="7">Aucun évènement.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    {{ include('_pagination.html.twig', {
+        route: 'app_history_index',
+        current_page: current_page,
+        pages_count: pages_count
+    }) }}
+{% endblock %}
