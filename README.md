@@ -11,7 +11,7 @@ Ce projet est conçu pour fonctionner de deux manières :
 - Via Docker (recommandé) : l'environnement est entièrement conteneurisé grâce à Docker et Docker Compose. C'est l'environnement utilisé pour la production.
 - Via WAMP : le projet peut également être exécuté directement dans un environnement WAMP local.
 
-Les versions des logiciels utilisées dans l'image Docker (PHP, MySQL) correspondent volontairement à celles de l'environnement WAMP du product owner, afin de garantir une cohérence et d'éviter tout problème de compatibilité entre les deux environnements.
+Les versions des programmes utilisées dans l'image Docker correspondent volontairement à celles de l'environnement WAMP du product owner, afin de garantir une cohérence et d'éviter tout problème de compatibilité entre les deux environnements.
 
 | Programme  | Version |
 | ---------- | ------- |

@@ -3,12 +3,12 @@
     "dockerComposeFile": [
         "../compose.yaml",
         "../compose.override.yaml",
-        "compose.devcontainer.yaml"
+        "compose.devcontainer.yaml",
     ],
     "service": "php",
     "workspaceFolder": "/app",
     "features": {
-        "ghcr.io/devcontainers/features/node:1": {}
+        "ghcr.io/devcontainers/features/node:1": {},
     },
     "remoteUser": "nonroot",
     "postCreateCommand": "npm install -g intelephense",
@@ -17,8 +17,8 @@
             "extensions": [
                 "bmewburn.vscode-intelephense-client",
                 "xdebug.php-debug",
-                "whatwedo.twig"
-            ]
-        }
-    }
+                "whatwedo.twig",
+            ],
+        },
+    },
 }

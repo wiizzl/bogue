@@ -3,14 +3,14 @@
 {% block title %}Étudiants{% endblock %}
 
 {% block body %}
-    <section>
+    <section style="display: flex; gap: 1rem; justify-content: space-between; align-items: center;">
         <a href="{{ path('app_student_new') }}">Ajouter un étudiant</a>
         <form method="get" action="{{ path('app_student_index') }}">
             <label data-field for="showArchived">
                 <input id="showArchived" name="showArchived" type="checkbox" value="1" {% if showArchived %}checked{% endif %}>
                 Afficher les archivés
             </label>
-            <button type="submit">Filtrer</button>
+            <button class="outline" type="submit">Filtrer</button>
         </form>
     </section>
 

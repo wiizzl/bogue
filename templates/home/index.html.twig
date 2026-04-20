@@ -24,8 +24,8 @@
 
 {% block body %}
     <section>
-        <form method="get" action="{{ path('app_home_index') }}" style="display: flex; align-items: center; justify-content: space-between;">
-            <div style="display: flex; gap: 1rem;">
+        <form method="get" action="{{ path('app_home_index') }}" style="margin-bottom: var(--space-4);">
+            <div style="display: flex; align-items: center; gap: 1rem;">
                 <div data-field style="flex: 1; min-width: 220px;">
                     <select id="major" name="major" aria-label="Filtrer par option" style="width: 100%;">
                         <option value="">Toutes les options</option>
