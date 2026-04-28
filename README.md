@@ -64,3 +64,12 @@ Il est possible d'utiliser les [Development Container](https://containers.dev) p
    ```sh
    symfony serve
    ```
+
+### Se connecter
+
+Par défaut, les [`fixtures`](./src/DataFixtures/AppFixtures.php) chargent les données nécessaires au bon fonctionnement de l'application, mais également deux comptes à destination du product owner (uniquement en environnement `dev`) :
+
+| Email        | Mot de passe | Rôle           |
+| ------------ | ------------ | -------------- |
+| bocba@cba.fr | mdp          | `ROLE_ADMIN`   |
+| focba@cba.fr | mdp          | `ROLE_TEACHER` |

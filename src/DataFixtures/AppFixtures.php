@@ -65,17 +65,13 @@ class AppFixtures extends Fixture
         }
 
         if ('dev' === $this->kernel->getEnvironment()) {
-            $devPassword = 'Bogue-Stage76!';
+            $devPassword = 'mdp';
 
-            $admin = (new User())->setEmail('admin@test.fr')->setFirstName('Administrateur')->setLastName('Bogue');
+            $admin = (new User())->setEmail('bocba@cba.fr')->setFirstName('Back')->setLastName('Office');
             $admin->setRole($savedRoles['ROLE_ADMIN'])->setPassword($this->hasher->hashPassword($admin, $devPassword));
             $manager->persist($admin);
 
-            $secretary = (new User())->setEmail('secretary@test.fr')->setFirstName('Secrétaire')->setLastName('Bogue');
-            $secretary->setRole($savedRoles['ROLE_SECRETARY'])->setPassword($this->hasher->hashPassword($secretary, $devPassword));
-            $manager->persist($secretary);
-
-            $teacher = (new User())->setEmail('teacher@test.fr')->setFirstName('Enseignant')->setLastName('Bogue');
+            $teacher = (new User())->setEmail('focba@cba.fr')->setFirstName('Front')->setLastName('Office');
             $teacher->setRole($savedRoles['ROLE_TEACHER'])->setPassword($this->hasher->hashPassword($teacher, $devPassword));
             $manager->persist($teacher);
         }
