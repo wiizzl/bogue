@@ -65,7 +65,7 @@ Il est possible d'utiliser les [Development Container](https://containers.dev) p
    symfony serve
    ```
 
-### Se connecter
+## Se connecter
 
 Par défaut, les [`fixtures`](./src/DataFixtures/AppFixtures.php) chargent les données nécessaires au bon fonctionnement de l'application, mais également deux comptes à destination du product owner (uniquement en environnement `dev`) :
 
