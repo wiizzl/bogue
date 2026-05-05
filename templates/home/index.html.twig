@@ -38,6 +38,17 @@
                 </div>
 
                 <div data-field style="flex: 1; min-width: 220px;">
+                    <select id="promotion" name="promotion" aria-label="Filtrer par promotion" style="width: 100%;">
+                        <option value="">Toutes les promotions</option>
+                        {% for promotion in promotions %}
+                            <option value="{{ promotion.id }}" {{ (current_filters.promotion|default('')) == promotion.id ? 'selected' : '' }}>
+                                {{ promotion.year }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div data-field style="flex: 1; min-width: 220px;">
                     <select id="teacher" name="teacher" aria-label="Filtrer par enseignant" style="width: 100%;">
                         <option value="">Tous les enseignants</option>
                         {% for teacher in teachers %}
@@ -55,7 +66,7 @@
                 <a class="button outline" href="{{ path('app_home_index') }}">Réinitialiser</a>
 
                 {% if is_granted('ROLE_SECRETARY') %}
-                    <a class="button outline" href="{{ path('app_home_export', {'major': current_filters.major|default(''), 'teacher': current_filters.teacher|default('')}) }}">
+                    <a class="button outline" href="{{ path('app_home_export', {'major': current_filters.major|default(''), 'promotion': current_filters.promotion|default(''), 'teacher': current_filters.teacher|default('')}) }}">
                         Exporter CSV
                     </a>
                 {% endif %}
@@ -69,6 +80,7 @@
                 <tr>
                     <th>Étudiant</th>
                     <th class="home-center-col">Option</th>
+                    <th class="home-center-col">Promotion</th>
                     <th>Entreprise</th>
                     <th class="home-center-col">Suivi</th>
                     <th class="home-center-col">Visite</th>
@@ -87,7 +99,10 @@
                             {{ internship.student.major.code }}
                         </span>
                     </td>
-                    <td>{{ internship.company.name }} ({{ internship.company.city }})</td>
+                    <td class="home-center-col">
+                        <span>{{ internship.student.promotion.year }}</span>
+                    </td>
+                    <td>{{ internship.company.name }}</td>
                     <td class="home-center-col">
                         <span title="{{ internship.trackingTeacher ? internship.trackingTeacher.fullName : '' }}">
                             {{ internship.trackingTeacher ? internship.trackingTeacher.trigram : 'Aucun' }}
@@ -112,7 +127,7 @@
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="9">Aucun stage ne correspond aux filtres.</td>
+                    <td colspan="10">Aucun stage ne correspond aux filtres.</td>
                 </tr>
             {% endfor %}
             </tbody>

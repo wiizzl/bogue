@@ -12,14 +12,7 @@
                 </tr>
                 <tr>
                     <th>Entreprise</th>
-                    <td>
-                        {% if is_granted('ROLE_ADMIN') %}
-                            <a href="{{ path('app_company_show', {'id': internship.company.id}) }}">{{ internship.company.name }}</a>
-                        {% else %}
-                            {{ internship.company.name }}
-                        {% endif %}
-                        ({{ internship.company.city }})
-                    </td>
+                    <td>{{ internship.company.name }}</td>
                 </tr>
                 <tr>
                     <th>Période</th>

@@ -1,14 +1,16 @@
+{% import "_form_macros.html.twig" as forms %}
+
 {{ form_start(form) }}
     <fieldset>
         <div class="row">
             <label data-field for="{{ form.student.vars.id }}" class="col-6">
-                {{ form.student.vars.label }}
+                {{ forms.label(form.student) }}
                 {{ form_widget(form.student) }}
                 {{ form_errors(form.student) }}
             </label>
 
             <label data-field for="{{ form.company.vars.id }}" class="col-6">
-                {{ form.company.vars.label }}
+                {{ forms.label(form.company) }}
                 {{ form_widget(form.company) }}
                 {{ form_errors(form.company) }}
             </label>
@@ -16,13 +18,13 @@
 
         <div class="row">
             <label data-field for="{{ form.startDate.vars.id }}" class="col-6">
-                {{ form.startDate.vars.label }}
+                {{ forms.label(form.startDate) }}
                 {{ form_widget(form.startDate) }}
                 {{ form_errors(form.startDate) }}
             </label>
 
             <label data-field for="{{ form.endDate.vars.id }}" class="col-6">
-                {{ form.endDate.vars.label }}
+                {{ forms.label(form.endDate) }}
                 {{ form_widget(form.endDate) }}
                 {{ form_errors(form.endDate) }}
             </label>
@@ -30,20 +32,20 @@
 
         <div class="row">
             <label data-field for="{{ form.trackingTeacher.vars.id }}" class="col-6">
-                {{ form.trackingTeacher.vars.label }}
+                {{ forms.label(form.trackingTeacher) }}
                 {{ form_widget(form.trackingTeacher) }}
                 {{ form_errors(form.trackingTeacher) }}
             </label>
 
             <label data-field for="{{ form.visitingTeacher.vars.id }}" class="col-6">
-                {{ form.visitingTeacher.vars.label }}
+                {{ forms.label(form.visitingTeacher) }}
                 {{ form_widget(form.visitingTeacher) }}
                 {{ form_errors(form.visitingTeacher) }}
             </label>
         </div>
 
         <label data-field for="{{ form.remarks.vars.id }}">
-            {{ form.remarks.vars.label }}
+            {{ forms.label(form.remarks) }}
             {{ form_widget(form.remarks) }}
             {{ form_errors(form.remarks) }}
         </label>

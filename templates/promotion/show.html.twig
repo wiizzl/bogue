@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Promotion{% endblock %}
+
+{% block body %}
+    <section class="table">
+        <table>
+            <tbody>
+                <tr>
+                    <th>Année</th>
+                    <td>{{ promotion.year }}</td>
+                </tr>
+                <tr>
+                    <th>Archivée</th>
+                    <td>{{ promotion.isArchived ? 'Oui' : 'Non' }}</td>
+                </tr>
+                <tr>
+                    <th>Étudiants</th>
+                    <td>{{ promotion.students|length }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+{% endblock %}

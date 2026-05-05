@@ -1,14 +1,16 @@
+{% import "_form_macros.html.twig" as forms %}
+
 {{ form_start(form) }}
     <fieldset>
         <div class="row">
             <label data-field for="{{ form.firstName.vars.id }}" class="col-6">
-                {{ form.firstName.vars.label }}
+                {{ forms.label(form.firstName) }}
                 {{ form_widget(form.firstName) }}
                 {{ form_errors(form.firstName) }}
             </label>
 
             <label data-field for="{{ form.lastName.vars.id }}" class="col-6">
-                {{ form.lastName.vars.label }}
+                {{ forms.label(form.lastName) }}
                 {{ form_widget(form.lastName) }}
                 {{ form_errors(form.lastName) }}
             </label>
@@ -16,13 +18,13 @@
 
         <div class="row">
             <label data-field for="{{ form.email.vars.id }}" class="col-6">
-                {{ form.email.vars.label }}
+                {{ forms.label(form.email) }}
                 {{ form_widget(form.email) }}
                 {{ form_errors(form.email) }}
             </label>
 
             <label data-field for="{{ form.password.vars.id }}" class="col-6">
-                {{ form.password.vars.label }}
+                {{ forms.label(form.password) }}
                 {{ form_widget(form.password) }}
                 {{ form_errors(form.password) }}
             </label>
@@ -30,7 +32,7 @@
 
         {% if form.role is defined %}
             <label data-field for="{{ form.role.vars.id }}">
-                {{ form.role.vars.label }}
+                {{ forms.label(form.role) }}
                 {{ form_widget(form.role) }}
                 {{ form_errors(form.role) }}
             </label>

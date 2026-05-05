@@ -28,4 +28,16 @@ class PromotionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @return Promotion[]
+     */
+    public function findActiveOrdered(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.isArchived = false')
+            ->orderBy('p.year', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }

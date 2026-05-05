@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\User;
 use App\Repository\InternshipRepository;
 use App\Repository\MajorRepository;
+use App\Repository\PromotionRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
@@ -19,6 +20,7 @@ class InternshipTrackingService
     public function __construct(
         private InternshipRepository $internshipRepository,
         private MajorRepository $majorRepository,
+        private PromotionRepository $promotionRepository,
         private UserRepository $userRepository,
         private PaginationService $paginationService
     ) {
@@ -32,7 +34,7 @@ class InternshipTrackingService
      * - SECRETARY: sees all internships
      * - TEACHER: sees only assigned internships
      *
-     * @param array $filters Array with 'major' and 'teacher' keys
+    * @param array $filters Array with 'major', 'promotion' and 'teacher' keys
      * @param User|null $user Current authenticated user
      * @param int $page Current page number (1-based)
      * @param int|null $limit Results per page (null for no limit)
@@ -64,14 +66,15 @@ class InternshipTrackingService
     /**
      * Get filter options for the UI.
      *
-     * Returns available majors and teachers for building filter dropdowns.
+     * Returns available majors, promotions and teachers for building filter dropdowns.
      *
-     * @return array{majors: array, teachers: array}
+     * @return array{majors: array, promotions: array, teachers: array}
      */
     public function getFilterOptions(): array
     {
         return [
             'majors' => $this->majorRepository->findAll(),
+            'promotions' => $this->promotionRepository->findActiveOrdered(),
             'teachers' => $this->userRepository->findTeachers()
         ];
     }
@@ -82,6 +85,10 @@ class InternshipTrackingService
 
         if (!empty($rawFilters['major']) && is_numeric($rawFilters['major'])) {
             $filters['major'] = (int) $rawFilters['major'];
+        }
+
+        if (!empty($rawFilters['promotion']) && is_numeric($rawFilters['promotion'])) {
+            $filters['promotion'] = (int) $rawFilters['promotion'];
         }
 
         if (!empty($rawFilters['teacher']) && is_numeric($rawFilters['teacher'])) {

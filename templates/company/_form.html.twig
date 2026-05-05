@@ -1,26 +1,28 @@
+{% import "_form_macros.html.twig" as forms %}
+
 {{ form_start(form) }}
     <fieldset>
         <label data-field for="{{ form.name.vars.id }}">
-            {{ form.name.vars.label }}
+            {{ forms.label(form.name) }}
             {{ form_widget(form.name) }}
             {{ form_errors(form.name) }}
         </label>
 
         <label data-field for="{{ form.address.vars.id }}">
-            {{ form.address.vars.label }}
+            {{ forms.label(form.address) }}
             {{ form_widget(form.address) }}
             {{ form_errors(form.address) }}
         </label>
 
         <div class="row">
             <label data-field for="{{ form.zipCode.vars.id }}" class="col-6">
-                {{ form.zipCode.vars.label }}
+                {{ forms.label(form.zipCode) }}
                 {{ form_widget(form.zipCode) }}
                 {{ form_errors(form.zipCode) }}
             </label>
 
             <label data-field for="{{ form.city.vars.id }}" class="col-6">
-                {{ form.city.vars.label }}
+                {{ forms.label(form.city) }}
                 {{ form_widget(form.city) }}
                 {{ form_errors(form.city) }}
             </label>
@@ -28,20 +30,20 @@
 
         <div class="row">
             <label data-field for="{{ form.tutorName.vars.id }}" class="col-6">
-                {{ form.tutorName.vars.label }}
+                {{ forms.label(form.tutorName) }}
                 {{ form_widget(form.tutorName) }}
                 {{ form_errors(form.tutorName) }}
             </label>
 
             <label data-field for="{{ form.phone.vars.id }}" class="col-6">
-                {{ form.phone.vars.label }}
+                {{ forms.label(form.phone) }}
                 {{ form_widget(form.phone) }}
                 {{ form_errors(form.phone) }}
             </label>
         </div>
 
         <label data-field for="{{ form.email.vars.id }}">
-            {{ form.email.vars.label }}
+            {{ forms.label(form.email) }}
             {{ form_widget(form.email) }}
             {{ form_errors(form.email) }}
         </label>

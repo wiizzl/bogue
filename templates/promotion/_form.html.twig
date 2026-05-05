@@ -1,14 +1,16 @@
+{% import "_form_macros.html.twig" as forms %}
+
 {{ form_start(form) }}
     <fieldset>
         <label data-field for="{{ form.year.vars.id }}">
-            {{ form.year.vars.label }}
+            {{ forms.label(form.year) }}
             {{ form_widget(form.year) }}
             {{ form_errors(form.year) }}
         </label>
 
         <label data-field for="{{ form.isArchived.vars.id }}">
             {{ form_widget(form.isArchived) }}
-            {{ form.isArchived.vars.label }}
+            {{ forms.label(form.isArchived) }}
             {{ form_errors(form.isArchived) }}
         </label>
     </fieldset>

@@ -25,7 +25,7 @@ class UserType extends AbstractType
                 'label' => 'Nom',
             ])
             ->add('email', EmailType::class, [
-                'label' => 'Adresse email professionnelle',
+                'label' => 'Adresse email',
             ])
             ->add('password', PasswordType::class, [
                 'label' => 'Mot de passe',

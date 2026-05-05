@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Étudiant{% endblock %}
+
+{% block body %}
+    <section class="table">
+        <table>
+            <tbody>
+                <tr>
+                    <th>Nom complet</th>
+                    <td>{{ student.fullName }}</td>
+                </tr>
+                <tr>
+                    <th>Prénom</th>
+                    <td>{{ student.firstName }}</td>
+                </tr>
+                <tr>
+                    <th>Nom</th>
+                    <td>{{ student.lastName }}</td>
+                </tr>
+                <tr>
+                    <th>Option</th>
+                    <td>{{ student.major.code }}</td>
+                </tr>
+                <tr>
+                    <th>Promotion</th>
+                    <td>{{ student.promotion.year }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+{% endblock %}

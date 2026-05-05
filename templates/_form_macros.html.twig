@@ -1,0 +1,6 @@
+{% macro label(field) %}
+    {{ field.vars.label }}
+    {% if field.vars.required %}
+        <span class="required-marker" aria-hidden="true">*</span>
+    {% endif %}
+{% endmacro %}

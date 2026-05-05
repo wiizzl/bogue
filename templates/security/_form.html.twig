@@ -1,13 +1,15 @@
+{% import "_form_macros.html.twig" as forms %}
+
 {{ form_start(form) }}
     <fieldset>
         <label data-field for="{{ form._username.vars.id }}">
-            {{ form._username.vars.label }}
+            {{ forms.label(form._username) }}
             {{ form_widget(form._username) }}
             {{ form_errors(form._username) }}
         </label>
 
         <label data-field for="{{ form._password.vars.id }}">
-            {{ form._password.vars.label }}
+            {{ forms.label(form._password) }}
             {{ form_widget(form._password) }}
             {{ form_errors(form._password) }}
         </label>

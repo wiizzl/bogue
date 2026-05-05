@@ -82,7 +82,7 @@ final class UserController extends AbstractController
 
         $form = $this->createForm(UserType::class, $user, [
             'action' => 'edit',
-            'can_edit_roles' => $this->isGranted('ROLE_ADMIN'),
+            'can_edit_roles' => false,
         ]);
 
         return $this->handleUserForm(

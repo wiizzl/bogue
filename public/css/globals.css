@@ -42,3 +42,9 @@
 .text-center {
     text-align: center;
 }
+
+.required-marker {
+    color: var(--danger);
+    font-weight: 700;
+    margin-inline-start: 0.25ch;
+}

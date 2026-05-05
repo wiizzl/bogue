@@ -10,8 +10,6 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * Repository for Internship entities with optimized queries.
- *
  * @extends ServiceEntityRepository<Internship>
  */
 class InternshipRepository extends ServiceEntityRepository
@@ -49,21 +47,11 @@ class InternshipRepository extends ServiceEntityRepository
     }
 
     /**
-     * Find filtered internships for tracking with optimized query and role-based access.
-     *
-     * This method builds an optimized query with proper eager loading to avoid N+1 problems.
-     * It applies role-based filtering to ensure users only see internships they have access to.
-     *
-     * Performance optimizations:
-     * - Uses DISTINCT to avoid duplicates from LEFT JOINs
-     * - Selects only necessary fields to reduce memory usage
-     * - Proper indexing expected on foreign keys (see migration)
-     *
-     * @param array $filters Array with 'major' and/or 'teacher' filter values
-     * @param User|null $user Current authenticated user for access control
-     * @param int $page Page number for pagination (1-based)
-     * @param int|null $limit Results per page (null for no pagination)
-     * @return Paginator|array Paginated results or array if no limit
+     * @param array $filters
+     * @param User|null $user
+     * @param int $page
+     * @param int|null $limit
+     * @return Paginator|array
      */
     public function findForTracking(array $filters, ?User $user = null, int $page = 1, ?int $limit = null): Paginator|array
     {
@@ -99,16 +87,8 @@ class InternshipRepository extends ServiceEntityRepository
     }
 
     /**
-     * Apply role-based access control filters to the query.
-     *
-     * Business rules:
-     * - ADMIN: Full access to all internships
-     * - SECRETARY: Full access to all internships
-     * - TEACHER: Only assigned internships (tracking or visiting)
-     * - Others: No access
-     *
-     * @param \Doctrine\ORM\QueryBuilder $qb Query builder to modify
-     * @param User|null $user Current user
+     * @param \Doctrine\ORM\QueryBuilder $qb
+     * @param User|null $user
      */
     private function applyUserAccessFilter($qb, ?User $user): void
     {
@@ -140,18 +120,19 @@ class InternshipRepository extends ServiceEntityRepository
     }
 
     /**
-     * Apply search filters for major and teacher.
-     *
-     * Filters are validated and sanitized by the service layer before reaching here.
-     *
-     * @param \Doctrine\ORM\QueryBuilder $qb Query builder to modify
-     * @param array $filters Validated filter array
+     * @param \Doctrine\ORM\QueryBuilder $qb
+     * @param array $filters
      */
     private function applySearchFilters($qb, array $filters): void
     {
         if (!empty($filters['major'])) {
             $qb->andWhere('m.id = :majorId')
                ->setParameter('majorId', $filters['major']);
+        }
+
+        if (!empty($filters['promotion'])) {
+            $qb->andWhere('p.id = :promotionId')
+               ->setParameter('promotionId', $filters['promotion']);
         }
 
         if (!empty($filters['teacher'])) {
@@ -166,11 +147,6 @@ class InternshipRepository extends ServiceEntityRepository
     }
 
     /**
-     * Find all active internships for a specific teacher.
-     *
-     * Returns internships where the teacher is assigned as tracking or visiting teacher.
-     * Only includes internships from non-archived promotions.
-     *
      * @param User $teacher
      * @return array
      */

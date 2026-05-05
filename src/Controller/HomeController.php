@@ -47,6 +47,7 @@ final class HomeController extends AbstractController
             return $this->render('home/index.html.twig', array_merge($result['pagination'], [
                 'internships' => $result['data'],
                 'majors' => $filterOptions['majors'],
+                'promotions' => $filterOptions['promotions'],
                 'teachers' => $filterOptions['teachers'],
                 'current_filters' => $filters
             ]));
@@ -61,6 +62,7 @@ final class HomeController extends AbstractController
                 'total_items' => 0,
                 'current_limit' => $limit,
                 'majors' => [],
+                'promotions' => [],
                 'teachers' => [],
                 'current_filters' => []
             ]);
@@ -106,6 +108,7 @@ final class HomeController extends AbstractController
     {
         return $this->internshipTrackingService->sanitizeFilters([
             'major' => $request->query->get('major'),
+            'promotion' => $request->query->get('promotion'),
             'teacher' => $request->query->get('teacher'),
         ]);
     }
